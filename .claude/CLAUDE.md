@@ -129,6 +129,22 @@ Every team has 4 standardized roles. Use the **role title** in policy rules — 
 - When answering, always have a clear label on who is talking to Commander ท่านผู้บัญชาการ
 - **Principal Manager (AM)** presents all final outputs to Commander ท่านผู้บัญชาการ
 
+
+### §2b. Language Policy
+> **Language behavior is configured per-project in `ProjectEnvironment.md`.**
+
+| Setting | Controls | Default |
+|---------|----------|---------|
+| `CONVERSATION_LANGUAGE` | AI responses to Commander | `auto` (detect from user input) |
+| `LOG_LANGUAGE` | RoundTable & Team Chat entries | `conversation` (match conversation) |
+| `DOC_LANGUAGE` | Plans, tickets, documentation | `en` (English) |
+
+**Rules:**
+- When `CONVERSATION_LANGUAGE` is `auto`, respond in the same language the Commander uses
+- When a specific ISO code is set (e.g., `th`, `en`, `ja`), always respond in that language regardless of input language
+- `LOG_LANGUAGE: conversation` means logs follow the conversation language; set a specific code to force a fixed log language
+- Technical terms, code identifiers, and file paths are always kept in their original form (never translated)
+- If ProjectEnvironment.md has no language fields, default to `auto` / `conversation` / `en`
 ### §3. Documentation Standards
 - All code must be commented for clarity
 - Design systems must use configurable values (CSS variables, config entries, constants) — no magic numbers
