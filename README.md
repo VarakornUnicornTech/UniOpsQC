@@ -12,7 +12,7 @@ A structured multi-team AI governance framework for [Claude Code](https://docs.a
 
 RoundTable Framework is a `.claude/` configuration template that gives Claude Code:
 
-- **Team structure** — 4 specialized teams (Overseer, Monolith, Syndicate, Arcade) + 2 lone operatives (Cipher, Medica), each with defined roles and domain boundaries
+- **Team structure** — 4 specialized teams (Overseer, Monolith, Syndicate, Arcade) + 1 lone operative (Cipher), each with defined roles and domain boundaries
 - **Session logging** — Automatic RoundTable session logs that capture every decision, action, and output
 - **Quality gates** — Planning-first workflow, verification scholar sign-off, acceptance criteria enforcement
 - **Debugging protocol** — Instrument-first rule, debug probe standards, side-effect scans
@@ -78,7 +78,7 @@ Install the RoundTable Framework from https://github.com/VarakornUnicornTech/uni
 
 4. **Start Claude Code** in your project directory — it will automatically load CLAUDE.md and adopt the team structure
 
-5. **Choose your team** — Claude will prompt you to select a Team Roster (Overseer, Monolith, Syndicate, Arcade, Cipher, or Medica)
+5. **Choose your team** — Claude will load the appropriate agent file (Overseer, Monolith, Syndicate, Arcade, or Cipher)
 
 ## Project Structure
 
@@ -89,10 +89,9 @@ Install the RoundTable Framework from https://github.com/VarakornUnicornTech/uni
 ├── settings.json                # Claude Code permissions
 ├── TeamDocument/
 │   ├── 1. Policies/            # 8 modular policy files
-│   ├── 2. Team Roster/         # 6 team definitions
+│   ├── 2. Team Roster/         # 5 team definitions
 │   ├── 3. Team Chat/           # Team communication logs
 │   ├── Diagnostic Log/         # Cipher engagement records
-│   └── Medical Reference/      # Medica reference library
 └── skills/                     # Custom slash commands
 ```
 
@@ -105,7 +104,6 @@ Install the RoundTable Framework from https://github.com/VarakornUnicornTech/uni
 | **Syndicate** | API integration, query optimization, security | DR (Conductor), AX (Technologist), LX (Design Scholar), WT (Verification Scholar) |
 | **Arcade** | Frontend UI, gamification, creative systems | CP (Conductor), GL (Technologist), PX (Design Scholar), HS (Verification Scholar) |
 | **Cipher** | Hardware diagnostics, disk forensics, RAID recovery | CI (Lone Operative) |
-| **Medica** | Clinical reference, medical knowledge | MD (Lone Operative) |
 
 ## Policy Reference
 

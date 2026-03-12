@@ -12,7 +12,7 @@
 
 RoundTable Framework คือ template การตั้งค่า `.claude/` ที่ให้ Claude Code มีความสามารถดังนี้:
 
-- **โครงสร้างทีม** — 4 ทีมเฉพาะทาง (Overseer, Monolith, Syndicate, Arcade) + 2 หน่วยปฏิบัติการเดี่ยว (Cipher, Medica) แต่ละทีมมีบทบาทและขอบเขตที่กำหนดไว้ชัดเจน
+- **โครงสร้างทีม** — 4 ทีมเฉพาะทาง (Overseer, Monolith, Syndicate, Arcade) + 1 หน่วยปฏิบัติการเดี่ยว (Cipher) แต่ละทีมมีบทบาทและขอบเขตที่กำหนดไว้ชัดเจน
 - **บันทึก Session** — ระบบบันทึก RoundTable อัตโนมัติที่เก็บทุกการตัดสินใจ การดำเนินการ และผลลัพธ์
 - **Quality Gate** — ขั้นตอนวางแผนก่อนลงมือ, Verification Scholar ลงนามรับรอง, บังคับใช้เกณฑ์การยอมรับ
 - **Debugging Protocol** — กฎ Instrument-First, มาตรฐาน debug probe, การสแกนผลกระทบข้างเคียง
@@ -78,7 +78,7 @@ Install the RoundTable Framework from https://github.com/VarakornUnicornTech/uni
 
 4. **เปิด Claude Code** ในโฟลเดอร์โปรเจค — ระบบจะโหลด CLAUDE.md และใช้โครงสร้างทีมโดยอัตโนมัติ
 
-5. **เลือกทีม** — Claude จะให้คุณเลือก Team Roster (Overseer, Monolith, Syndicate, Arcade, Cipher หรือ Medica)
+5. **เลือกทีม** — Claude จะโหลด agent file ที่เหมาะสม (Overseer, Monolith, Syndicate, Arcade หรือ Cipher)
 
 ## โครงสร้างโปรเจค
 
@@ -92,7 +92,6 @@ Install the RoundTable Framework from https://github.com/VarakornUnicornTech/uni
 │   ├── 2. Team Roster/         # นิยามทีม 6 ทีม
 │   ├── 3. Team Chat/           # บันทึกการสื่อสารระหว่างทีม
 │   ├── Diagnostic Log/         # บันทึกงานของ Cipher
-│   └── Medical Reference/      # คลังอ้างอิงของ Medica
 └── skills/                     # Slash command ที่กำหนดเอง
 ```
 
@@ -105,7 +104,6 @@ Install the RoundTable Framework from https://github.com/VarakornUnicornTech/uni
 | **Syndicate** | API integration, Query optimization, Security | DR (Conductor), AX (Technologist), LX (Design Scholar), WT (Verification Scholar) |
 | **Arcade** | Frontend UI, Gamification, ระบบสร้างสรรค์ | CP (Conductor), GL (Technologist), PX (Design Scholar), HS (Verification Scholar) |
 | **Cipher** | วินิจฉัยฮาร์ดแวร์, Disk forensics, กู้คืน RAID | CI (Lone Operative) |
-| **Medica** | อ้างอิงทางคลินิก, ความรู้ทางการแพทย์ | MD (Lone Operative) |
 
 ## นโยบาย
 
