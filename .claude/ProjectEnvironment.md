@@ -1,7 +1,7 @@
 # ProjectEnvironment
 
 > Active project registry. Check this file before constructing any Development folder path or PreExisting TechStack path.
-> Maintained by KP (Overseer). Update when a project is added, put on hold, or its source path changes.
+> Maintained by AM (Overseer). Update when a project is added, put on hold, or its source path changes.
 
 ---
 

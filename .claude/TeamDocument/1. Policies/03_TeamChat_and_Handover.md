@@ -41,9 +41,9 @@ TeamDocument/2. TeamChat/
 **Rules:**
 - Each team logs ALL internal discussions for that day in a single daily file (like RoundTable does)
 - Multiple sessions/tasks on the same day go into the same daily file as separate sections
-- Teams must **NOT** write directly to the RoundTable file — only KP/Overseer writes to RoundTable
-- Team Conductors must also file a summary in `OverseerReport/` for KP to review
-- KP (Principal Manager) reads these files to stay informed and present work to Chief Manager Martin
+- Teams must **NOT** write directly to the RoundTable file — only AM/Overseer writes to RoundTable
+- Team Conductors must also file a summary in `OverseerReport/` for AM to review
+- AM (Principal Manager) reads these files to stay informed and present work to Commander
 
 ### Handoff Process
 
@@ -55,7 +55,7 @@ TeamDocument/2. TeamChat/
 - This is a **shared daily roundtable** that any sub-team can write to
 - All sub-team (Monolith, Syndicate, Arcade) reports/handoffs to Overseer go here
 - Multiple teams writing on the same day append to the same daily file as separate sections
-- KP reads this folder to stay informed and present work to Chief Manager Martin
+- AM reads this folder to stay informed and present work to Commander
 
 ---
 
@@ -120,7 +120,7 @@ A **Team Chat daily log** is the internal discussion record for one team on one 
 
 ## OverseerReport Standard
 
-The **OverseerReport** is the shared daily file where all sub-teams file their completed ticket reports and blockers for KP to review.
+The **OverseerReport** is the shared daily file where all sub-teams file their completed ticket reports and blockers for AM to review.
 
 **File naming:** `DD-MM-YYYY_OverseerReport.md`
 **Location:** `TeamDocument/2. TeamChat/OverseerReport/DD-MM-YYYY_OverseerReport.md`
@@ -145,7 +145,7 @@ The **OverseerReport** is the shared daily file where all sub-teams file their c
 ### Blockers
 None | [Description of blocker — what is needed to unblock]
 
-### Next Step for KP
+### Next Step for AM
 [What Overseer must do: authorize next ticket, review report, assign follow-up, etc.]
 
 ---
@@ -155,7 +155,7 @@ None | [Description of blocker — what is needed to unblock]
 - Only sub-teams (Monolith, Syndicate, Arcade) file here — Overseer does not self-report to OverseerReport
 - The Conductor files the report; the Verification Scholar must confirm criteria are checked before filing
 - For blockers: file immediately — do not wait for task completion
-- KP reads this file to stay informed and determine what to present to Chief Manager Martin
+- AM reads this file to stay informed and determine what to present to Commander
 
 ---
 
@@ -204,4 +204,4 @@ None | [Description of any risk the receiving team should know about]
 
 ---
 
-*Adopted from ClaudeTemplate — 11-03-2026. Adapted for RoundTable: KP/Martin naming, Windows paths.*
+*Adopted from ClaudeTemplate — 11-03-2026. Adapted for RoundTable: AM naming, Windows paths.*

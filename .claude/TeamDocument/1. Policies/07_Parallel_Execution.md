@@ -15,7 +15,7 @@
 4. **Arcade scaffolds with mock data.** When Arcade's tickets depend on backend data, they build the UI against mock/stub data first and wire live APIs when the dependency signals complete.
 5. **No idle waiting.** If a team exhausts all unblocked tickets while blocked tickets remain, they file an OverseerReport noting the wait state and take up internal prep work (code review, documentation, test expansion) until unblocked.
 6. **Within a team, work in parallel too.** Team members (Conductor, Technologist, Design Scholar, Verification Scholar) divide unblocked tickets among themselves and work concurrently. The Conductor tracks which member owns which ticket and aggregates results.
-7. **Early Phase Advance — Chief Manager Martin gate (MANDATORY).** A team that completes all their Phase N tickets may NOT advance to Phase N+1 on their own initiative. They must: (a) file their Phase N OverseerReport marking all tickets complete, (b) enter a wait state and notify KP, and (c) wait for Chief Manager Martin to explicitly tell them they may advance. Only a direct message from Chief Manager Martin authorises the early advance. KP does not have authority to grant this — only Chief Manager Martin does.
+7. **Early Phase Advance — Commander gate (MANDATORY).** A team that completes all their Phase N tickets may NOT advance to Phase N+1 on their own initiative. They must: (a) file their Phase N OverseerReport marking all tickets complete, (b) enter a wait state and notify AM, and (c) wait for Commander to explicitly tell them they may advance. Only a direct message from Commander authorises the early advance. AM does not have authority to grant this — only Commander does.
 
 **Dependency signal format (OverseerReport entry):**
 When a ticket that other teams depend on completes, the completing team's OverseerReport entry MUST include:
@@ -29,10 +29,10 @@ Ticket [ID] is COMPLETE. Teams waiting on this ticket may now proceed:
 
 ## Ticket Ownership Rules (MANDATORY — applies when creating any new ticket)
 
-These rules prevent cross-team blocking at phase open. KP must apply them when writing every Briefing.
+These rules prevent cross-team blocking at phase open. AM must apply them when writing every Briefing.
 
 1. **The team that consumes a deliverable owns its foundation tickets.** If Syndicate's enforcement logic needs a database schema, Syndicate writes and owns that schema — not Monolith. The consumer team owns the full vertical (data layer → logic → API). There are NO exceptions to this rule.
-2. **Zero Cross-Team Block (ZCB) Guarantee — HARD RULE.** No team may have a ticket that is blocked waiting on another team's output within the same phase. Before dispatching any phase briefing, KP runs the ZCB check: for every team assigned tickets, confirm that ALL their tickets can be executed using only their own team's output and prior-phase foundations already completed. Any remaining cross-team block is a design error — reassign ownership before dispatch. The ZCB check must be documented in the Briefing's "Parallel Execution" section.
+2. **Zero Cross-Team Block (ZCB) Guarantee — HARD RULE.** No team may have a ticket that is blocked waiting on another team's output within the same phase. Before dispatching any phase briefing, AM runs the ZCB check: for every team assigned tickets, confirm that ALL their tickets can be executed using only their own team's output and prior-phase foundations already completed. Any remaining cross-team block is a design error — reassign ownership before dispatch. The ZCB check must be documented in the Briefing's "Parallel Execution" section.
 3. **Every team receiving tickets must be able to execute ALL of them independently.** A team is never assigned a ticket whose prerequisite sits in another team's column. If it does, either: (a) move the prerequisite ticket to the consuming team's ownership, or (b) split the work into a prior-phase ticket so it is complete before this phase opens.
 4. **Arcade Mock-First Exception (only exception to ZCB).** Arcade is the sole team allowed to have live-API wiring blocked on backend delivery — because Arcade scaffolds all UI with mock/stub data first and never sits idle. Arcade starts immediately with mocks; wires live APIs only after backend signals complete in OverseerReport. This is the only permitted cross-team dependency pattern.
 5. **Overseer must resolve all OVR-XX architecture decisions during the preceding phase.** Overseer does not open a phase that requires an architecture decision that hasn't been made yet. OVR-XX evaluation work runs concurrently with the preceding phase — so when the phase gate opens, teams can begin immediately.
@@ -41,7 +41,7 @@ These rules prevent cross-team blocking at phase open. KP must apply them when w
 
 ---
 
-## ZCB Pre-Dispatch Checklist (KP must run this before every Briefing is dispatched)
+## ZCB Pre-Dispatch Checklist (AM must run this before every Briefing is dispatched)
 
 ```
 For each team with tickets in Phase N:
@@ -58,4 +58,4 @@ For each team with tickets in Phase N:
 
 ---
 
-*Adopted from ClaudeTemplate — 11-03-2026. Adapted for RoundTable: KP/Martin naming. Added shared-resource priority clarification to Rule §6.*
+*Adopted from ClaudeTemplate — 11-03-2026. Adapted for RoundTable: AM naming. Added shared-resource priority clarification to Rule §6.*

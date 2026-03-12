@@ -4,17 +4,17 @@
 
 ---
 
-## Phase Dispatch Report (KP → Chief Manager Martin)
+## Phase Dispatch Report (AM → Commander)
 
-When KP opens a phase, KP **must present a Phase Dispatch Report to Chief Manager Martin** before any team begins work. This tells Chief Manager Martin exactly which teams are active and how to address each one.
+When AM opens a phase, AM **must present a Phase Dispatch Report to Commander** before any team begins work. This tells Commander exactly which teams are active and how to address each one.
 
-**When to present:** Immediately after all phase briefings are written and ZCB-checked — before Chief Manager Martin sends any kickoff message.
+**When to present:** Immediately after all phase briefings are written and ZCB-checked — before Commander sends any kickoff message.
 
 **Format:**
 
 ```markdown
 ## Phase [N] — [Phase Name] — Dispatch Report
-**Issued by:** KP | **Date:** DD-MM-YYYY | **Project:** [Name]
+**Issued by:** AM | **Date:** DD-MM-YYYY | **Project:** [Name]
 
 ### Active Teams This Phase
 | Team | Conductor | Tickets | Start Status |
@@ -44,16 +44,16 @@ All teams: ✅ ZCB-clean — verified [date]
 > **Note:** Replace `[PROJECT_ROOT]` with the actual project path. Find the correct path in `.claude/ProjectEnvironment.md → PROJECT_ROOT`.
 
 **Rules:**
-- KP presents this report in the RoundTable session that dispatches the phase
-- Chief Manager Martin should NOT send kickoff messages until KP has presented the Dispatch Report
-- Chief Manager Martin only messages teams that appear in the "Active Teams" table — idle teams are not contacted
-- The kickoff message format above is the official template — Chief Manager Martin can use it verbatim
+- AM presents this report in the RoundTable session that dispatches the phase
+- Commander should NOT send kickoff messages until AM has presented the Dispatch Report
+- Commander only messages teams that appear in the "Active Teams" table — idle teams are not contacted
+- The kickoff message format above is the official template — Commander can use it verbatim
 
 ---
 
 ## Briefing Mail Standard
 
-A **Briefing Mail** is the official dispatch document KP uses to assign a phase or ticket block to a sub-team. It lives at the **Phase root level** within `01_Implementation Logs/[VERSION]/Phase [N]/`.
+A **Briefing Mail** is the official dispatch document AM uses to assign a phase or ticket block to a sub-team. It lives at the **Phase root level** within `01_Implementation Logs/[VERSION]/Phase [N]/`.
 
 **File naming:**
 ```
@@ -78,7 +78,7 @@ A **Briefing Mail** is the official dispatch document KP uses to assign a phase 
 
 ```
 # Team [Name] — [Phase] Briefing
-Issued by: KP | Date: DD-MM-YYYY | Project: [Name] | Phase: [N] | Tickets: [list]
+Issued by: AM | Date: DD-MM-YYYY | Project: [Name] | Phase: [N] | Tickets: [list]
 
 ## 0. Pre-Work: Load Your Roster
   - Read CLAUDE.md
@@ -115,22 +115,22 @@ Issued by: KP | Date: DD-MM-YYYY | Project: [Name] | Phase: [N] | Tickets: [list
   - Explicit list of what this team must not modify
 
 ## 7. If You Hit a Blocker
-  - Stop and file a blocker in OverseerReport — do not workaround without KP sign-off
+  - Stop and file a blocker in OverseerReport — do not workaround without AM sign-off
 
-Footer: Issued by KP (Overseer) — DD-MM-YYYY
+Footer: Issued by AM (Overseer) — DD-MM-YYYY
 ```
 
 **Rules:**
 - One briefing file per team per phase (or per major dispatch if mid-phase)
-- Briefings are written by KP (Overseer) only
-- The briefing is the single source of truth for the team — if it contradicts a ticket, the briefing wins and KP must be notified to reconcile
+- Briefings are written by AM (Overseer) only
+- The briefing is the single source of truth for the team — if it contradicts a ticket, the briefing wins and AM must be notified to reconcile
 - Briefings are never deleted after dispatch — they form part of the project record
 
 ---
 
-## Team Kickoff Message Standard (Chief Manager Martin → Team)
+## Team Kickoff Message Standard (Commander → Team)
 
-The **Team Kickoff Message** is what Chief Manager Martin sends to a team session to start their work. It is a single message containing three things: team identity, roster path, and briefing path.
+The **Team Kickoff Message** is what Commander sends to a team session to start their work. It is a single message containing three things: team identity, roster path, and briefing path.
 
 **Official template (copy verbatim, fill in [N]):**
 
@@ -142,9 +142,9 @@ Load your agent file, read your briefing, and begin implementation.
 ```
 
 **Rules:**
-- Chief Manager Martin sends one kickoff message per team in a **new, separate session** for each team
-- Chief Manager Martin only kicks off teams listed in the Phase Dispatch Report's "Active Teams" table
-- KP provides the filled-in kickoff messages in the Phase Dispatch Report — Chief Manager Martin copies them directly
+- Commander sends one kickoff message per team in a **new, separate session** for each team
+- Commander only kicks off teams listed in the Phase Dispatch Report's "Active Teams" table
+- AM provides the filled-in kickoff messages in the Phase Dispatch Report — Commander copies them directly
 - Do not add extra context or instructions to the kickoff message — the briefing contains everything the team needs
 
 ---
@@ -204,4 +204,4 @@ Examples: `MON-01_UIDSchemaAndStorage.md`, `SYN-02_RateLimiterMiddleware.md`
 
 ---
 
-*Adopted from ClaudeTemplate — 11-03-2026. Adapted for RoundTable: KP/Martin naming, Windows paths.*
+*Adopted from ClaudeTemplate — 11-03-2026. Adapted for RoundTable: AM naming, Windows paths.*

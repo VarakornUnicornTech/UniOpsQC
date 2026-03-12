@@ -2,6 +2,7 @@
   "permissions": {
     "allow": [
       "Bash(*)",
+      "Glob(*)",
       "Write(*)",
       "Edit(*)",
       "Read(*)"

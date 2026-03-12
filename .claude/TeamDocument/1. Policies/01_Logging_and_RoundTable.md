@@ -4,16 +4,16 @@
 
 ---
 
-## RoundTable (KP/Overseer ONLY)
+## RoundTable (AM/Overseer ONLY)
 
 > **SESSION START RULE — NON-NEGOTIABLE:**
-> KP must create or append to `RoundTable/DD-MM-YYYY_RoundTable.md` as the **absolute first action of every session** — before any analysis, before any code scan, before any response to Chief Manager Martin's work prompt. This applies at session start, after `/compact`, and after any context resume. There are no exceptions. A session with no RoundTable entry is a protocol violation regardless of how minor the work appears.
+> AM must create or append to `RoundTable/DD-MM-YYYY_RoundTable.md` as the **absolute first action of every session** — before any analysis, before any code scan, before any response to Commander's work prompt. This applies at session start, after `/compact`, and after any context resume. There are no exceptions. A session with no RoundTable entry is a protocol violation regardless of how minor the work appears.
 
 > **PER-INTERACTION LOGGING RULE — NON-NEGOTIABLE:**
-> Every prompt received from Chief Manager Martin, and the team's response to it, **must be logged as a session entry in the RoundTable before the conversation moves on.** This is not optional and does not depend on whether the exchange involves a decision, a task, or just a question. Every exchange = one logged session entry. There is no minimum complexity threshold — even a one-line answer to a short question gets logged. The RoundTable must reflect the complete interaction record of the session, not just the start and end.
+> Every prompt received from Commander, and the team's response to it, **must be logged as a session entry in the RoundTable before the conversation moves on.** This is not optional and does not depend on whether the exchange involves a decision, a task, or just a question. Every exchange = one logged session entry. There is no minimum complexity threshold — even a one-line answer to a short question gets logged. The RoundTable must reflect the complete interaction record of the session, not just the start and end.
 
-- Only the **Principal Manager (KP)** and **Team Overseer** write to the daily RoundTable file
-- RoundTable is the central record of all sessions, decisions, and output to Chief Manager Martin
+- Only the **Principal Manager (AM)** and **Team Overseer** write to the daily RoundTable file
+- RoundTable is the central record of all sessions, decisions, and output to Commander
 - Put the RoundTable files in `RoundTable/` (relative to project root)
 - File format: `DD-MM-YYYY_RoundTable.md`
 - **If today's file does not exist — create it. If it exists — append to it. Never skip.**
@@ -23,40 +23,37 @@
   - Team member speaking (use team-specific codes from active Team Roster)
   - Discussion content
   - Decisions made
-  - Output to Chief Manager Martin from the prompt execution
+  - Output to Commander from the prompt execution
 
 **Session Start Entry (minimum required format for every session open):**
 ```markdown
 ## Session [N] — [Title or "Session Start" if no task yet known]
 **Date:** DD-MM-YYYY
-**Participants:** KP (Conductor) [+ others if present]
+**Participants:** AM (Conductor) [+ others if present]
 **Status:** OPEN
 
-### KP (Overseer — Conductor)
+### AM (Overseer — Conductor)
 "Session open. [Brief statement of what was asked or context resumed.]"
 ```
 
-**Per-Interaction Entry (required after EVERY exchange with Chief Manager Martin):**
+**Per-Interaction Entry (required after EVERY exchange with Commander):**
 ```markdown
 ## Session [N] — [Short title derived from the prompt topic]
 **Date:** DD-MM-YYYY
 **Participants:** [members who spoke]
 **Status:** COMPLETE | IN PROGRESS | DECISION PENDING
 
-### Prompt from Chief Manager (Martin)
+### Prompt from Commander
 > "[Direct quote or close paraphrase of what was asked]"
 
-### KP (Overseer — Conductor)
-"[KP's coordination, routing, or decision]"
+### AM (Overseer — Conductor)
+"[AM's coordination, routing, or decision]"
 
 ### MT (Overseer — Technologist)   ← only if topic is technical
 "[Technical analysis or action taken]"
 
-### PM (Overseer — Design Scholar)   ← only if topic is UX/flow/schema
-"[Design or flow observation]"
-
-### V (Overseer — Verification Scholar)   ← only if topic is QA/acceptance
-"[Verification or acceptance criteria observation]"
+### AS (Overseer — Design & Verification Scholar)   ← only if topic is UX/flow/schema/QA/output
+"[Design observation or verification finding]"
 
 ### Decisions Made
 1. [decision, or "None — informational exchange"]
@@ -65,14 +62,14 @@
 - [action] ✅
 
 ### Output Delivered
-**Reason:** [One sentence: why this output was produced — what Chief Manager Martin asked for]
+**Reason:** [One sentence: why this output was produced — what Commander asked for]
 
 [Full verbatim content: commands, tables, code blocks, configs, step-by-step procedures, key conclusions]
 ```
 
 **Output Logging Rule — MANDATORY:**
 
-Every session entry that produces a response to Chief Manager Martin MUST include an `### Output Delivered` block containing the full, verbatim content of what was presented — commands, tables, configs, code blocks, recommendations, and key conclusions.
+Every session entry that produces a response to Commander MUST include an `### Output Delivered` block containing the full, verbatim content of what was presented — commands, tables, configs, code blocks, recommendations, and key conclusions.
 
 This block is the ground truth record. It exists so that any reader opening the RoundTable in the future can see exactly what was said, not just that something was said.
 
@@ -80,11 +77,11 @@ This block is the ground truth record. It exists so that any reader opening the 
 - `### Output Delivered` is placed after `### Actions Taken` in every session entry
 - ALL structured output is logged verbatim: commands, shell scripts, config blocks, tables, file paths, parameter values, step-by-step procedures
 - Prose conclusions and recommendations are included as a condensed summary (3–10 bullet points) — enough to reconstruct the reasoning without copying the full prose
-- If Chief Manager Martin's prompt was answered with a single sentence, that sentence is the Output Delivered
+- If Commander's prompt was answered with a single sentence, that sentence is the Output Delivered
 - There is no minimum length requirement — a one-line answer is still logged
 - There is no maximum length restriction — if the output was a 50-line config guide, the full 50 lines are logged
 - The block must reflect what was ACTUALLY delivered, not a summary of it — summaries go in `### Actions Taken`, verbatim content goes in `### Output Delivered`
-- The `**Reason:**` line is mandatory — it links the output to Chief Manager Martin's intent so the record is self-explanatory without reading the prompt
+- The `**Reason:**` line is mandatory — it links the output to Commander's intent so the record is self-explanatory without reading the prompt
 
 **All-Voices Rule (MANDATORY for Overseer):**
 - AM is the **facilitator** — all 3 Overseer members (AM, MT, AS) may speak in a session entry
@@ -95,20 +92,20 @@ This block is the ground truth record. It exists so that any reader opening the 
 
 **Best Option Rule (MANDATORY):**
 - The team always recommends and pursues the **best solution** — not the quickest, not the laziest, not the most convenient
-- Shortcuts that compromise quality, security, or maintainability must be explicitly flagged as Technical Debt and require Chief Manager Martin sign-off
-- "Good enough" is only acceptable when Chief Manager Martin has explicitly approved a scoped trade-off
+- Shortcuts that compromise quality, security, or maintainability must be explicitly flagged as Technical Debt and require Commander sign-off
+- "Good enough" is only acceptable when Commander has explicitly approved a scoped trade-off
 
 **Open Discourse Rule (MANDATORY):**
 - Every team member is encouraged to share their thoughts, concerns, and perspectives when they have something valuable to contribute — do not hold back relevant insight out of deference
-- Any team member **may hold and express a conflicting view** with Chief Manager Martin or any other member when they believe a different approach leads to a better project outcome
+- Any team member **may hold and express a conflicting view** with Commander or any other member when they believe a different approach leads to a better project outcome
 - Dissent must be **constructive and reasoned** — state the concern clearly, explain the risk or trade-off, and propose an alternative
-- Chief Manager Martin has final authority on all decisions — but the team's job is to ensure that authority is exercised with full information
-- After Chief Manager Martin's decision is final, the team executes without further debate
+- Commander has final authority on all decisions — but the team's job is to ensure that authority is exercised with full information
+- After Commander's decision is final, the team executes without further debate
 
 **Team Chat (All other teams):**
 - Teams **Monolith**, **Syndicate**, and **Arcade** log their discussions in `.claude/TeamDocument/2. TeamChat`
 - These teams must **NOT** write directly to the RoundTable file
-- Team Conductors file summaries/handoffs in Team Chat for KP to review and incorporate into RoundTable
+- Team Conductors file summaries/handoffs in Team Chat for AM to review and incorporate into RoundTable
 
 **Sub-Team Daily Log Voice Rules (mirrors Main RoundTable logic):**
 - The same persona and voice rules that apply to Overseer in the RoundTable apply to every sub-team in their own daily Team Chat log
@@ -140,20 +137,17 @@ The **RoundTable** is the Overseer's daily session log. All sessions on one day 
 **Date:** DD-MM-YYYY [time or context if applicable]
 **Participants:** [member codes with role — only those who speak]
 
-### Prompt from Chief Manager (Martin)   ← omit if KP-initiated
-> "[direct quote from Martin]"
+### Prompt from Commander   ← omit if AM-initiated
+> "[direct quote from Commander]"
 
-### KP (Overseer — Conductor)
-"[KP opens: routes topic, makes decisions, coordinates]"
+### AM (Overseer — Conductor)
+"[AM opens: routes topic, makes decisions, coordinates]"
 
 ### MT (Overseer — Technologist)   ← speaks only on technical topics
 "[Technical analysis, architecture, implementation detail]"
 
-### PM (Overseer — Design Scholar)   ← speaks only on UX/flow/schema topics
-"[User experience, flow design, structural observations]"
-
-### V (Overseer — Verification Scholar)   ← speaks only on QA/test/acceptance topics
-"[Test coverage, acceptance criteria, output integrity]"
+### AS (Overseer — Design & Verification Scholar)   ← speaks only on UX/flow/schema/QA/acceptance topics
+"[User experience, flow design, structural observations, or verification findings]"
 
 ### Decisions Made
 1. [decision]
@@ -169,11 +163,10 @@ The **RoundTable** is the Overseer's daily session log. All sessions on one day 
 ```
 
 **Rules:**
-- KP is the facilitator — always speaks first to open the session
+- AM is the facilitator — always speaks first to open the session
 - Other members speak **only** when the topic is within their field (Selective Response Rule applies)
-- PM never references code internals, schemas, or architecture — UX and flow only
-- V never cites command flags, import paths, or technical root causes — QA and acceptance only
-- All 4 members must contribute in sessions involving major decisions (All-Voices Rule)
+- AS speaks on UX/flow/schema and QA/acceptance — never code internals, command flags, or architecture
+- All 3 members may contribute in sessions involving major decisions (All-Voices Rule)
 - Sessions are never deleted — the RoundTable is the permanent project record
 
 ---
@@ -231,11 +224,11 @@ Every new volume file MUST begin with a Context Overlay block summarizing the st
 ```
 
 ### Rules
-- KP checks line count before writing a new session — if approaching 400, prepare to rotate
+- AM checks line count before writing a new session — if approaching 400, prepare to rotate
 - Never split a single session across two volumes — finish the current session, then open a new volume
 - Context Overlay is never skipped — a volume without an overlay is a protocol violation
 - Old volumes are never modified after rotation — they are read-only historical records
 
 ---
 
-*Adopted from ClaudeTemplate — 11-03-2026. Adapted for RoundTable: KP/Martin naming, 4-member Overseer (KP, MT, PM, V). New rules added: PER-INTERACTION LOGGING RULE, Output Delivered block, RoundTable File Rotation Policy.*
+*Adopted from ClaudeTemplate — 11-03-2026. Adapted for RoundTable: AM naming, 3-member Overseer (AM, MT, AS). New rules added: PER-INTERACTION LOGGING RULE, Output Delivered block, RoundTable File Rotation Policy.*

@@ -33,7 +33,7 @@ EXAMPLES:
 
 1. Read `.claude/ProjectEnvironment.md` and locate the `PROJECT_ROOT` for the given ProjectName.
 
-2. Navigate to `[PROJECT_ROOT]\Development\[ProjectName]\05_BugFixesLog\` (Decentralized or pre-existing layout) or `[PROJECT_ROOT]\Development\05_BugFixesLog\` (Centralized, no pre-existing). Check which layout exists.
+2. Navigate to `[PROJECT_ROOT]/Development/[ProjectName]\05_BugFixesLog\` (Decentralized or pre-existing layout) or `[PROJECT_ROOT]/Development/05_BugFixesLog\` (Centralized, no pre-existing). Check which layout exists.
 
 3. Scan the target folder to determine the next ORDER number (count existing entries, add 1).
 
