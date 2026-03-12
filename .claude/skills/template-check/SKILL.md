@@ -13,7 +13,7 @@ None.
 
 2. **Fetch remote version** from the RoundTable Framework repository:
    - Attempt to fetch `template-version.json` from the GitHub raw URL:
-     `https://raw.githubusercontent.com/unicorn/roundtable-framework/main/template-version.json`
+     `https://raw.githubusercontent.com/VarakornUnicornTech/unicorn_roundtable_framework_repo/main/template-version.json`
    - If fetch fails, report: "Could not reach remote repository. Check your internet connection or verify the repository URL."
 
 3. **Compare versions** using semantic versioning:
