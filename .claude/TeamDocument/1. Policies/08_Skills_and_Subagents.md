@@ -1,131 +1,205 @@
-# §8 — Skills & Subagents Standard
+# §8 — Skills (Slash Commands) & Subagent Standard
 
-## Skills (Custom Slash Commands)
-
-Skills are prompt templates in `.claude/skills/[name]/SKILL.md` invoked with `/name`. Each skill expands into a full structured prompt that Claude executes.
-
-### Available Skills
-
-| Command | File | Purpose |
-|---------|------|---------|
-| `/compact-resume` | `skills/compact-resume/SKILL.md` | Post-compact re-orientation |
-| `/team-start` | `skills/team-start/SKILL.md` | Formal team kickoff |
-| `/phase-status` | `skills/phase-status/SKILL.md` | Phase + ticket status report |
-| `/audit` | `skills/audit/SKILL.md` | End-to-end user flow audit |
-| `/bug-report` | `skills/bug-report/SKILL.md` | Create PLANNED bug fix file + ticket folders |
-| `/mod-log` | `skills/mod-log/SKILL.md` | Create PLANNED modification log + ticket folders |
-| `/sub-feature` | `skills/sub-feature/SKILL.md` | Create PLANNED sub-feature + ticket folders |
-| `/overseer-report` | `skills/overseer-report/SKILL.md` | File OverseerReport entry |
-| `/template` | `skills/template/SKILL.md` | Framework version management |
-| `/Overseer` | `skills/Overseer/SKILL.md` | Persona switch to Overseer |
-| `/Monolith` | `skills/Monolith/SKILL.md` | Persona switch to Monolith |
-| `/Syndicate` | `skills/Syndicate/SKILL.md` | Persona switch to Syndicate |
-| `/Arcade` | `skills/Arcade/SKILL.md` | Persona switch to Arcade |
-| `/Cipher` | `skills/Cipher/SKILL.md` | Persona switch to Cipher |
-
-### Granularity Rule
-Skills should map to **discrete operations** that are explicitly invoked, not to steps that CLAUDE.md rules already enforce automatically. Do not create skills for actions that should be automatic (e.g., SESSION START logging — that is enforced by CLAUDE.md, not a skill).
+> **Policy reference file.** Loaded on-demand from `.claude/TeamDocument/1. Policies/`. Core rules live in CLAUDE.md.
 
 ---
 
-## AM Orchestration Modes
+## Skills (Slash Commands)
+
+Skills are reusable prompt templates stored in `.claude/skills/[name]/SKILL.md`. They are invoked with `/command-name [arguments]`. Claude Code loads the SKILL.md file, substitutes `$ARGUMENTS` with whatever the user typed after the command name, and executes the prompt.
+
+**Location:** `.claude/skills/[name]/SKILL.md`
+
+**Directory naming:** Each skill lives in its own subfolder matching the command name exactly (e.g., `skills/audit/SKILL.md` for `/audit`).
+
+### Skill File Format
+
+```markdown
+# /[command-name]
+
+## Purpose
+[One sentence: what this skill does]
+
+## Arguments
+[List each argument, its type, and valid values. Or "None" if no arguments.]
+
+## Steps
+[Numbered list of exactly what Claude must do when this skill is invoked]
+
+## Output
+[What the skill produces / presents to Commander ท่านผู้บัญชาการ]
+```
+
+### Rules
+- Skill files describe **procedures** — not policy. Policy lives in `.claude/TeamDocument/1. Policies/`. Skills call on policy as context.
+- Every skill must read `.claude/ProjectEnvironment.md` whenever it needs a project path — never hardcode paths.
+- Skills that create files must determine the next ORDER number by scanning the target folder before writing.
+- Skills must log to the appropriate file (RoundTable for Overseer, Team Chat for sub-teams) as part of their execution.
+- Skills never skip the Planning-First Workflow — skills that create plan files still present to Commander ท่านผู้บัญชาการ before implementing anything.
+
+---
+
+## Skill Catalogue
+
+### `/roundtable-open [title]`
+**File:** `skills/roundtable-open/SKILL.md`
+Create/append today's RoundTable session entry. Creates the file if it doesn't exist.
+
+### `/ticket-create [ID] [Name]`
+**File:** `skills/ticket-create/SKILL.md`
+Scaffold a ticket file from the standard template.
+
+### `/briefing-create [Team] [Phase]`
+**File:** `skills/briefing-create/SKILL.md`
+Generate a Phase Briefing Mail for a specific team.
+
+### `/zcb-check [Phase]`
+**File:** `skills/zcb-check/SKILL.md`
+Validate Zero Cross-Team Block on a phase's tickets.
+
+### `/overseer-report [ID]`
+**File:** `skills/overseer-report/SKILL.md`
+File a report entry for AM review.
+
+### `/l3-scan [Project]`
+**File:** `skills/l3-scan/SKILL.md`
+Initiate L3 Full Code Scan with all 5 checks. Requires Commander authorization.
+
+### `/audit [Project] [scope?]`
+**File:** `skills/audit/SKILL.md`
+End-to-end user flow audit — finds UX-breaking gap bugs, files bug report.
+
+---
+
+## AM Orchestration Mode
+
+AM (Overseer) may orchestrate sub-teams directly as subagents, handling all team coordination internally and presenting a consolidated result to Commander ท่านผู้บัญชาการ.
 
 ### Mode A — AM Direct Orchestration (DEFAULT)
 
-Commander gives AM a goal. AM handles all coordination internally:
+Commander ท่านผู้บัญชาการ gives AM the goal. AM reads briefings, spawns each sub-team as a subagent with their roster + ticket scope, receives results, files OverseerReport, presents consolidated report to Commander.
 
-1. AM presents COO Vision Gate Execution Plan to Commander and waits for approval
-2. AM spawns each sub-team as a subagent using the Agent tool, passing:
-   - The team's agent file content (`.claude/agents/[team].md`)
-   - The Phase Briefing Mail
-   - Commander's constraints from the Vision Gate
-3. AM receives each team's output
-4. AM files OverseerReport
-5. AM presents the consolidated result to Commander
+**Commander's experience:** One prompt in, one consolidated report out.
 
-Commander gives one instruction, receives one report.
+**Best for:** Well-defined tickets with clear acceptance criteria, full phase execution where briefings are written, any work where Commander wants a clean outcome rather than managing live team sessions.
 
 ### Mode B — Separate Sessions (opt-in)
 
-Commander opens a **separate Claude session** per team. Commander pastes the relevant `agents/[team].md` content manually at the session start to bootstrap the team persona.
+Commander opens a separate session per team directly and interacts with each team live.
 
-**When to use Mode B:**
-- Commander wants live visibility into a team's reasoning
-- Exploratory or uncertain work where course correction is expected
-- When AM orchestration overhead is not warranted for a simple single-team task
+**Best for:** Exploratory/uncertain work, phases requiring real-time architectural decisions, when Commander wants direct visibility and the ability to course-correct mid-session.
 
-**How Commander activates Mode B:**
-1. Open a new Claude Code session
-2. Paste the full contents of `.claude/agents/[team].md` at the start of the conversation
-3. The team self-initializes from the agent definition
-4. Commander interacts directly with that team
+**To activate:** Commander says "I want to work directly with [Team]" or "run this as separate sessions."
 
 ---
 
-## Subagent Standard
+## Commander Vision Gate — MANDATORY Before Mode A Execution
 
-### Trigger Conditions
+Before AM spawns ANY subagents for phase execution, AM MUST present an Execution Plan to Commander ท่านผู้บัญชาการ and receive explicit approval. **AM never executes autonomously.**
 
-A Conductor MUST use a subagent (not inline execution) when:
-- Work spans more than one team's domain
-- A task will consume significant context that should be isolated
-- Parallel team execution is required (Mode A dispatch)
-
-### Pre-Flight Declaration (MANDATORY)
-
-Before spawning any subagent, the Conductor must declare:
-
-```
-[SUBAGENT PRE-FLIGHT]
-Team: [Team Name]
-Agent file: .claude/agents/[team].md
-Briefing: [Phase N Briefing path]
-Scope: [ticket IDs or task description]
-Commander constraints: [from Vision Gate or direct instruction]
-```
-
-### AM Orchestration Prompt Format (Mode A)
-
-When AM spawns a sub-team subagent, the prompt must include:
-
-```
-[SUBAGENT] Team [Name] — Phase [N] Execution
-
-You are Team [Name] of the RoundTable organization. Read your agent file to adopt your full identity and voice.
-
-Agent file: .claude/agents/[team].md
-Briefing: [path to Phase Briefing Mail]
-Tickets: [ticket IDs assigned to this team]
-Commander constraints: [from Vision Gate]
-
-Initialize per your Mandatory Initialization sequence, then execute your tickets.
-File OverseerReport entries as tickets complete. Return your final OverseerReport summary to AM when all tickets are done.
-```
-
-### `/team-start` Dual-Use
-
-The `/team-start` skill may be invoked by:
-- **Commander directly** (Mode B) — to formally kick off a team session
-- **AM internally** (Mode A) — as part of each subagent's initialization before dispatch
-
----
-
-## COO Vision Gate (MANDATORY — Mode A)
-
-Before AM spawns any subagents for phase execution, AM MUST present and receive explicit Commander approval:
+**Execution Plan format:**
 
 ```markdown
 ## Phase [N] Execution Plan — [ProjectName]
-Mode: A — AM Direct Orchestration
+**Mode:** A — AM Direct Orchestration
 
-| Team      | Tickets       | Scope   |
-|-----------|---------------|---------|
-| Monolith  | MON-01–MON-XX | [brief] |
-| Syndicate | SYN-01–SYN-XX | [brief] |
-| Arcade    | ARC-01–ARC-XX | [brief] |
+### Teams & Scope
+| Team | Tickets | Scope |
+|------|---------|-------|
+| Monolith | MON-01–MON-XX | [2-sentence scope] |
+| Syndicate | SYN-01–SYN-XX | [2-sentence scope] |
+| Arcade | ARC-01–ARC-XX | [2-sentence scope — mock-first if applicable] |
 
-Your vision / constraints to pass to teams?
-Approve to proceed.
+### Dependencies
+[Cross-team dependency signals, order of execution if any sequential steps]
+
+### Your Vision / Constraints
+Any strategic direction, priorities, or constraints to pass to the teams?
+Approve to proceed with orchestration.
 ```
 
-Commander either adds direction or approves. AM incorporates Commander's input into each team's kickoff prompt before spawning.
+Commander either adds direction (AM incorporates into kickoff prompts) or approves. "Approve", "proceed", "go ahead", "yes" count as approval.
+
+---
+
+## AM Orchestration Prompt Format
+
+When AM spawns a team subagent in Mode A, the kickoff prompt must include:
+
+```
+You are Team [Name].
+Roster: .claude/agents/[team].md
+Briefing: [PROJECT_ROOT]/Development/[ProjectName]/01_Implementation Logs/INDEV v1.0.0/Phase [N]/[TeamName]_Phase[N]_Briefing.md
+Your ticket scope: [specific ticket IDs]
+Commander direction: [Commander's input from Vision Gate, or "None — execute per briefing"]
+When complete: write your Team Chat session entry to .claude/TeamDocument/2. TeamChat/[N. TeamName]/[DD-MM-YYYY]_[TeamName].md, then return a compact summary of: (1) what you built, (2) files created/modified, (3) any blockers.
+Do NOT advance to Phase [N+1] — auth: [free | hold]
+```
+
+---
+
+## AM Aggregation Standard
+
+After all subagents return, AM:
+1. Logs each team's result in their Team Chat file under `### Subagent Result — [TicketIDs]` if not already written by the subagent
+2. Files a consolidated OverseerReport entry covering all teams
+3. Presents a single summary to Commander ท่านผู้บัญชาการ: what each team built, any blockers, next steps
+
+---
+
+## Subagent Standard (General — All Conductors)
+
+A **subagent** is a separate Claude session that handles a delegated subtask, returning a compact result to the parent session. Subagents are not a built-in command — they are a **usage pattern** enforced through policy.
+
+### Subagent Trigger Conditions (Mandatory Pre-Flight)
+
+Before executing ANY ticket block, investigation, or multi-step task, the Conductor runs this check:
+
+| Trigger | Threshold | Required Action |
+|---------|-----------|----------------|
+| Independent tickets in one session | 3 or more | Each ticket → separate subagent session |
+| Files to scan (L2/L3) | 10+ files | Scan → subagent, return compact summary |
+| AM in planning mode + deep investigation needed | Any | Investigation → subagent, AM continues with result |
+| Estimated tool calls for a single task | 20+ | Delegate to subagent |
+| Task requires full subsystem read + implementation | Any | Read phase → subagent, implement phase → separate session |
+
+If **none** of these conditions are met → single-session execution is permitted.
+
+### Conductor Pre-Flight Declaration (Mandatory)
+
+Before starting any multi-step task, the Conductor must open their Team Chat session entry with one of these declarations:
+
+**Single-session:**
+```
+Single-session execution — [reason: e.g., 2 tickets only / scan under 10 files / estimated 8 tool calls]
+```
+
+**Subagent delegation:**
+```
+Delegating to subagent — [task description]
+Kickoff message:
+> [Exact prompt for the subagent session]
+```
+
+No silent execution. The declaration is logged in Team Chat before work begins.
+
+### `[SUBAGENT]` Briefing Tag
+
+When AM writes a phase briefing, tickets that meet trigger conditions are tagged:
+
+```markdown
+## Ticket MON-03 — Full Subsystem Scan   [SUBAGENT]
+```
+
+`[SUBAGENT]` is a mandatory instruction — the implementing team member **must** delegate this ticket. Conductors confirm delegation before marking the ticket IN PROGRESS.
+
+### Receiving Subagent Results
+
+The parent session (Conductor) receives the subagent's output. The Conductor:
+1. Logs the result under `### Subagent Result — [TaskName]` in their Team Chat session
+2. Incorporates the result into ongoing work
+3. Updates the relevant ticket status if applicable
+
+---
+
+*Created: 13-03-2026*

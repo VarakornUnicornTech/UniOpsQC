@@ -15,7 +15,7 @@
 4. **Arcade scaffolds with mock data.** When Arcade's tickets depend on backend data, they build the UI against mock/stub data first and wire live APIs when the dependency signals complete.
 5. **No idle waiting.** If a team exhausts all unblocked tickets while blocked tickets remain, they file an OverseerReport noting the wait state and take up internal prep work (code review, documentation, test expansion) until unblocked.
 6. **Within a team, work in parallel too.** Team members (Conductor, Technologist, Design Scholar, Verification Scholar) divide unblocked tickets among themselves and work concurrently. The Conductor tracks which member owns which ticket and aggregates results.
-7. **Early Phase Advance — Commander gate (MANDATORY).** A team that completes all their Phase N tickets may NOT advance to Phase N+1 on their own initiative. They must: (a) file their Phase N OverseerReport marking all tickets complete, (b) enter a wait state and notify AM, and (c) wait for Commander to explicitly tell them they may advance. Only a direct message from Commander authorises the early advance. AM does not have authority to grant this — only Commander does.
+7. **Early Phase Advance — Commander ท่านผู้บัญชาการ gate (MANDATORY).** A team that completes all their Phase N tickets may NOT advance to Phase N+1 on their own initiative. They must: (a) file their Phase N OverseerReport marking all tickets complete, (b) enter a wait state and notify AM, and (c) wait for the Commander ท่านผู้บัญชาการ to explicitly tell them they may advance. Only a direct message from the Commander ท่านผู้บัญชาการ authorises the early advance. AM does not have authority to grant this — only the Commander ท่านผู้บัญชาการ does.
 
 **Dependency signal format (OverseerReport entry):**
 When a ticket that other teams depend on completes, the completing team's OverseerReport entry MUST include:
@@ -58,4 +58,26 @@ For each team with tickets in Phase N:
 
 ---
 
-*Adopted from ClaudeTemplate — 11-03-2026. Adapted for RoundTable: AM naming. Added shared-resource priority clarification to Rule §6.*
+## Commander Sync Gate for Early Phase Advance (NEW — 12-03-2026)
+
+> **Lesson learned:** SyncSpace teams were pre-authorized to chain Phases 3 → 4 automatically. When Phase 3 had critical user-facing bugs, Phase 4 work was already underway — built on a broken foundation. Async advance without Commander's validation wastes effort when the preceding phase has undetected issues.
+
+**Extends Rule 7 (Early Phase Advance).** This gate only applies when the Commander Phase Acceptance Gate (§2) is toggled ON for the current phase. When the gate is OFF, standard Early Phase Advance (Rule 7) applies.
+
+**When Commander Phase Acceptance Gate is ON and teams are async:**
+1. **Async advance requires explicit Commander opt-in.** Commander ท่านผู้บัญชาการ must state: "Team [X] may advance to Phase N+1 while Phase N acceptance is pending."
+2. **AM presents the Async Advance checklist:**
+   ```
+   ## Async Advance Request — [TeamName] → Phase [N+1]
+   [ ] All Phase N tickets complete (Verification Scholar confirmed)
+   [ ] User Journey Walkthrough: PASS
+   [ ] Commander Phase Acceptance: PENDING / ACCEPTED
+   [ ] If PENDING: Commander acknowledges rework risk
+   [ ] Phase N+1 tickets have ZERO dependencies on other teams' Phase N work
+   [ ] Commander grants provisional advance: YES / NO
+   ```
+3. **Provisional advances do not stack.** A team on provisional Phase N+1 may NOT advance to N+2 until Phase N is Commander-ACCEPTED.
+
+---
+
+*Updated: 13-03-2026*

@@ -122,21 +122,23 @@ AM must open (or append to) the daily RoundTable file and write a `## Session [N
 
 **PER-INTERACTION LOGGING RULE:** Every prompt + response is a logged session entry. No exceptions for "quick answers" or "simple tasks."
 
+**All-Voices Rule:** AM, MT, and AS may all speak in a session. Each uses their own voice. AM does not speak for the others. Selective Response Rule applies — members only speak when the topic is within their field.
+
 **Best Option Rule:** Always recommend the best solution — not the quickest or most convenient. Shortcuts must be flagged as Technical Debt and require Commander sign-off.
 
-**Open Discourse Rule:** Every team member may share conflicting views constructively. State the concern, explain the risk, propose an alternative. Commander has final authority — but the team ensures that authority is exercised with full information.
-
-**RoundTable Rotation Policy:** 400-line soft limit, 500-line hard limit. When a file approaches 400 lines, open a new Volume (`Vol2`, `Vol3`…). New Volume files include a Context Overlay section at top.
+**RoundTable Rotation Policy:** 400-line soft limit, 500-line hard limit. First file of the day is `DD-MM-YYYY_RoundTable_Vol1.md`. When it approaches 400 lines, open `Vol2`, `Vol3`… Update `_Index.md`. New Volume files include a Context Overlay section at top. Full details in §1 policy file.
 
 ### §2 — Ticket & Briefing Standards
 > Full standard in: `TeamDocument/1. Policies/02_Ticket_and_Briefing.md`
 
-Phase Dispatch Report required before any team begins work. Tickets are never deleted. Status values: `[ ]` PENDING → `[~]` IN PROGRESS → `[x]` Complete → `[!]` BLOCKED → `[>]` DEFERRED.
+Key rules: Phase Dispatch Report required before any team begins work. One Briefing per team per phase. Briefings live at Phase root (not in team subfolders). Tickets are never deleted. Status values: `[ ]` PENDING → `[~]` IN PROGRESS → `[x]` Complete → `[!]` BLOCKED → `[>]` DEFERRED.
+
+**UX Smoke Test Gate:** Every user-facing ticket requires manual UX smoke test by Verification Scholar before Complete. **User Journey Walkthrough:** Full E2E walkthrough chaining all phase tickets before phase completion. **Commander Phase Acceptance Gate (toggleable):** OFF by default. When Commander declares intent to test a phase, no advance until COMMANDER-ACCEPTED. **Silent Failure = Critical Bug:** Any silent failure is CRITICAL severity. **Hotfix Regression Gate:** Every bug fix includes a permanent regression test.
 
 ### §3 — Cross-Team Protocol
 > Full standard in: `TeamDocument/1. Policies/03_TeamChat_and_Handover.md`
 
-Sub-teams log in `TeamDocument/2. TeamChat/`, not RoundTable. OverseerReport is the shared daily file for sub-team → Overseer reporting. HandOver files are never deleted.
+Key rules: Sub-teams log in `TeamDocument/2. TeamChat/`, not RoundTable. OverseerReport is the shared daily file for sub-team → Overseer reporting. HandOver files go in the originating team's `HandOver/` subfolder. HandOver files are never deleted.
 
 **Team Chat location:** `TeamDocument/2. TeamChat/[N. TeamName]/DD-MM-YYYY_[TeamName].md`
 **OverseerReport location:** `TeamDocument/2. TeamChat/4. OverseerReport/DD-MM-YYYY_OverseerReport.md`
@@ -149,31 +151,44 @@ Sub-teams log in `TeamDocument/2. TeamChat/`, not RoundTable. OverseerReport is 
 2. Wait for explicit Commander confirmation before implementing
 3. Never implement without approval — no matter how simple the task appears
 
-**ProjectEnvironment.md** declares the active mode and project root paths. Location: `.claude/ProjectEnvironment.md`.
+**ProjectEnvironment.md** declares the active mode, project root paths, and source code locations for every project. Location: `.claude/ProjectEnvironment.md`. Check this file before constructing any Development folder path.
+
+Two project modes:
+- **Centralized** — planning and source code share the same root (greenfield / solo projects)
+- **Decentralized** — planning hub and source code are fully separated (pre-existing codebases, client repos)
+
+**State Transparency Rule:** No silent no-ops — every skipped operation must log why. **09_TestCase:** Mandatory test documentation folder in every Development directory. **Cross-Package Change Manifest:** Multi-package changes require a manifest listing all packages, files, and interface impacts. **Error Code Catalog:** Every project maintains `ErrorCatalog.md` with integer error codes (-1xxx to -5xxx). **Living Documentation Rule:** TechStack docs updated in the same session as code changes — Verification Scholar checks currency.
 
 ### §5 — Pre-Existing Codebase Standards
 > Full standard in: `TeamDocument/1. Policies/05_PreExisting_Codebase.md`
 
-**Tiered Scan Protocol:** L1 (directory scan) → L2 (key files per subsystem) → L3 (full scan, Commander authorization required).
+**Tiered Scan Protocol:** L1 (directory scan) → L2 (key files per subsystem) → L3 (full scan, Commander authorization required). L3 requires 5 mandatory completeness checks — see §5 policy file.
 
 ### §6 — Debugging Protocol
 > Full standard in: `TeamDocument/1. Policies/06_Debugging_Protocol.md`
 
-**Instrument-First Rule:** Never attempt a fix before you can see the system. Add observability first. Fix second. All debug probes prefixed `[DBG]`.
+**Instrument-First Rule:** Never attempt a fix before you can see the system. Add observability first. Fix second.
+
+Correct order: Instrument → Observe → Hypothesize → Fix → Verify.
+
+**RELEASE projects:** All debug probes prefixed `[DBG]`. Probes removed in the same commit as the fix. Findings documented before ticket closes. **INDEV projects:** Debug probes are PERSISTENT and toggled via runtime flag (`debugMode` setting / `DEBUG_MODE` env var). Probes stay across fixes — stripped only on RELEASE transition. Mandatory probe coverage for all message handlers, state transitions, event listeners, and error paths.
 
 ### §7 — Parallel Execution Policy
 > Full standard in: `TeamDocument/1. Policies/07_Parallel_Execution.md`
 
-All three sub-teams work in parallel across every phase. **Zero Cross-Team Block (ZCB) Guarantee — HARD RULE.** AM runs ZCB check before every Briefing dispatch. Early Phase Advance requires Commander's explicit authorization.
+All three sub-teams (Monolith, Syndicate, Arcade) work in parallel across every phase. No team waits for another team to fully finish before starting their own unblocked tickets.
 
-### §8 — Skills & Subagents
-> Full standard in: `TeamDocument/1. Policies/08_Skills_and_Subagents.md`
+**Zero Cross-Team Block (ZCB) Guarantee — HARD RULE.** AM runs ZCB check before every Briefing dispatch. Full rules and ZCB checklist in §7 policy file.
+
+**Early Phase Advance gate:** A team that completes all Phase N tickets must wait for Commander ท่านผู้บัญชาการ's explicit authorization before advancing to Phase N+1. AM cannot grant this. **COO Sync Gate:** Async phase advance requires explicit COO opt-in. Default is synchronous (all teams finish → Commander accepts → all advance). Provisional advances do not stack.
 
 ### Quality Standards
 
-**Testing:** Teams MUST write and run tests for every ticket. Unit tests for all new functions/methods/endpoints. Integration tests for cross-module interactions. Verification Scholar signs off before OverseerReport is filed.
+**Testing:** Teams MUST write and run tests for every ticket they implement. Unit tests for all new functions/methods/endpoints. Integration tests for cross-module interactions. Verification Scholar signs off on test results before OverseerReport is filed.
 
-**Documentation:** All code must be commented for clarity. Design systems use configurable values — no magic numbers.
+**Documentation:** All code must be commented for clarity. Design systems use configurable values (CSS variables, config entries, constants) — no magic numbers. `Current TechStack.md` is a living document — update it whenever new classes, methods, or functions are created.
+
+**Open Discourse Rule:** Every team member may share conflicting views constructively. State the concern, explain the risk, propose an alternative. Commander ท่านผู้บัญชาการ has final authority — but the team ensures that authority is exercised with full information.
 
 ---
 
@@ -193,14 +208,14 @@ All three sub-teams work in parallel across every phase. **Zero Cross-Team Block
 
 | § | Topic | File |
 |---|-------|------|
-| §1 | Logging, RoundTable format, Rotation Policy | `TeamDocument/1. Policies/01_Logging_and_RoundTable.md` |
-| §2 | Ticket format, Briefing Mail, Phase Dispatch Report | `TeamDocument/1. Policies/02_Ticket_and_Briefing.md` |
+| §1 | Logging, RoundTable format, Rotation Policy, Output Delivered block | `TeamDocument/1. Policies/01_Logging_and_RoundTable.md` |
+| §2 | Ticket format, Briefing Mail, Phase Dispatch, UX Smoke Test, User Journey Walkthrough, Commander Phase Acceptance, Silent Failure Rule, Hotfix Regression Gate | `TeamDocument/1. Policies/02_Ticket_and_Briefing.md` |
 | §3 | Team Chat, OverseerReport, HandOver File Standard | `TeamDocument/1. Policies/03_TeamChat_and_Handover.md` |
-| §4 | Development folder structure, ProjectEnvironment.md, Project Modes | `TeamDocument/1. Policies/04_Development_Structure.md` |
+| §4 | Development structure, ProjectEnvironment, State Transparency, 09_TestCase, Cross-Package Manifest, Error Catalog, Living Docs | `TeamDocument/1. Policies/04_Development_Structure.md` |
 | §5 | Pre-existing codebase, Tiered Scan Protocol, L3 Completeness Verification | `TeamDocument/1. Policies/05_PreExisting_Codebase.md` |
-| §6 | Debugging Protocol, Instrument-First Rule | `TeamDocument/1. Policies/06_Debugging_Protocol.md` |
-| §7 | Parallel Execution, ZCB Guarantee, Ticket Ownership Rules | `TeamDocument/1. Policies/07_Parallel_Execution.md` |
-| §8 | Skills, Subagent standard, Orchestration Modes | `TeamDocument/1. Policies/08_Skills_and_Subagents.md` |
+| §6 | Debugging Protocol, Instrument-First Rule, INDEV Persistent Probes, Cross-Layer Trace, Rewrite Threshold, Gap Bug Detection | `TeamDocument/1. Policies/06_Debugging_Protocol.md` |
+| §7 | Parallel Execution, ZCB Guarantee, Ticket Ownership, Commander Sync Gate | `TeamDocument/1. Policies/07_Parallel_Execution.md` |
+| §8 | Skills (slash commands), Subagent standard, Trigger Conditions, Pre-Flight Declaration | `TeamDocument/1. Policies/08_Skills_and_Subagents.md` |
 
 > **Loading rule:** Policy files are read on-demand. Teams do NOT need to read all 8 at session start — CLAUDE.md is sufficient for initialization. Read the specific policy when needed.
 
@@ -231,7 +246,7 @@ Skills are prompt templates in `.claude/skills/` invoked with `/command-name`. S
 ### Mode A — AM Direct Orchestration (DEFAULT)
 Commander gives AM the goal. AM spawns each sub-team as a subagent, receives results, files OverseerReport, presents to Commander. Commander gives one instruction, receives one consolidated report.
 
-**COO Vision Gate (MANDATORY before Mode A execution):**
+**Commander Vision Gate (MANDATORY before Mode A execution):**
 Before AM spawns any subagents for phase execution, AM MUST present an Execution Plan and receive Commander's explicit approval:
 ```
 ## Phase [N] Execution Plan — [ProjectName]
@@ -248,7 +263,7 @@ Approve to proceed.
 ### Mode B — Separate Sessions (opt-in)
 Commander opens a **separate Claude session per team** and pastes the relevant `agents/[team].md` content manually to bootstrap the team persona. Use when Commander wants live visibility into a team's reasoning or real-time course correction.
 
-> **Full orchestration standard:** `TeamDocument/1. Policies/08_Skills_and_Subagents.md`
+**Subagent Enforcement:** Pre-flight check mandatory before multi-step execution. Full details in §8 policy file.
 
 ---
 
@@ -278,4 +293,4 @@ Each team has a dedicated agent definition in `.claude/agents/`.
 
 ---
 
-*Last updated: 12-03-2026 — v1.2.0 restructure: agents/ as sole identity source (Team Roster removed), TeamDocument/ consolidation, SESSION START RULE upgraded to every session, AM Mode A/B + COO Vision Gate, Architecture Decision Rule, Open Discourse + Best Option Rule, §8 policy added, /template + consolidated skill set. Authored by AM (Overseer) per Commander ท่านผู้บัญชาการ authorization.*
+*Last updated: 13-03-2026*

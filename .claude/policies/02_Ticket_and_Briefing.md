@@ -4,11 +4,11 @@
 
 ---
 
-## Phase Dispatch Report (AM → Commander)
+## Phase Dispatch Report (AM → Commander ท่านผู้บัญชาการ)
 
-When AM opens a phase, AM **must present a Phase Dispatch Report to Commander** before any team begins work. This tells Commander exactly which teams are active and how to address each one.
+When AM opens a phase, AM **must present a Phase Dispatch Report to Commander ท่านผู้บัญชาการ** before any team begins work. This tells Commander ท่านผู้บัญชาการ exactly which teams are active and how to address each one.
 
-**When to present:** Immediately after all phase briefings are written and ZCB-checked — before Commander sends any kickoff message.
+**When to present:** Immediately after all phase briefings are written and ZCB-checked — before Commander ท่านผู้บัญชาการ sends any kickoff message.
 
 **Format:**
 
@@ -19,9 +19,9 @@ When AM opens a phase, AM **must present a Phase Dispatch Report to Commander** 
 ### Active Teams This Phase
 | Team | Conductor | Tickets | Start Status |
 |------|-----------|---------|--------------|
-| Monolith | AT | MON-01 to MON-XX | ✅ All start immediately |
-| Syndicate | DR | SYN-01 to SYN-XX | ✅ All start immediately |
-| Arcade | CP | ARC-01 to ARC-XX | ✅ Scaffolding with mocks |
+| Monolith | AT | MON-01 to MON-XX | [DONE] All start immediately |
+| Syndicate | DR | SYN-01 to SYN-XX | [DONE] All start immediately |
+| Arcade | CP | ARC-01 to ARC-XX | [DONE] Scaffolding with mocks |
 
 *(Teams not listed have no tickets this phase.)*
 
@@ -29,31 +29,29 @@ When AM opens a phase, AM **must present a Phase Dispatch Report to Commander** 
 Send one message per team in a new session. Use the exact format below — copy and fill in:
 
 **Monolith:**
-> You are Team Monolith. Agent: `.claude/agents/monolith.md` — Briefing: `Development/01_Implementation Logs/INDEV v1.0.0/Phase [N]/Monolith_Phase[N]_Briefing.md` — Load your agent file, read your briefing, and begin implementation.
+> You are Team Monolith. Roster: `[PROJECT_ROOT]/.claude/agents/monolith.md` — Briefing: `[PROJECT_ROOT]/Development/01_Implementation Logs/INDEV v1.0.0/Phase [N]/Monolith_Phase[N]_Briefing.md` — Load your roster, read your briefing, and begin implementation.
 
 **Syndicate:**
-> You are Team Syndicate. Agent: `.claude/agents/syndicate.md` — Briefing: `Development/01_Implementation Logs/INDEV v1.0.0/Phase [N]/Syndicate_Phase[N]_Briefing.md` — Load your agent file, read your briefing, and begin implementation.
+> You are Team Syndicate. Roster: `[PROJECT_ROOT]/.claude/agents/syndicate.md` — Briefing: `[PROJECT_ROOT]/Development/01_Implementation Logs/INDEV v1.0.0/Phase [N]/Syndicate_Phase[N]_Briefing.md` — Load your roster, read your briefing, and begin implementation.
 
 **Arcade:**
-> You are Team Arcade. Agent: `.claude/agents/arcade.md` — Briefing: `Development/01_Implementation Logs/INDEV v1.0.0/Phase [N]/Arcade_Phase[N]_Briefing.md` — Load your agent file, read your briefing, and begin implementation.
+> You are Team Arcade. Roster: `[PROJECT_ROOT]/.claude/agents/arcade.md` — Briefing: `[PROJECT_ROOT]/Development/01_Implementation Logs/INDEV v1.0.0/Phase [N]/Arcade_Phase[N]_Briefing.md` — Load your roster, read your briefing, and begin implementation.
 
 ### ZCB Status
-All teams: ✅ ZCB-clean — verified [date]
+All teams: [DONE] ZCB-clean — verified [date]
 ```
-
-> **Note:** Replace `[PROJECT_ROOT]` with the actual project path. Find the correct path in `.claude/ProjectEnvironment.md → PROJECT_ROOT`.
 
 **Rules:**
 - AM presents this report in the RoundTable session that dispatches the phase
-- Commander should NOT send kickoff messages until AM has presented the Dispatch Report
-- Commander only messages teams that appear in the "Active Teams" table — idle teams are not contacted
-- The kickoff message format above is the official template — Commander can use it verbatim
+- Commander ท่านผู้บัญชาการ should NOT send kickoff messages until AM has presented the Dispatch Report
+- Commander ท่านผู้บัญชาการ only messages teams that appear in the "Active Teams" table — idle teams are not contacted
+- The kickoff message format above is the official template — Commander ท่านผู้บัญชาการ can use it verbatim
 
 ---
 
 ## Briefing Mail Standard
 
-A **Briefing Mail** is the official dispatch document AM uses to assign a phase or ticket block to a sub-team. It lives at the **Phase root level** within `01_Implementation Logs/[VERSION]/Phase [N]/`.
+A **Briefing Mail** is the official dispatch document AM uses to assign a phase or ticket block to a sub-team. It lives inside the **receiving team's subfolder** within `01_Implementation Logs/[VERSION]/Phase [N]/` — alongside that team's tickets.
 
 **File naming:**
 ```
@@ -72,7 +70,13 @@ A **Briefing Mail** is the official dispatch document AM uses to assign a phase 
 01_Implementation Logs/[VERSION]/Phase [N]/[TeamName]_Phase[N]_Briefing.md
 ```
 
-**Note:** Briefings live at the Phase root level, NOT inside team subfolders. Team subfolders contain only ticket files. This keeps the briefing visible immediately when the phase folder is opened.
+**Full path example:**
+```
+Development/01_Implementation Logs/INDEV v1.0.0/Phase 1/Monolith_Phase1_Briefing.md
+Development/01_Implementation Logs/INDEV v1.0.0/Phase 1/Syndicate_Phase1_Briefing.md
+```
+
+**Note:** Briefings live at the Phase root level, NOT inside team subfolders. Team subfolders contain only ticket files. This keeps the briefing visible immediately when the phase folder is opened, regardless of how many tickets are inside the team subfolders.
 
 **Mandatory sections (in this order):**
 
@@ -82,7 +86,7 @@ Issued by: AM | Date: DD-MM-YYYY | Project: [Name] | Phase: [N] | Tickets: [list
 
 ## 0. Pre-Work: Load Your Roster
   - Read CLAUDE.md
-  - Read agent file from `.claude/agents/[team].md`
+  - Read Team Roster file
   - Adopt voice, code names, coding style
   - Create today's Team Chat log
 
@@ -128,23 +132,25 @@ Footer: Issued by AM (Overseer) — DD-MM-YYYY
 
 ---
 
-## Team Kickoff Message Standard (Commander → Team)
+## Team Kickoff Message Standard (Commander ท่านผู้บัญชาการ → Team)
 
-The **Team Kickoff Message** is what Commander sends to a team session to start their work. It is a single message containing three things: team identity, roster path, and briefing path.
+The **Team Kickoff Message** is what Commander ท่านผู้บัญชาการ sends to a team session to start their work. It is a single message containing three things: team identity, roster path, and briefing path.
 
-**Official template (copy verbatim, fill in [N]):**
+**Official template (copy verbatim, fill in [N] and [PROJECT_ROOT]):**
 
 ```
 You are Team [Monolith / Syndicate / Arcade].
-Agent: .claude/agents/[monolith / syndicate / arcade].md
-Briefing: Development/01_Implementation Logs/INDEV v1.0.0/Phase [N]/[Monolith / Syndicate / Arcade]_Phase[N]_Briefing.md
-Load your agent file, read your briefing, and begin implementation.
+Roster: [PROJECT_ROOT]/.claude/agents/[monolith / syndicate / arcade].md
+Briefing: [PROJECT_ROOT]/Development/01_Implementation Logs/INDEV v1.0.0/Phase [N]/[Monolith / Syndicate / Arcade]_Phase[N]_Briefing.md
+Load your roster, read your briefing, and begin implementation.
 ```
 
+> **Note:** Replace `[PROJECT_ROOT]` with the actual project path before pasting. Find the correct path in `.claude/ProjectEnvironment.md → PROJECT_ROOT`.
+
 **Rules:**
-- Commander sends one kickoff message per team in a **new, separate session** for each team
-- Commander only kicks off teams listed in the Phase Dispatch Report's "Active Teams" table
-- AM provides the filled-in kickoff messages in the Phase Dispatch Report — Commander copies them directly
+- Commander ท่านผู้บัญชาการ sends one kickoff message per team in a **new, separate session** for each team
+- Commander ท่านผู้บัญชาการ only kicks off teams listed in the Phase Dispatch Report's "Active Teams" table
+- AM provides the filled-in kickoff messages in the Phase Dispatch Report — Commander ท่านผู้บัญชาการ copies them directly
 - Do not add extra context or instructions to the kickoff message — the briefing contains everything the team needs
 
 ---
@@ -200,8 +206,74 @@ Examples: `MON-01_UIDSchemaAndStorage.md`, `SYN-02_RateLimiterMiddleware.md`
 | `[~]` | IN PROGRESS | Work has begun |
 | `[x]` | Complete | All criteria met, tests pass, OverseerReport filed |
 | `[!]` | BLOCKED | Cannot proceed — blocker filed in OverseerReport |
-| `[>]` | DEFERRED | Intentionally scheduled for a later phase — always include target phase in the status field (e.g., `[>] Deferred — scheduled pre-Phase 5 open`) |
+| `[>]` | DEFERRED | Intentionally scheduled for a later phase — not forgotten, not pending. Always include target phase in the status field (e.g., `[>] Deferred — scheduled pre-Phase 5 open`) |
 
 ---
 
-*Adopted from ClaudeTemplate — 11-03-2026. Adapted for RoundTable: AM naming, Windows paths.*
+## UX Smoke Test Gate (NEW — 12-03-2026)
+
+> *Origin: SyncSpace Phase 3 — 100% test pass, every user-facing feature broken.*
+
+**Every user-facing ticket MUST include a UX Smoke Test before Complete.**
+
+1. **Performed by Verification Scholar** — not the implementing Technologist.
+2. **Manual test** — exercises the feature as a real user would (click/type/see).
+3. **Happy path + at least one failure path** required.
+4. **Results logged in ticket** under `### UX Smoke Test` — table: `| # | Scenario | Steps | Expected | Actual | PASS/FAIL |`
+5. **FAIL blocks Complete.** Technologist fixes, Verification Scholar re-tests.
+
+---
+
+## Mandatory User Journey Walkthrough (NEW — 12-03-2026)
+
+> *Origin: SyncSpace tickets tested in isolation — pipeline broke E2E.*
+
+**Before any phase is Complete, the Verification Scholar performs a full User Journey Walkthrough chaining ALL delivered tickets into one continuous flow.**
+
+1. **One walkthrough per phase.** File: `[Phase N]/Phase[N]_UserJourney_Walkthrough.md`
+2. **User actions only** — "Click Create Snapshot" not "call handleCreateSnapshot()".
+3. **Each step records:** action, expected result, actual result, PASS/FAIL.
+4. **Any FAIL blocks phase completion.** Fix → re-run from failing step.
+5. **Conductor files walkthrough result in OverseerReport.**
+
+---
+
+## COMMANDER Phase Acceptance Gate (NEW — 12-03-2026, revised same day)
+
+> *Origin: SyncSpace — 100% test pass, all user-facing features broken. COMMANDER never tested before advance.*
+
+**Opt-in toggle.** OFF by default (standard Early Phase Advance per §7). ON when Commander ท่านผู้บัญชาการ declares "I will test Phase N before advance."
+
+**When ON:** AM presents deliverables after all tickets Complete + User Journey Walkthrough passes. Commander ท่านผู้บัญชาการ tests as a user. Verdict: **ACCEPTED** (advance) or **REJECTED with issues** (fix + re-test). No Phase N+1 until COMMANDER-ACCEPTED. Logged in RoundTable under `### COMMANDER Phase Acceptance`.
+
+**AM asks at every Phase Dispatch:** "Commander, do you want to personally test Phase N before advance?"
+
+---
+
+## Silent Failure = Critical Bug (NEW — 12-03-2026)
+
+> *Origin: SyncSpace — multiple silent no-ops took hours to diagnose.*
+
+**Any operation that fails silently (no error, no warning, no log, no user feedback) = CRITICAL severity, equivalent to a crash.**
+
+1. **Every failure MUST produce observable feedback:** user-facing (popup/notification) or developer-facing (console.error/warn/`[DBG]`). At minimum: a log line.
+2. **"Nothing happens" is never acceptable.** System MUST tell the user why.
+3. **Error messages must include:** what failed, why, what to do. Example: `"Cannot create snapshot — no files are open. Open files first."` NOT: `"Snapshot failed."`
+
+---
+
+## Hotfix Regression Gate (NEW — 12-03-2026)
+
+> *Origin: SyncSpace 70+ bugs, fixes creating new bugs, no regression tests.*
+
+**Every bug fix MUST include a test case that reproduces the original bug. The test is permanent.**
+
+1. **Write failing test FIRST** — must fail before fix, pass after.
+2. **Committed alongside the fix** — atomic (same commit).
+3. **Location:** `Development/09_TestCase/_regression/` (see §4). Named: `test_[bugId]_[shortDescription]`.
+4. **Never deleted.** Archived if feature removed — not deleted.
+5. **Verification Scholar confirms** fail-before/pass-after and signs off.
+
+---
+
+*Updated: 13-03-2026*

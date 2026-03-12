@@ -1,12 +1,12 @@
-# §7 — Pre-Existing Codebase Standards
+# §5 — Pre-Existing Codebase Standards
 
-> **Policy reference file.** Loaded on-demand from `.claude/policies/`. Core rules live in CLAUDE.md.
+> **Policy reference file.** Loaded on-demand from `.claude/TeamDocument/1. Policies/`. Core rules live in CLAUDE.md.
 
 **Applies to:** ALL teams (Overseer, Monolith, Syndicate, Arcade, Cipher) — any project that has a pre-existing codebase, regardless of whether the work is a fork, modification, rebuild, or investigation. There are no exceptions.
 
 ---
 
-## 7a. Tiered Scan Protocol (MANDATORY — Global)
+## 5a. Tiered Scan Protocol (MANDATORY — Global)
 
 **Trigger:** `Development/[ProjectName]/PreExisting TechStack/[ProjectName].md` MUST be initialized at the **start of any Discovery or Scan session** — before any implementation, before any modification, before any ticket is opened. The document is NOT deferred until "first touch". First contact with the codebase IS the trigger.
 
@@ -98,7 +98,7 @@
 
 ---
 
-## 7b. L3 Completeness Verification Protocol (MANDATORY — every L3 scan)
+## 5b. L3 Completeness Verification Protocol (MANDATORY — every L3 scan)
 
 **Applies to:** Every team, every L3 scan, every project — no exceptions.
 
@@ -288,6 +288,13 @@ Produce an **External Dependency Registry**:
 **Rules:**
 - Every external URL found in config must have a row — no silent dependencies.
 - Credentials found in plaintext must be flagged as a security concern.
+- Environment-specific variants (dev vs prod vs test) must be noted — different environments may talk to different services.
+- Webhook/callback URLs where external services call INTO the app must also be documented (search for webhook, callback, notify URLs in configs and code).
+
+---
+
+**5b. Background Worker & Hosted Service Audit**
+
 Scan entry-point files for registered background services, hosted workers, scheduled tasks, and any non-HTTP processing that runs without a controller or route.
 
 ```
@@ -472,4 +479,4 @@ All six sub-audits produce their respective registries/tables as mandatory secti
 
 ---
 
-*Extracted from CLAUDE.md §7 — 11-03-2026*
+*Updated: 13-03-2026*
