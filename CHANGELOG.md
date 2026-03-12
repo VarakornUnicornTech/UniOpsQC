@@ -5,6 +5,26 @@ All notable changes to RoundTable Framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] — 2026-03-12
+
+### Fixed
+- GETTING_STARTED_TH.md — restored all code blocks, backtick references, and file structure section that were corrupted during initial creation
+
+### Added
+- §2b Language Policy — per-project language configuration (CONVERSATION_LANGUAGE, LOG_LANGUAGE, DOC_LANGUAGE) in ProjectEnvironment.md and CLAUDE.md
+
+## [1.2.0] — 2026-03-12
+
+### Added
+- GETTING_STARTED.md — English getting started guide for new users (first session walkthrough, slash commands, project modes, file structure, tips)
+- GETTING_STARTED_TH.md — Thai getting started guide
+- Post-install welcome dialog in VS Code extension offers Getting Started guide options (EN/TH)
+
+### Changed
+- README.md — removed Medica references, changed "Team Roster" to "agent file", updated team count from 6 to 5
+- README.th.md — same Medica/terminology fixes as English version
+- Development structure policy (04) — fixed backslash paths to forward slashes
+
 ## [1.1.0] — 2026-03-12
 
 ### Added
