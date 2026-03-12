@@ -355,7 +355,7 @@ Once findings are compiled:
    - Scope statement (which teams are affected)
    - Ticket list with team assignments (MON/SYN/ARC)
 
-3. Present the full findings to Chief Manager Martin:
+3. Present the full findings to Commander:
    - Summary: X bugs found, Y CRITICAL, Z HIGH
    - The user actions or systems that are currently broken
    - Which bug to fix first and why
