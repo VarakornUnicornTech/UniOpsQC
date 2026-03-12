@@ -15,6 +15,10 @@ desktop.ini
 # Project-specific data (generated at runtime, not part of template)
 RoundTable/
 Development/
+Claude Projects/
+
+# Claude Code memory (private per-user)
+memory/
 
 # Backup files from /template-apply
 *.backup

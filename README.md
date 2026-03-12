@@ -1,8 +1,8 @@
-# RoundTable Framework for Claude Code
+# RoundTable Framework For Claude Code
 
 A structured multi-team AI governance framework for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). RoundTable organizes your Claude Code sessions into specialized teams with defined roles, logging standards, and quality gates — turning a single AI assistant into a coordinated engineering organization.
 
-**By Unicorn**
+**By [Unicorn Tech Integration Co., Ltd.](https://www.unicorntechint.com)**
 
 ---
 
@@ -23,7 +23,7 @@ RoundTable Framework is a `.claude/` configuration template that gives Claude Co
 
 1. **Clone this repo** into your project:
    ```bash
-   git clone https://github.com/unicorn/roundtable-framework.git .claude-template
+   git clone https://github.com/VarakornUnicornTech/unicorn_roundtable_framework_repo.git .claude-template
    cp -r .claude-template/.claude/ your-project/.claude/
    ```
 
@@ -88,10 +88,17 @@ RoundTable is designed to be forked and customized:
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI installed
 - Claude API access (Anthropic API key)
 
+## Author
+
+**Unicorn Tech Integration Co., Ltd.**
+- Website: [unicorntechint.com](https://www.unicorntechint.com)
+- GitHub: [@VarakornUnicornTech](https://github.com/VarakornUnicornTech)
+- Location: Bangkok, Thailand
+
 ## License
 
 MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
-*RoundTable Framework v1.0.0 — Built by Unicorn*
+*RoundTable Framework v1.0.0 — Built by Unicorn Tech Integration Co., Ltd.*
