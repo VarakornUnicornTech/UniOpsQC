@@ -1,0 +1,22 @@
+{
+  "name": "roundtable",
+  "description": "Multi-team governance framework for Claude Code. Phase-based development with approval gates, persona-driven subagents, automated policy enforcement via hooks, and full audit trail. For teams that need traceability, not just velocity.",
+  "version": "2.0.0",
+  "author": {
+    "name": "Unicorn Tech Integration Co., Ltd.",
+    "url": "https://github.com/VarakornUnicornTech"
+  },
+  "repository": "https://github.com/VarakornUnicornTech/unicorn_roundtable_framework_repo",
+  "license": "MIT",
+  "keywords": [
+    "governance",
+    "multi-team",
+    "project-management",
+    "audit",
+    "phase-development",
+    "code-review",
+    "subagents",
+    "shipping",
+    "retrospective"
+  ]
+}

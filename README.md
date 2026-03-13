@@ -2,28 +2,36 @@
 
 > **ภาษาไทย / Thai:** [อ่าน README ภาษาไทย](README.th.md)
 
-A structured multi-team AI governance framework for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). RoundTable organizes your Claude Code sessions into specialized teams with defined roles, logging standards, and quality gates — turning a single AI assistant into a coordinated engineering organization.
+Governance for Claude Code — ship with confidence, not just speed.
+
+A structured multi-team AI governance framework that turns Claude Code into a coordinated engineering organization with specialized teams, approval gates, automated policy enforcement, and full audit trail.
 
 **By [Unicorn Tech Integration Co., Ltd.](https://www.unicorntechint.com)**
 
 ---
 
-## What Is This?
+## Why RoundTable?
 
-RoundTable Framework is a `.claude/` configuration template that gives Claude Code:
+| | Vanilla Claude Code | **RoundTable** |
+|---|---|---|
+| **Structure** | Single assistant | 5 teams + 16 personas |
+| **Planning** | Ad hoc | Phase dispatch + ticket gates |
+| **Code Review** | Manual | 2-pass + cross-layer trace |
+| **Shipping** | Manual git | `/git pr` with rebase + governance gates |
+| **QA** | Manual | Playwright MCP + smoke test gates |
+| **Retrospective** | None | `/git lookback` — git + session data + decision audit |
+| **Governance** | None | Full hierarchy + approval gates |
+| **Audit Trail** | None | Every decision logged + traceable |
+| **Multi-Team** | No | 4 teams + parallel execution |
+| **Setup** | N/A | ~30 seconds |
 
-- **Team structure** — 4 specialized teams (Overseer, Monolith, Syndicate, Arcade) + 1 lone operative (Cipher), each with defined roles and domain boundaries
-- **Session logging** — Automatic RoundTable session logs that capture every decision, action, and output
-- **Quality gates** — Planning-first workflow, verification scholar sign-off, acceptance criteria enforcement
-- **Debugging protocol** — Instrument-first rule, debug probe standards, side-effect scans
-- **Codebase scanning** — Tiered L1/L2/L3 scan protocol with 5-check completeness verification for pre-existing codebases
-- **Parallel execution** — Zero Cross-Team Block (ZCB) guarantee, ticket ownership rules, dependency signaling
-- **Skills** — Built-in slash commands for common workflows (`/audit`, `/bug-report`, `/team-start`, etc.)
-- **Template management** — Built-in `/template-*` skills for version checking, diffing, updating, and rollback
+---
 
-## Install via Claude Code (Recommended)
+## Quick Start
 
-Copy one of these prompts and paste it directly into Claude Code:
+### Install via Claude Code (Recommended)
+
+Copy and paste into Claude Code:
 
 **English:**
 ```
@@ -35,98 +43,178 @@ Install the RoundTable Framework from https://github.com/VarakornUnicornTech/uni
 ติดตั้ง RoundTable Framework จาก https://github.com/VarakornUnicornTech/unicorn_roundtable_framework_repo ลงใน project ปัจจุบัน ตาม Getting Started ที่ https://github.com/VarakornUnicornTech/unicorn_roundtable_framework_repo/wiki/Getting-Started
 ```
 
-> ### ⚠️ Important Tips / ข้อควรระวัง
->
-> **Use the word "install" — not "read", "explain", or "set up the rules".**
-> If your prompt mentions `.claude rules` or asks Claude to "understand" the framework first, Claude Code will read every policy file inside `.claude/` before starting installation — this makes the process significantly slower.
->
-> **ใช้คำว่า "ติดตั้ง" (install) — ไม่ใช่ "อ่าน", "อธิบาย", หรือ "ศึกษา rules"**
-> ถ้า prompt ของคุณพูดถึง `.claude rules` หรือขอให้ Claude "เข้าใจ" framework ก่อน Claude Code จะอ่านไฟล์ policy ทุกไฟล์ในโฟลเดอร์ `.claude/` ก่อนเริ่มติดตั้ง — ทำให้กระบวนการช้าลงมาก
->
-> | Prompt | Speed | Why |
-> |--------|-------|-----|
-> | ✅ *"Install RoundTable Framework from [URL] into my project"* | **Fast** | Claude goes straight to installation |
-> | ✅ *"ติดตั้ง RoundTable Framework จาก [URL] ลงใน project ปัจจุบัน"* | **Fast** | Claude ติดตั้งเลย |
-> | ❌ *"I'm interested in this .claude rule, can you set it up?"* | **Slow** | Claude reads all .claude/ files first |
-> | ❌ *"อยากลองใช้ .claude rule นี้ ช่วย setup ให้หน่อย"* | **Slow** | Claude อ่านไฟล์ทั้งหมดก่อน |
+> **Tip:** Use "install" — not "read" or "explain". Saying "install" makes Claude go straight to setup without reading every policy file first.
+
+### Manual Install
+
+**Bash / Git Bash / macOS / Linux:**
+```bash
+git clone https://github.com/VarakornUnicornTech/unicorn_roundtable_framework_repo.git .claude-template
+cp -r .claude-template/.claude/ your-project/.claude/
+cp .claude-template/plugin.json your-project/plugin.json
+cp .claude-template/.mcp.json your-project/.mcp.json
+cp -r .claude-template/hooks/ your-project/hooks/
+rm -rf .claude-template
+```
+
+**PowerShell (Windows):**
+```powershell
+git clone https://github.com/VarakornUnicornTech/unicorn_roundtable_framework_repo.git .claude-template
+Copy-Item -Recurse .claude-template\.claude\ your-project\.claude\
+Copy-Item .claude-template\plugin.json your-project\plugin.json
+Copy-Item .claude-template\.mcp.json your-project\.mcp.json
+Copy-Item -Recurse .claude-template\hooks\ your-project\hooks\
+Remove-Item -Recurse -Force .claude-template
+```
+
+Then edit `.claude/ProjectEnvironment.md` with your project details and start Claude Code.
 
 ---
 
-## Manual Install (Quick Start)
+## Three Ways to Use RoundTable
 
-1. **Clone this repo** into your project:
+### Level 1 — "I just want better shipping"
+Use `/git commit` and `/git pr`. No governance overhead — just better shipping.
 
-   **Bash / Git Bash / macOS / Linux:**
-   ```bash
-   git clone https://github.com/VarakornUnicornTech/unicorn_roundtable_framework_repo.git .claude-template
-   cp -r .claude-template/.claude/ your-project/.claude/
-   rm -rf .claude-template
-   ```
+### Level 2 — "I want project structure"
+Use `/team-start`, `/phase-status`, `/bug-report`. Phase-based development without full team simulation.
 
-   **PowerShell (Windows):**
-   ```powershell
-   git clone https://github.com/VarakornUnicornTech/unicorn_roundtable_framework_repo.git .claude-template
-   Copy-Item -Recurse .claude-template\.claude\ your-project\.claude\
-   Remove-Item -Recurse -Force .claude-template
-   ```
+### Level 3 — "I want full governance"
+Enable all hooks, use agent teams, full logging. Enterprise-grade traceability.
 
-   > **Note:** If you install via Claude Code, it runs commands through Git Bash automatically — no need to worry about OS differences.
+Each level is opt-in. Use only what you need.
 
-2. **Edit `.claude/ProjectEnvironment.md`** — add your project details (name, mode, paths). See the field reference and examples inside the file.
+---
 
-3. **Customize your authority name** — The framework uses "Commander ท่านผู้บัญชาการ" as the default authority title. To personalize, find-and-replace `Commander ท่านผู้บัญชาการ` with your preferred title in `.claude/CLAUDE.md`.
+## Teams
 
-4. **Start Claude Code** in your project directory — it will automatically load CLAUDE.md and adopt the team structure
+| Team | Domain | Style |
+|------|--------|-------|
+| **Overseer** | Project management, architecture decisions | Balanced, cautious, standards-compliant |
+| **Monolith** | Core backend, infrastructure, DB schema, cloud, docs | Verbose, type-safe, bulletproof |
+| **Syndicate** | API integration, query optimization, security | Pragmatic, terse, performance-focused |
+| **Arcade** | Frontend UI, gamification, creative systems | Clever, modern, innovative |
+| **Cipher** | Hardware diagnostics, disk forensics, RAID recovery | Surgical, zero-write, verify-before-acting |
 
-5. **Choose your team** — Claude will load the appropriate agent file (Overseer, Monolith, Syndicate, Arcade, or Cipher)
+## Skills
+
+### Workflow Skills
+| Command | Purpose |
+|---------|---------|
+| `/team-start [Team] [Project] [Phase] [free\|hold]` | Formal team kickoff |
+| `/phase-status [Project]` | Full project phase + ticket status |
+| `/compact-resume` | Post-compact re-orientation |
+| `/overseer-report [ID]` | File OverseerReport entry |
+
+### Planning Skills
+| Command | Purpose |
+|---------|---------|
+| `/bug-report [Project] [desc]` | Create bug fix ticket + folders |
+| `/mod-log [Project] [name]` | Create modification ticket + folders |
+| `/sub-feature [Project] [name]` | Create sub-feature ticket + folders |
+
+### Quality Skills
+| Command | Purpose |
+|---------|---------|
+| `/audit [Project] [scope?]` | End-to-end multi-domain audit — finds gap bugs |
+| `/git commit [branch?]` | Governed commit — rebase, 2-pass review, ticket gate |
+| `/git pr [branch?]` | Governed pull request — rebase, review, test, PR with governance gates |
+| `/git lookback [period?]` | Retrospective — rebase-aware git + session data + decision audit |
+
+### Persona Skills
+| Command | Purpose |
+|---------|---------|
+| `/Overseer` `/Monolith` `/Syndicate` `/Arcade` `/Cipher` | Switch active team persona |
+
+### Framework Management
+| Command | Purpose |
+|---------|---------|
+| `/template [action]` | Version check, diff, update, rollback |
+
+## Rules (Path-Scoped)
+
+Policy rules in `.claude/rules/` load automatically based on file context:
+
+| Rule | When It Loads | Key Rules |
+|------|--------------|-----------|
+| `governance.md` | Always | Plan-before-code, no-code-before-ticket, ticket/briefing standards, phase gates |
+| `logging.md` | Always | Session logging, rotation, handover, OverseerReport, TeamChat |
+| `debugging.md` | Code files (`.ts`, `.js`, `.py`, etc.) | Instrument-first, probe standards, cross-layer trace, gap bugs |
+| `testing.md` | Test files (`*.test.*`, `*.spec.*`) | Unit tests, regression gates, living docs |
+| `codebase-scanning.md` | Always | L1/L2/L3 tiered scan protocol, completeness checks |
+| `parallel-execution.md` | Always | ZCB guarantee, ticket ownership, multi-session |
+| `skills-and-subagents.md` | Always | Skill format, orchestration modes, subagent triggers |
+
+## Hooks (Automated Enforcement)
+
+Hooks are defined in `.claude/settings.json` under the `"hooks"` key. Scripts live in `hooks/scripts/`.
+
+| Hook | Event | What It Does |
+|------|-------|-------------|
+| `SessionStart` | Session start | Confirms RoundTable governance framework is active |
+| `check-ticket-exists` | PreToolUse (Edit/Write) | Warns if no ticket exists before code edits |
+| `log-file-change` | PostToolUse (Edit/Write) | Logs file changes to session audit trail |
+| Protected files | PreToolUse (Edit/Write) | Prompt hook — blocks edits to CLAUDE.md, policies, agents without authorization |
+
+> **Windows note:** Hook scripts require Git Bash or WSL. Ensure `bash` and `jq` are available in your PATH. Scripts use `#!/usr/bin/env bash` shebangs and Unix path separators.
+
+## Playwright MCP (Browser Automation)
+
+Verification Scholars can use Playwright for UX Smoke Test Gates and User Journey Walkthroughs.
+Configuration: `.mcp.json` at project root.
+
+---
 
 ## Project Structure
 
 ```
-.claude/
-├── CLAUDE.md                    # Core policy file (entry point)
-├── ProjectEnvironment.md        # Your project registry
-├── settings.json                # Claude Code permissions
-├── TeamDocument/
-│   ├── 1. Policies/            # 8 modular policy files
-│   ├── 2. Team Roster/         # 5 team definitions
-│   ├── 3. Team Chat/           # Team communication logs
-│   ├── Diagnostic Log/         # Cipher engagement records
-└── skills/                     # Custom slash commands
+your-project/
+├── .claude/
+│   ├── CLAUDE.md                # Core policy (entry point)
+│   ├── ProjectEnvironment.md    # Project registry
+│   ├── settings.json            # Permissions + hooks + protected file rules
+│   ├── agents/                  # 5 team agent definitions
+│   ├── rules/                   # 7 path-scoped rule files
+│   ├── skills/                  # 21 slash command skills
+│   │   ├── git/                 # Unified VCS: commit, pr, lookback
+│   │   │   └── checklists/      # Critical, informational, suppressions
+│   │   ├── audit/               # Multi-domain gap bug finder
+│   │   └── ...
+│   └── TeamDocument/
+│       ├── 1. Policies/         # 9 detailed policy files
+│       └── 2. TeamChat/         # Team communication logs
+├── hooks/                       # Hook scripts (config in .claude/settings.json)
+│   └── scripts/                 # check-ticket-exists.sh, log-file-change.sh
+├── .mcp.json                    # Playwright browser automation
+├── plugin.json                  # Plugin manifest
+└── RoundTable/                  # Session logs (created at runtime)
 ```
-
-## Teams
-
-| Team | Domain | Roles |
-|------|--------|-------|
-| **Overseer** | Project management, architecture decisions | AM (Conductor), MT (Technologist), AS (Design & Verification Scholar) |
-| **Monolith** | Core backend, infrastructure, DB schema, cloud, docs | AT (Conductor), SC (Technologist), EN (Design Scholar), PF (Verification Scholar) |
-| **Syndicate** | API integration, query optimization, security | DR (Conductor), AX (Technologist), LX (Design Scholar), WT (Verification Scholar) |
-| **Arcade** | Frontend UI, gamification, creative systems | CP (Conductor), GL (Technologist), PX (Design Scholar), HS (Verification Scholar) |
-| **Cipher** | Hardware diagnostics, disk forensics, RAID recovery | CI (Lone Operative) |
 
 ## Policy Reference
 
 | Policy | What It Covers |
 |--------|---------------|
 | §1 Logging & RoundTable | Session logging, RoundTable format, rotation policy |
-| §2 Tickets & Briefings | Phase dispatch, briefing mail, ticket standards |
+| §2 Tickets & Briefings | Phase dispatch, briefing mail, ticket standards, UX smoke test |
 | §3 Team Chat & Handover | Cross-team protocol, OverseerReport, handoff files |
-| §4 Development Structure | Project organization, planning-first workflow |
+| §4 Development Structure | Project organization, planning-first workflow, error catalog |
 | §5 Pre-Existing Codebase | Tiered scan protocol (L1/L2/L3), completeness verification |
-| §6 Debugging Protocol | Instrument-first rule, probe standards, side-effect scan |
+| §6 Debugging Protocol | Instrument-first rule, probe standards, gap bug detection |
 | §7 Parallel Execution | ZCB guarantee, ticket ownership, dependency signals |
 | §8 Skills & Subagents | Skill catalogue, orchestration modes, subagent standards |
+| §9 Multi-Session | One-session-per-project, project-prefixed logging |
 
 ## Customization
 
 RoundTable is designed to be forked and customized:
 
-- **Rename team members** — edit Team Roster files to match your preferred code names
-- **Add/remove teams** — create new roster files or remove unused ones
-- **Adjust policies** — modify policy files to match your project's needs
+- **Rename team members** — edit agent files to match your preferred code names
+- **Add/remove teams** — create new agent files or remove unused ones
+- **Adjust policies** — modify policy files in `TeamDocument/1. Policies/`
 - **Add skills** — create new `.claude/skills/[name]/SKILL.md` files
-- **Change authority naming** — replace "Commander ท่านผู้บัญชาการ" with your preferred authority title
+- **Tune rules** — edit `.claude/rules/` files to adjust enforcement level
+- **Change authority naming** — replace "Commander" with your preferred title
+- **Toggle hooks** — switch from warning to blocking mode in hook scripts
 
 ## Requirements
 
@@ -146,4 +234,4 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
-*RoundTable Framework v1.0.0 — Built by Unicorn Tech Integration Co., Ltd.*
+*RoundTable Framework v2.0.0 — Built by Unicorn Tech Integration Co., Ltd.*
