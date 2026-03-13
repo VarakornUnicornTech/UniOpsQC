@@ -133,16 +133,17 @@ Each level is opt-in. Use only what you need.
 
 ## Rules (Path-Scoped)
 
-Rules are compressed policy files in `.claude/rules/` that load automatically based on file context:
+Policy rules in `.claude/rules/` load automatically based on file context:
 
 | Rule | When It Loads | Key Rules |
 |------|--------------|-----------|
-| `governance.md` | Always | Plan-before-code, no-code-before-ticket, phase gates, ZCB |
-| `logging.md` | Always | Session logging, rotation, handover, OverseerReport |
-| `debugging.md` | Code files (`.ts`, `.js`, `.py`, etc.) | Instrument-first, probe standards, cross-layer trace |
+| `governance.md` | Always | Plan-before-code, no-code-before-ticket, ticket/briefing standards, phase gates |
+| `logging.md` | Always | Session logging, rotation, handover, OverseerReport, TeamChat |
+| `debugging.md` | Code files (`.ts`, `.js`, `.py`, etc.) | Instrument-first, probe standards, cross-layer trace, gap bugs |
 | `testing.md` | Test files (`*.test.*`, `*.spec.*`) | Unit tests, regression gates, living docs |
-| `codebase-scanning.md` | Always | L1/L2/L3 tiered scan protocol |
+| `codebase-scanning.md` | Always | L1/L2/L3 tiered scan protocol, completeness checks |
 | `parallel-execution.md` | Always | ZCB guarantee, ticket ownership, multi-session |
+| `skills-and-subagents.md` | Always | Skill format, orchestration modes, subagent triggers |
 
 ## Hooks (Automated Enforcement)
 
@@ -168,7 +169,7 @@ your-project/
 │   ├── ProjectEnvironment.md    # Project registry
 │   ├── settings.json            # Permissions + protected file hooks
 │   ├── agents/                  # 5 team agent definitions
-│   ├── rules/                   # 6 path-scoped rule files
+│   ├── rules/                   # 7 path-scoped rule files
 │   ├── skills/                  # 21 slash command skills
 │   │   ├── git/                 # Unified VCS: commit, pr, lookback
 │   │   │   └── checklists/      # Critical, informational, suppressions

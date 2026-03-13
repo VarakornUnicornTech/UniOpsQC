@@ -292,16 +292,17 @@ Each team has a dedicated agent definition in `.claude/agents/`.
 
 ## Rules (Path-Scoped Enforcement)
 
-Compressed policy rules in `.claude/rules/` — loaded automatically based on file context:
+Policy rules in `.claude/rules/` — loaded automatically based on file context. These complement the full policy files in `TeamDocument/1. Policies/`.
 
 | Rule File | Scope | What It Enforces |
 |-----------|-------|-----------------|
-| `governance.md` | All files | Plan-before-code, no-code-before-ticket, phase gates, ZCB |
-| `logging.md` | All files | Session logging, RoundTable format, rotation, handover |
-| `debugging.md` | `*.ts, *.js, *.py, *.go, *.rs, *.java` | Instrument-first, probe standards, cross-layer trace |
-| `testing.md` | `*.test.*, *.spec.*, tests/, test/` | Unit/integration tests, regression gates, living docs |
-| `codebase-scanning.md` | All files | L1/L2/L3 tiered scan protocol |
-| `parallel-execution.md` | All files | ZCB guarantee, ticket ownership, multi-session rules |
+| `governance.md` | All files | §2+§4: Plan-before-code, no-code-before-ticket, ticket standards, briefing format, phase gates, UX smoke test, silent failure rule |
+| `logging.md` | All files | §1+§3: Session logging, RoundTable format/rotation, all-voices rule, OverseerReport, TeamChat, HandOver standard |
+| `debugging.md` | `*.ts, *.js, *.py, *.go, *.rs, *.java` | §6: Instrument-first, probe standards, cross-layer trace, gap bug detection, side-effect scan, rewrite threshold |
+| `testing.md` | `*.test.*, *.spec.*, tests/, test/` | Unit/integration tests, regression gates, living docs, quality standards |
+| `codebase-scanning.md` | All files | §5: L1/L2/L3 tiered scan protocol, PreExisting TechStack format, 5 completeness checks |
+| `parallel-execution.md` | All files | §7+§9: ZCB guarantee, ticket ownership, COO sync gate, multi-session rules |
+| `skills-and-subagents.md` | All files | §8: Skill format, AM orchestration modes, subagent triggers, pre-flight declarations |
 
 ## Hooks (Automated Enforcement)
 
