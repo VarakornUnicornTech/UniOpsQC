@@ -154,6 +154,8 @@ Key rules: Sub-teams log in `TeamDocument/2. TeamChat/`, not RoundTable. Oversee
 2. Wait for explicit Commander confirmation before implementing
 3. Never implement without approval — no matter how simple the task appears
 
+**No-Code-Before-Ticket Rule (13-03-2026):** No code change — not a single line — until its ticket exists in the Development folder. Applies to ALL scenarios: live-discovered bugs, approved features, quick fixes, urgent issues. No exceptions. Conductor must halt implementation and create the ticket first. Violations logged in RoundTable with root cause.
+
 **ProjectEnvironment.md** declares the active mode, project root paths, and source code locations for every project. Location: `.claude/ProjectEnvironment.md`. Check this file before constructing any Development folder path.
 
 Two project modes:

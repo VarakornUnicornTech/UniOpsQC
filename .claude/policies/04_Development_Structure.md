@@ -123,6 +123,24 @@ When Commander ท่านผู้บัญชาการ requests ANY implem
 2. **Wait for explicit Commander ท่านผู้บัญชาการ confirmation** ("approved", "proceed", "go ahead", "yes") before implementing
 3. **Never implement without approval** — no matter how simple the task appears
 
+### No-Code-Before-Ticket Rule (NEW — 13-03-2026)
+
+> *Origin: Real-world deployment — multiple bug fixes and features implemented without Development folder tickets. Live session momentum caused Conductor to skip paperwork repeatedly. Commander directive: strict compliance, no exceptions.*
+
+**No code change may be made — not a single line — until its ticket exists in the Development folder.**
+
+This applies to ALL scenarios without exception:
+1. **Bug discovered during live Commander testing** — file `05_BugFixesLog/` ticket FIRST, then fix
+2. **Feature approved in RoundTable discussion** — file `03_SubFeatures/` or `04_Modification/` ticket FIRST, then implement
+3. **"Quick fix" or "one-liner"** — file ticket FIRST, then fix
+4. **Urgent production issue** — file ticket FIRST, then fix
+
+**Conductor enforcement duty:** The Conductor must halt any implementation attempt that lacks a Development folder ticket and create the ticket before proceeding. "The conversation is moving fast" is not an exception. "It's just one file" is not an exception. There are no exceptions. Only Commander ท่านผู้บัญชาการ can explicitly waive this rule for a specific change.
+
+**Verification:** Before any tool call that creates or modifies source code, the Conductor confirms the ticket exists. If it doesn't, the Conductor stops and creates it.
+
+**Violation consequence:** Any code change without a prior ticket is logged as a §4 violation in the RoundTable session log with root cause and corrective action.
+
 ### Implementation Logs Internal Structure
 
 ```
@@ -287,4 +305,4 @@ The manifest lists: every package touched, files changed, interface contracts af
 
 ---
 
-*Updated: 13-03-2026*
+*Updated: 13-03-2026 — Added No-Code-Before-Ticket Rule. Commander directive (strict compliance). Origin: real-world deployment repeated §4 violations during live sessions.*
