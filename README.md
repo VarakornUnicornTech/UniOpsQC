@@ -12,18 +12,18 @@ A structured multi-team AI governance framework that turns Claude Code into a co
 
 ## Why RoundTable?
 
-| | Vanilla Claude Code | gstack | **RoundTable** |
-|---|---|---|---|
-| **Structure** | Single assistant | 8 cognitive modes | 5 teams + 16 personas |
-| **Planning** | Ad hoc | CEO + Eng review | Phase dispatch + ticket gates |
-| **Code Review** | Manual | 2-pass with suppressions | 2-pass + cross-layer trace |
-| **Shipping** | Manual git | `/ship` (sync→test→PR) | `/git pr` with rebase + governance gates |
-| **QA** | Manual | Playwright binary | Playwright MCP + smoke test gates |
-| **Retrospective** | None | Git history mining | `/git lookback` — git + session data + decision audit |
-| **Governance** | None | None | Full hierarchy + approval gates |
-| **Audit Trail** | None | None | Every decision logged + traceable |
-| **Multi-Team** | No | No | 4 teams + parallel execution |
-| **Setup** | N/A | ~10 seconds | ~30 seconds |
+| | Vanilla Claude Code | **RoundTable** |
+|---|---|---|
+| **Structure** | Single assistant | 5 teams + 16 personas |
+| **Planning** | Ad hoc | Phase dispatch + ticket gates |
+| **Code Review** | Manual | 2-pass + cross-layer trace |
+| **Shipping** | Manual git | `/git pr` with rebase + governance gates |
+| **QA** | Manual | Playwright MCP + smoke test gates |
+| **Retrospective** | None | `/git lookback` — git + session data + decision audit |
+| **Governance** | None | Full hierarchy + approval gates |
+| **Audit Trail** | None | Every decision logged + traceable |
+| **Multi-Team** | No | 4 teams + parallel execution |
+| **Setup** | N/A | ~30 seconds |
 
 ---
 
@@ -74,7 +74,7 @@ Then edit `.claude/ProjectEnvironment.md` with your project details and start Cl
 ## Three Ways to Use RoundTable
 
 ### Level 1 — "I just want better shipping"
-Use `/git commit` and `/git pr`. No governance overhead. Competes directly with gstack.
+Use `/git commit` and `/git pr`. No governance overhead — just better shipping.
 
 ### Level 2 — "I want project structure"
 Use `/team-start`, `/phase-status`, `/bug-report`. Phase-based development without full team simulation.
