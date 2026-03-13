@@ -1,6 +1,6 @@
-# §6 — Parallel Execution Policy & Ticket Ownership Rules
+# §7 — Parallel Execution Policy & Ticket Ownership Rules
 
-> **Policy reference file.** Loaded on-demand from `.claude/policies/`. Core rules live in CLAUDE.md.
+> **Policy reference file.** Loaded on-demand from `.claude/TeamDocument/1. Policies/`. Core rules live in CLAUDE.md.
 
 ---
 
@@ -58,4 +58,26 @@ For each team with tickets in Phase N:
 
 ---
 
-*Extracted from CLAUDE.md §6 — 11-03-2026*
+## Commander Sync Gate for Early Phase Advance (NEW — 12-03-2026)
+
+> **Lesson learned:** SyncSpace teams were pre-authorized to chain Phases 3 → 4 automatically. When Phase 3 had critical user-facing bugs, Phase 4 work was already underway — built on a broken foundation. Async advance without Commander's validation wastes effort when the preceding phase has undetected issues.
+
+**Extends Rule 7 (Early Phase Advance).** This gate only applies when the Commander Phase Acceptance Gate (§2) is toggled ON for the current phase. When the gate is OFF, standard Early Phase Advance (Rule 7) applies.
+
+**When Commander Phase Acceptance Gate is ON and teams are async:**
+1. **Async advance requires explicit Commander opt-in.** Commander ท่านผู้บัญชาการ must state: "Team [X] may advance to Phase N+1 while Phase N acceptance is pending."
+2. **AM presents the Async Advance checklist:**
+   ```
+   ## Async Advance Request — [TeamName] → Phase [N+1]
+   [ ] All Phase N tickets complete (Verification Scholar confirmed)
+   [ ] User Journey Walkthrough: PASS
+   [ ] Commander Phase Acceptance: PENDING / ACCEPTED
+   [ ] If PENDING: Commander acknowledges rework risk
+   [ ] Phase N+1 tickets have ZERO dependencies on other teams' Phase N work
+   [ ] Commander grants provisional advance: YES / NO
+   ```
+3. **Provisional advances do not stack.** A team on provisional Phase N+1 may NOT advance to N+2 until Phase N is Commander-ACCEPTED.
+
+---
+
+*Updated: 13-03-2026*

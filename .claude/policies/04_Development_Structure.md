@@ -1,6 +1,6 @@
 # §4 — Development Structure, Project Organization & Planning Workflow
 
-> **Policy reference file.** Loaded on-demand from `.claude/policies/`. Core rules live in CLAUDE.md.
+> **Policy reference file.** Loaded on-demand from `.claude/TeamDocument/1. Policies/`. Core rules live in CLAUDE.md.
 
 ---
 
@@ -9,8 +9,8 @@
 ```
 [PROJECT_ROOT]/
 ├── .claude/
-│   ├── CLAUDE.md                        # Core policy file
-│   ├── ProjectEnvironment.md            # Project path config, mode, source registry — fill on setup
+│   ├── CLAUDE.md                        # Core policy file (slim)
+│   ├── ProjectEnvironment.md            # Active project registry — mode, root paths, source paths
 │   ├── policies/                        # Detailed policy reference files (loaded on-demand)
 │   ├── Team Roster/                     # Team definitions
 │   │   ├── 1. Team_Overseer.md
@@ -30,14 +30,47 @@
 │   │   │   └── HandOver/
 │   │   └── 4. OverseerReport/
 │   │       └── DD-MM-YYYY_OverseerReport.md
-│   └── Diagnostic Log/                 # Cipher engagement records
-│       └── [NUMBER]. [TASK]_DD_MM_YYYY.md
+│   ├── Diagnostic Log/                  # Cipher engagement records
+│   │   └── [NUMBER]. [TASK]_DD_MM_YYYY.md
+│   ├── skills/                          # Custom slash commands
+│   ├── agents/                          # Team subagent definitions
+│   └── settings.json                    # Permissions and hooks
 ├── RoundTable/
 │   ├── _Index.md                        # Volume navigation index
 │   └── DD-MM-YYYY_RoundTable.md         # Daily session logs (with Volume system)
-└── Development/                         # Planning & documentation
-    └── (see Project Structure Mode below)
+└── [ProjectName]/                       # Project workspaces
+    ├── Development/                     # Planning & documentation
+    └── Projects/                        # Source code (if multi-component)
 ```
+
+---
+
+## ProjectEnvironment.md
+
+Every project hub uses a **ProjectEnvironment.md** file at `.claude/ProjectEnvironment.md` to declare the active mode, project root paths, and source code locations.
+
+**Location:** `.claude/ProjectEnvironment.md`
+
+**Format:**
+
+```markdown
+# ProjectEnvironment
+
+## Active Projects
+
+### [ProjectName]
+**PROJECT_MODE:** Centralized | Decentralized
+**PROJECT_ROOT:** [absolute path to planning hub]
+**SOURCE_ROOT:** [absolute path to source code — same as PROJECT_ROOT if Centralized]
+**ACTIVE:** true | false
+**Notes:** [any special path notes]
+```
+
+**Rules:**
+- Check this file before constructing any Development folder path or PreExisting TechStack path
+- If a project is not listed here, add it before beginning work
+- `SOURCE_ROOT` and `PROJECT_ROOT` are the same in Centralized mode; different in Decentralized mode
+- Set `ACTIVE: false` for projects that are on hold — do not delete entries
 
 ---
 
@@ -47,101 +80,36 @@ Every project operates in one of two modes. The active mode is declared in `.cla
 
 ### Centralized Mode
 
-Planning and source code share the same project root. Use for greenfield projects or projects you own end-to-end.
-
-**Development folder shape — no pre-existing codebase:**
-```
-Development/
-├── 01_Implementation Logs/
-├── 02_FeatureDescription/
-├── 03_SubFeatures Implementation/
-├── 04_Modification Logs/
-├── 05_BugFixesLog/
-├── 06_InstallationGuide/
-├── 07_TechnicalDebt/
-├── Current TechStack.md
-├── Main Implementation Plan.md
-└── Main TechStack Logic.md
-```
-
-**Development folder shape — WITH pre-existing codebase:**
-```
-Development/
-└── [ProjectName]/
-    ├── 01_Implementation Logs/
-    ├── 02_FeatureDescription/
-    ├── 03_SubFeatures Implementation/
-    ├── 04_Modification Logs/
-    ├── 05_BugFixesLog/
-    ├── 06_InstallationGuide/
-    ├── 07_TechnicalDebt/
-    ├── Current TechStack.md
-    ├── Main Implementation Plan.md
-    ├── Main TechStack Logic.md
-    └── PreExisting TechStack/
-        └── [ProjectName].md
-```
-
-Source code location (Centralized):
-```
-[PROJECT_ROOT]/
-├── .claude/
-├── Development/
-├── RoundTable/
-└── [src-folder]/                         # Source code lives here, inside the same root
-```
+Planning and source code share the same project root. Use for greenfield projects or solo projects.
 
 ### Decentralized Mode
 
-Planning hub and source code are fully separated. Use for pre-existing codebases, client repos, multi-repo projects, or any codebase you cannot restructure.
+Planning hub and source code are fully separated. Use for pre-existing codebases, client repos, multi-repo projects. Source code path recorded in `ProjectEnvironment.md → SOURCE_ROOT`.
 
-**Development folder shape (always named subfolder):**
-```
-Development/
-└── [ProjectName]/
-    ├── 01_Implementation Logs/
-    ├── 02_FeatureDescription/
-    ├── 03_SubFeatures Implementation/
-    ├── 04_Modification Logs/
-    ├── 05_BugFixesLog/
-    ├── 06_InstallationGuide/
-    ├── 07_TechnicalDebt/
-    ├── Current TechStack.md
-    ├── Main Implementation Plan.md
-    ├── Main TechStack Logic.md
-    └── PreExisting TechStack/
-        └── [ProjectName].md
-```
+### Mode Decision: Centralized = greenfield/solo. Decentralized = pre-existing/client/multi-repo.
 
-Source code location (Decentralized):
-```
-[PROJECT_ROOT]/          ← Claude Code root — planning only
-[EXTERNAL_PATH]/         ← Source code lives here, outside the root entirely
-                           Record this path in ProjectEnvironment.md → External Source Code Registry
-```
-
-### Mode Decision Table
-
-| Situation | Mode |
-|-----------|------|
-| Greenfield project, you own the repo end-to-end | Centralized |
-| Pre-existing codebase you cannot restructure | Decentralized |
-| Client repo or external repo | Decentralized |
-| Multiple repos under one planning hub | Decentralized |
-| Source code has sensitive history (no planning docs in git) | Decentralized |
-| Simple solo project | Centralized |
-
-### Pre-Existing Codebase Rule (applies to BOTH modes)
-
-**Whenever a pre-existing codebase is involved — regardless of mode — use the named project subfolder shape.** The `Development/[ProjectName]/` layer is mandatory when a PreExisting TechStack scan file exists or will be created.
-
-### PreExisting TechStack Path Formula
+### Development Folder Contents (canonical — one tree for all modes)
 
 ```
-Development/[ProjectName]/PreExisting TechStack/[ProjectName].md
+[Development/ or Development/[ProjectName]/]
+├── 01_Implementation Logs/       # Tickets, briefings, phase logs
+├── 02_FeatureDescription/        # Feature documentation
+├── 03_SubFeatures Implementation/
+├── 04_Modification Logs/
+├── 05_BugFixesLog/
+├── 06_InstallationGuide/         # Setup/deploy docs
+├── 07_TechnicalDebt/             # Temporary fixes needing cleanup
+├── 08_AuditReport/               # /audit reports (MANDATORY)
+├── 09_TestCase/                  # Test plans and coverage index (MANDATORY)
+├── Current TechStack.md          # Living doc: all classes, methods, functions
+├── Main Implementation Plan.md   # READ-ONLY core roadmap
+├── Main TechStack Logic.md       # READ-ONLY tech documentation
+├── ErrorCatalog.md               # Error code registry (see Error Code Catalog below)
+└── PreExisting TechStack/        # (Pre-existing projects only)
+    └── [ProjectName].md
 ```
 
-This formula applies in both Centralized (with pre-existing codebase) and Decentralized mode. There is no flat `Development/PreExisting TechStack/` path — the named project subfolder is always required.
+**Folder nesting rule:** Centralized without pre-existing codebase → flat `Development/`. All other cases (pre-existing, Decentralized) → `Development/[ProjectName]/`. The `[ProjectName]/` layer is mandatory when a PreExisting TechStack exists.
 
 ---
 
@@ -155,71 +123,25 @@ When Commander ท่านผู้บัญชาการ requests ANY implem
 2. **Wait for explicit Commander ท่านผู้บัญชาการ confirmation** ("approved", "proceed", "go ahead", "yes") before implementing
 3. **Never implement without approval** — no matter how simple the task appears
 
-### Development Folder Structure (Standard)
-
-This is the **canonical template** for the contents of a project subfolder. The shape of `Development/` itself depends on the active mode — see **Project Structure Mode** section above.
-
-> In Centralized mode with no pre-existing codebase: these folders sit directly inside `Development/`.
-> In all other cases (Decentralized, or Centralized with pre-existing codebase): these folders sit inside `Development/[ProjectName]/`.
+### Implementation Logs Internal Structure
 
 ```
-[ProjectName]/
-├── 01_Implementation Logs/           # Tickets, briefings, and completed implementation logs
-│   └── [VERSION]/                    # e.g. INDEV v1.0.0
-│       ├── Phase 0/
-│       │   ├── Monolith_Phase0_Briefing.md
-│       │   ├── Syndicate_Phase0_Briefing.md
-│       │   ├── Arcade_Phase0_Briefing.md
-│       │   ├── 1. Overseer/
-│       │   ├── 2. Monolith/
-│       │   ├── 3. Syndicate/
-│       │   └── 4. Arcade/
-│       ├── Phase 1/
-│       │   └── (same structure)
-│       └── Phase N/
-│           └── (same structure)
-├── 02_FeatureDescription/
-│   └── [FeatureName]/
-│       └── [ComponentName].md
-├── 03_SubFeatures Implementation/
-│   └── [FeatureName]/
-│       ├── [ORDER]. [STATUS]_[Name]_DD-MM-YYYY.md
-│       └── [STATUS]_[Name]_DD-MM-YYYY/
-│           ├── 1. Overseer/
-│           ├── 2. Monolith/
-│           ├── 3. Syndicate/
-│           └── 4. Arcade/
-├── 04_Modification Logs/
-│   └── [FeatureName]/
-│       ├── [ORDER]. [STATUS]_[Name]_DD-MM-YYYY.md
-│       └── [STATUS]_[Name]_DD-MM-YYYY/
-│           ├── 1. Overseer/
-│           ├── 2. Monolith/
-│           ├── 3. Syndicate/
-│           └── 4. Arcade/
-├── 05_BugFixesLog/
-│   └── [FeatureName]/
-│       ├── [ORDER]. [STATUS]_[Name]_DD-MM-YYYY.md
-│       └── [STATUS]_[Name]_DD-MM-YYYY/
-│           ├── 1. Overseer/
-│           ├── 2. Monolith/
-│           ├── 3. Syndicate/
-│           └── 4. Arcade/
-├── 06_InstallationGuide/             # Setup guides, installation docs
-├── 07_TechnicalDebt/                 # Temporary or hacky code fixes
-├── Current TechStack.md              # Living doc: all classes, methods, functions
-├── Main Implementation Plan.md       # READ-ONLY core roadmap
-├── Main TechStack Logic.md           # READ-ONLY tech documentation
-└── PreExisting TechStack/            # (Pre-existing projects only)
-    └── [ProjectName].md
+01_Implementation Logs/[VERSION]/Phase [N]/
+├── [TeamName]_Phase[N]_Briefing.md   # Briefings at Phase root
+├── 1. Overseer/                      # OVR-XX tickets
+├── 2. Monolith/                      # MON-XX tickets
+├── 3. Syndicate/                     # SYN-XX tickets
+└── 4. Arcade/                        # ARC-XX tickets
 ```
+
+SubFeatures/Modification/BugFix folders each contain: `[ORDER]. [STATUS]_[Name]_DD-MM-YYYY.md` (overview) + `[STATUS]_[Name]_DD-MM-YYYY/` (tickets in team subfolders: 1. Overseer/, 2. Monolith/, 3. Syndicate/, 4. Arcade/).
 
 ---
 
 ### Request Type → Destination Folder
 
 | Commander's Request | Destination Folder |
-|--------------|-------------------|
+|-------------------------------|-------------------|
 | "Fix bug in X" | `05_BugFixesLog/[FeatureName]/` |
 | "Add feature X" | `03_SubFeatures Implementation/` |
 | "Modify/expand X" | `04_Modification Logs/[FeatureName]/` |
@@ -235,26 +157,22 @@ Example: `01. RomanceSystem_04-02-2026.md`
 
 **SubFeature, Modification & Bug Fix Logs (Main Overview + Tickets):**
 
-Main overview file (brief description of job scope and ticket list):
+Main overview file:
 ```
 [ORDER]. [STATUS]_[Name]_DD-MM-YYYY.md
 ```
 
-Tickets folder (detailed per-task tickets divided into 4 teams):
+Tickets folder:
 ```
 [STATUS]_[Name]_DD-MM-YYYY/
-├── 1. Overseer/    # Integration + deployment tickets
-├── 2. Monolith/    # Core pipeline / infrastructure tickets
-├── 3. Syndicate/   # Backend / API / process management tickets
-└── 4. Arcade/      # UI / prompts / formatting tickets
+├── 1. Overseer/
+├── 2. Monolith/
+├── 3. Syndicate/
+└── 4. Arcade/
 ```
 
 - STATUS: `PLANNED` or `IMPLEMENTED` (both file AND folder rename on completion)
-- Main overview is **brief** — describes what the job is about and lists tickets
-- Tickets contain **detailed** per-task specs with acceptance criteria
 - Ticket naming: `[TEAM_PREFIX]-[NUMBER]_[ShortName].md` (e.g., `MON-01_ParseOverseerOutput.md`)
-- Example overview: `04. PLANNED_ParallelExecution_11-02-2026.md`
-- Example folder: `PLANNED_ParallelExecution_11-02-2026/`
 
 ### Main Document Rules
 
@@ -273,7 +191,7 @@ Tickets folder (detailed per-task tickets divided into 4 teams):
 3. Create **main overview file** with `PLANNED` status (brief description + ticket list)
 4. Create **tickets folder** (`PLANNED_[Name]_DD-MM-YYYY/`) with team subfolders
 5. Create **individual tickets** in team subfolders (detailed specs + acceptance criteria)
-6. Present plan location to user and ask for approval
+6. Present plan location to Commander ท่านผู้บัญชาการ and ask for approval
 7. **WAIT** for Commander ท่านผู้บัญชาการ to approve
 8. After approval: implement and rename `PLANNED` → `IMPLEMENTED` (both file and folder)
 9. Log in `01_Implementation Logs/` if major feature
@@ -300,18 +218,73 @@ For projects with multiple sub-projects (e.g., server, extension, dashboard):
 | Monorepo with distinct apps | **Yes** |
 | Simple scripts or utilities | No |
 
-### 06_InstallationGuide Contents
+### Folder-Specific Notes
 
-Store setup and installation documentation:
-- Environment setup instructions
-- Dependency installation guides
-- Configuration procedures
-- Deployment documentation
-
-### 07_TechnicalDebt
-
-Store all temporary or hacky code fixes that need future cleanup.
+- **06_InstallationGuide:** Setup, dependency, config, and deployment docs.
+- **07_TechnicalDebt:** Temporary/hacky fixes needing future cleanup.
+- **08_AuditReport (MANDATORY):** `/audit` reports filed here. Naming: `Audit[N]-[Description]_[DD-MM-YYYY].md`. Audit = what was found; `05_BugFixesLog/` = what was fixed.
 
 ---
 
-*Extracted from CLAUDE.md — Project Organization, Structure Mode, Planning-First Workflow, Development Structure — 11-03-2026*
+## State Transparency Rule (NEW — 12-03-2026)
+
+> *Origin: SyncSpace silent no-ops made debugging impossible.*
+
+**Every system component MUST expose its current operational state through at minimum one observable channel.**
+
+1. **Connection/session state must be visible** to both user (status bar) and developer (log on state change).
+2. **No silent no-ops.** Skipped operations MUST log the reason. `if (!roomId) return` is a violation — must be `if (!roomId) { console.warn('[WARN] skipped: not in a room'); return }`.
+3. **State transitions are always logged.** Join/leave, connect/disconnect, open/close — every transition gets a log line.
+
+---
+
+## Regulated Test Location — 09_TestCase (NEW — 12-03-2026)
+
+> *Origin: SyncSpace tests scattered with no centralized index — coverage gaps invisible.*
+
+**`09_TestCase/` is mandatory** in every project's Development directory. Structure: `[FeatureName]/{unit,integration,e2e}/` + `_regression/[bugId]_[desc].*`.
+
+- Stores test **plans and documentation** (the index). Executable test code lives in the source tree (`__tests__/`, `*.test.ts`).
+- Regression tests from hotfixes (§2 Hotfix Regression Gate) indexed in `_regression/`.
+- **Verification Scholar owns this folder** — maintains index and flags coverage gaps.
+
+---
+
+## Cross-Package Change Manifest (NEW — 12-03-2026)
+
+> *Origin: SyncSpace fix spanned 3 packages with no cross-package tracking — caused sync breakage.*
+
+**Any change spanning 2+ packages MUST include a `### Cross-Package Change Manifest` section in the ticket/bug fix file.**
+
+The manifest lists: every package touched, files changed, interface contracts affected, data flow direction. Paired with TechStack — new code must be added to Current TechStack in the same commit. Cross-Layer Trace (§6) is the verification step.
+
+**Template columns:** `| Package | Files Changed | What Changed | Interface Impact |` + `Data flow:` line + `TechStack update required: Yes/No`.
+
+---
+
+## Error Code Catalog (NEW — 12-03-2026)
+
+> *Origin: SyncSpace had free-form error strings — no programmatic filtering possible.*
+
+**Every project maintains `ErrorCatalog.md`** in its Development folder. Each error has: negative integer code, constant name (`ERR_[SUBSYSTEM]_[DESC]`), human message, subsystem.
+
+**Prefix ranges:** `-1xxx` Core, `-2xxx` Server, `-3xxx` Extension/client, `-4xxx` Database, `-5xxx` Auth. Projects define additional ranges as needed.
+
+**Rules:** All error responses MUST include the integer code alongside the message. New errors appended to catalog before code is committed. An error without a catalog entry is a policy violation.
+
+---
+
+## Living Documentation Rule (NEW — 12-03-2026)
+
+> *Origin: SyncSpace TechStack not updated after Phase 3 — new methods undocumented.*
+
+**`Current TechStack.md`, `PreExisting TechStack/`, and `ErrorCatalog.md` MUST be updated in the same session that creates or modifies the code they describe.**
+
+1. **Same-session update.** TechStack updated before ticket is marked Complete.
+2. **Deletion = removal from docs.** Stale entries are a documentation bug.
+3. **Verification Scholar checks TechStack currency** as part of sign-off. Missing entry = ticket not Complete.
+4. **Cross-Package Change Manifest** with "TechStack update required: Yes" blocks completion until done.
+
+---
+
+*Updated: 13-03-2026*

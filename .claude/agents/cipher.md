@@ -63,7 +63,7 @@ Device letters shift between boots. Serial numbers are the only stable identifie
 - You do NOT participate in phase briefings, RoundTable, Team Chat, or OverseerReport
 
 ## Logging
-- **Diagnostic Log ONLY:** `.claude/Diagnostic Log/[NUMBER]. [TASK]_DD_MM_YYYY.md`
+- **Diagnostic Log ONLY:** `.claude/TeamDocument/Diagnostic Log/[NUMBER]. [TASK]_DD_MM_YYYY.md`
 - One file per engagement — all sessions go into the same file
 - Create the log file BEFORE beginning any diagnostic work
 - Include: timestamps, commands run, raw output, analysis, decisions

@@ -74,7 +74,7 @@ Install the RoundTable Framework from https://github.com/VarakornUnicornTech/uni
 
 2. **แก้ไข `.claude/ProjectEnvironment.md`** — เพิ่มรายละเอียดโปรเจคของคุณ (ชื่อ, โหมด, path) ดูตัวอย่างและคำอธิบายในไฟล์
 
-3. **ตั้งชื่อผู้มีอำนาจ** — Framework ใช้ "Chief Manager Martin" เป็นชื่อเริ่มต้นของผู้ใช้ (คือตัวคุณ!) หากต้องการเปลี่ยน ให้ find-and-replace `Chief Manager Martin` ด้วยชื่อของคุณใน `.claude/CLAUDE.md`
+3. **ตั้งชื่อผู้มีอำนาจ** — Framework ใช้ "Commander ท่านผู้บัญชาการ" เป็นตำแหน่งเริ่มต้น หากต้องการเปลี่ยน ให้ find-and-replace `Commander ท่านผู้บัญชาการ` ด้วยตำแหน่งที่คุณต้องการใน `.claude/CLAUDE.md`
 
 4. **เปิด Claude Code** ในโฟลเดอร์โปรเจค — ระบบจะโหลด CLAUDE.md และใช้โครงสร้างทีมโดยอัตโนมัติ
 
@@ -99,7 +99,7 @@ Install the RoundTable Framework from https://github.com/VarakornUnicornTech/uni
 
 | ทีม | ขอบเขต | บทบาท |
 |-----|--------|-------|
-| **Overseer** | บริหารโปรเจค, ตัดสินใจด้านสถาปัตยกรรม | KP (Conductor), MT (Technologist), PM (Design Scholar), V (Verification Scholar) |
+| **Overseer** | บริหารโปรเจค, ตัดสินใจด้านสถาปัตยกรรม | AM (Conductor), MT (Technologist), AS (Design & Verification Scholar) |
 | **Monolith** | Backend หลัก, Infrastructure, DB schema, Cloud, เอกสาร | AT (Conductor), SC (Technologist), EN (Design Scholar), PF (Verification Scholar) |
 | **Syndicate** | API integration, Query optimization, Security | DR (Conductor), AX (Technologist), LX (Design Scholar), WT (Verification Scholar) |
 | **Arcade** | Frontend UI, Gamification, ระบบสร้างสรรค์ | CP (Conductor), GL (Technologist), PX (Design Scholar), HS (Verification Scholar) |
@@ -126,7 +126,7 @@ RoundTable ออกแบบมาให้ fork และปรับแต่
 - **เพิ่ม/ลบทีม** — สร้างไฟล์ roster ใหม่หรือลบที่ไม่ใช้
 - **ปรับนโยบาย** — แก้ไขไฟล์นโยบายให้เหมาะกับโปรเจคของคุณ
 - **เพิ่ม skill** — สร้างไฟล์ `.claude/skills/[name]/SKILL.md` ใหม่
-- **เปลี่ยนชื่อผู้มีอำนาจ** — แทนที่ "Chief Manager Martin" ด้วยตำแหน่งที่คุณต้องการ
+- **เปลี่ยนชื่อผู้มีอำนาจ** — แทนที่ "Commander ท่านผู้บัญชาการ" ด้วยตำแหน่งที่คุณต้องการ
 
 ## ความต้องการของระบบ
 

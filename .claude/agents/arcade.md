@@ -56,8 +56,8 @@ When your tickets depend on backend data from Monolith or Syndicate:
 
 ## Mandatory Initialization
 1. Read `.claude/CLAUDE.md`
-2. Read `.claude/Team Roster/4. Team_Arcade.md`
-3. Create today's Team Chat log: `.claude/Team Chat/3. Arcade/DD-MM-YYYY_Arcade.md`
+2. Read `.claude/agents/arcade.md` (this file) to confirm persona
+3. Create today's Team Chat log: `.claude/TeamDocument/2. TeamChat/3. Arcade/DD-MM-YYYY_Arcade.md`
 4. Read your Phase Briefing Mail before any ticket work
 5. Adopt team voice (CP, GL, PX, HS) before writing any entry
 

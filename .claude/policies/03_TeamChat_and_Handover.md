@@ -1,6 +1,6 @@
 # §3 — Team Chat, OverseerReport & HandOver Standards
 
-> **Policy reference file.** Loaded on-demand from `.claude/policies/`. Core rules live in CLAUDE.md.
+> **Policy reference file.** Loaded on-demand from `.claude/TeamDocument/1. Policies/`. Core rules live in CLAUDE.md.
 
 ---
 
@@ -10,11 +10,11 @@
 
 Each team has a **daily log file** (like RoundTable) in their team-specific subfolder:
 
-**Location:** `.claude/Team Chat/[N]. [TeamName]/`
+**Location:** `.claude/TeamDocument/2. TeamChat/[N]. [TeamName]/`
 
 **Directory Structure:**
 ```
-Team Chat/
+TeamDocument/2. TeamChat/
 ├── 1. Monolith/
 │   ├── DD-MM-YYYY_Monolith.md         # Daily team log (like RoundTable)
 │   └── HandOver/                      # Cross-team handoffs (non-Overseer)
@@ -43,23 +43,19 @@ Team Chat/
 - Multiple sessions/tasks on the same day go into the same daily file as separate sections
 - Teams must **NOT** write directly to the RoundTable file — only AM/Overseer writes to RoundTable
 - Team Conductors must also file a summary in `OverseerReport/` for AM to review
-- AM (Principal Manager) reads these files to stay informed and present work to Commander ท่านผู้บัญชาการ
+- AM (Principal Manager) reads these files to stay informed and present work to Commander
 
 ### Handoff Process
 
-**Handoffs TO Overseer** go in `Team Chat/4. OverseerReport/`:
+**Handoffs TO Overseer** go in `TeamDocument/2. TeamChat/4. OverseerReport/`:
 
 **OverseerReport File Format:** `DD-MM-YYYY_OverseerReport.md`
-
-**Examples:**
-- `4. OverseerReport/08-02-2026_OverseerReport.md`
-- `4. OverseerReport/09-02-2026_OverseerReport.md`
 
 **Rules:**
 - This is a **shared daily roundtable** that any sub-team can write to
 - All sub-team (Monolith, Syndicate, Arcade) reports/handoffs to Overseer go here
 - Multiple teams writing on the same day append to the same daily file as separate sections
-- AM reads this folder to stay informed and present work to Commander ท่านผู้บัญชาการ
+- AM reads this folder to stay informed and present work to Commander
 
 ---
 
@@ -84,7 +80,7 @@ Team Chat/
 A **Team Chat daily log** is the internal discussion record for one team on one day. All sessions and tasks that day go into a single file.
 
 **File naming:** `DD-MM-YYYY_[TeamName].md`
-**Location:** `Team Chat/[TeamName]/DD-MM-YYYY_[TeamName].md`
+**Location:** `TeamDocument/2. TeamChat/[TeamName]/DD-MM-YYYY_[TeamName].md`
 
 **Mandatory structure:**
 
@@ -110,8 +106,8 @@ A **Team Chat daily log** is the internal discussion record for one team on one 
 "[Test plan, acceptance criteria review, or sign-off]"
 
 ### Actions Taken
-- [action] [DONE]
-- [blocker filed] [BLOCKED]
+- [action] ✅
+- [blocker filed] ⛔
 ```
 
 **Rules:**
@@ -127,7 +123,7 @@ A **Team Chat daily log** is the internal discussion record for one team on one 
 The **OverseerReport** is the shared daily file where all sub-teams file their completed ticket reports and blockers for AM to review.
 
 **File naming:** `DD-MM-YYYY_OverseerReport.md`
-**Location:** `Team Chat/OverseerReport/DD-MM-YYYY_OverseerReport.md`
+**Location:** `TeamDocument/2. TeamChat/OverseerReport/DD-MM-YYYY_OverseerReport.md`
 **Rule:** Append to the existing daily file — do not create a new file per report.
 
 **Each report entry format:**
@@ -159,7 +155,7 @@ None | [Description of blocker — what is needed to unblock]
 - Only sub-teams (Monolith, Syndicate, Arcade) file here — Overseer does not self-report to OverseerReport
 - The Conductor files the report; the Verification Scholar must confirm criteria are checked before filing
 - For blockers: file immediately — do not wait for task completion
-- AM reads this file to stay informed and determine what to present to the Commander ท่านผู้บัญชาการ
+- AM reads this file to stay informed and determine what to present to Commander
 
 ---
 
@@ -168,7 +164,7 @@ None | [Description of blocker — what is needed to unblock]
 A **HandOver** is a cross-team work transfer document filed by the originating team in their own `HandOver/` folder.
 
 **File naming:** `[NUMBER]. [RECEIVING_TEAM]_[WorkTitle]_DD-MM-YYYY.md`
-**Location:** `Team Chat/[OriginatingTeam]/HandOver/`
+**Location:** `TeamDocument/2. TeamChat/[OriginatingTeam]/HandOver/`
 Examples:
 - `Monolith/HandOver/01. Syndicate_UIDSchemaHandoff_28-02-2026.md`
 - `Arcade/HandOver/01. Monolith_AssetList_28-02-2026.md`
@@ -191,8 +187,8 @@ Examples:
 [What the receiving team must do next — specific and actionable]
 
 ## Files Modified / Created
-- `path/to/file.ts` — [brief description]
-- `path/to/other.ts` — [brief description]
+- `path/to/file` — [brief description]
+- `path/to/other` — [brief description]
 
 ## Blockers / Risks
 None | [Description of any risk the receiving team should know about]
@@ -208,4 +204,4 @@ None | [Description of any risk the receiving team should know about]
 
 ---
 
-*Extracted from CLAUDE.md — Cross-Team Protocol, Team Chat, OverseerReport, HandOver Standards — 11-03-2026*
+*Adopted from ClaudeTemplate — 11-03-2026. Adapted for RoundTable: AM naming, Windows paths.*

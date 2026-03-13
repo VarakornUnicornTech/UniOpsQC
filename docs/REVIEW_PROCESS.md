@@ -68,7 +68,7 @@ Every reviewer should verify the following before approving:
 
 - [ ] All file paths are **relative** (no `C:\`, `D:\`, or `/Users/` paths)
 - [ ] All file paths use **forward slashes** (not backslashes)
-- [ ] No legacy naming contamination (no `KP`, `PM`, `V`, `Chief Manager Martin`)
+- [ ] No legacy naming contamination (no `KP`, `PM`, `V`, or legacy authority titles)
 - [ ] Policy section numbers match filenames (e.g., `§5` in `05_PreExisting_Codebase.md`)
 - [ ] No secrets, API keys, credentials, or tokens included
 - [ ] No hardcoded usernames or machine-specific references

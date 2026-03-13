@@ -74,7 +74,7 @@ Install the RoundTable Framework from https://github.com/VarakornUnicornTech/uni
 
 2. **Edit `.claude/ProjectEnvironment.md`** — add your project details (name, mode, paths). See the field reference and examples inside the file.
 
-3. **Customize your authority name** — The framework uses "Chief Manager Martin" as the default name for the user (that's you!). To personalize, find-and-replace `Chief Manager Martin` with your name in `.claude/CLAUDE.md`.
+3. **Customize your authority name** — The framework uses "Commander ท่านผู้บัญชาการ" as the default authority title. To personalize, find-and-replace `Commander ท่านผู้บัญชาการ` with your preferred title in `.claude/CLAUDE.md`.
 
 4. **Start Claude Code** in your project directory — it will automatically load CLAUDE.md and adopt the team structure
 
@@ -99,7 +99,7 @@ Install the RoundTable Framework from https://github.com/VarakornUnicornTech/uni
 
 | Team | Domain | Roles |
 |------|--------|-------|
-| **Overseer** | Project management, architecture decisions | KP (Conductor), MT (Technologist), PM (Design Scholar), V (Verification Scholar) |
+| **Overseer** | Project management, architecture decisions | AM (Conductor), MT (Technologist), AS (Design & Verification Scholar) |
 | **Monolith** | Core backend, infrastructure, DB schema, cloud, docs | AT (Conductor), SC (Technologist), EN (Design Scholar), PF (Verification Scholar) |
 | **Syndicate** | API integration, query optimization, security | DR (Conductor), AX (Technologist), LX (Design Scholar), WT (Verification Scholar) |
 | **Arcade** | Frontend UI, gamification, creative systems | CP (Conductor), GL (Technologist), PX (Design Scholar), HS (Verification Scholar) |
@@ -126,7 +126,7 @@ RoundTable is designed to be forked and customized:
 - **Add/remove teams** — create new roster files or remove unused ones
 - **Adjust policies** — modify policy files to match your project's needs
 - **Add skills** — create new `.claude/skills/[name]/SKILL.md` files
-- **Change authority naming** — replace "Chief Manager Martin" with your preferred authority title
+- **Change authority naming** — replace "Commander ท่านผู้บัญชาการ" with your preferred authority title
 
 ## Requirements
 

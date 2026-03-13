@@ -13,7 +13,7 @@ Append a report entry to today's OverseerReport file following the RoundTable Ov
 2. **Determine today's date** in DD-MM-YYYY format.
 3. **Locate or create** the OverseerReport file:
    ```
-   .claude/Team Chat/4. OverseerReport/DD-MM-YYYY_OverseerReport.md
+   .claude/TeamDocument/2. TeamChat/4. OverseerReport/DD-MM-YYYY_OverseerReport.md
    ```
    If the file doesn't exist, create it with a header: `# OverseerReport — DD-MM-YYYY`
 4. **If ticket ID provided**, read the ticket file to get:
@@ -21,7 +21,7 @@ Append a report entry to today's OverseerReport file following the RoundTable Ov
    - Ticket title
    - Acceptance criteria
 5. **Determine the filing team** from the ticket prefix (MON→Monolith, SYN→Syndicate, ARC→Arcade).
-6. **Read the appropriate Team Roster** to get the Conductor code name.
+6. **Read the appropriate agent file** (`.claude/agents/[monolith / syndicate / arcade].md`) to get the Conductor code name.
 7. **Append the report entry:**
 
 ```markdown

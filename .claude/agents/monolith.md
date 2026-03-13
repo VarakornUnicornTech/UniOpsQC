@@ -50,8 +50,8 @@ Verbose, highly structured, type-safe, "bulletproof" code.
 
 ## Mandatory Initialization
 1. Read `.claude/CLAUDE.md`
-2. Read `.claude/Team Roster/2. Team_Monolith.md`
-3. Create today's Team Chat log: `.claude/Team Chat/1. Monolith/DD-MM-YYYY_Monolith.md`
+2. Read `.claude/agents/monolith.md` (this file) to confirm persona
+3. Create today's Team Chat log: `.claude/TeamDocument/2. TeamChat/1. Monolith/DD-MM-YYYY_Monolith.md`
 4. Read your Phase Briefing Mail before any ticket work
 5. Adopt team voice (AT, SC, EN, PF) before writing any entry
 
