@@ -1,55 +1,90 @@
 # RoundTable Framework — Code Ownership
 # https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 #
-# When a PR touches files matching these patterns, the listed owners
-# are automatically requested for review. This enforces the protection
-# tiers defined in GOVERNANCE.md and docs/REVIEW_PROCESS.md.
-#
 # IMPORTANT: CODEOWNERS uses the LAST matching pattern, not the first.
 # More specific patterns must come AFTER general ones.
+#
+# Security model updated after xMartin PR #22 incident:
+# - Unauthorized folder (10. GitHubReference/) was added to TeamDocument
+# - CODEOWNERS was too permissive on .claude/TeamDocument/ (co-owner could self-approve)
+# - Executable files (hooks, workflows) had insufficient ownership protection
 
 # ============================================================
-# TIER 1: Owner-Only Zone (Commander review required)
-# Core framework identity and configuration
+# TIER 1: CRITICAL — Owner ONLY (@VarakornUnicornTech)
+# These files can execute code, modify AI behavior, or
+# compromise security. NO contributor can modify these
+# without explicit Owner review.
 # ============================================================
 
-/.claude/CLAUDE.md                      @VarakornUnicornTech
-/.claude/agents/                        @VarakornUnicornTech
-/.claude/settings.json                  @VarakornUnicornTech
-/template-version.json                  @VarakornUnicornTech
-/LICENSE                                @VarakornUnicornTech
+# Executable scripts — can run arbitrary commands on user machines
+/hooks/                                @VarakornUnicornTech
 
-# Governance and security documents
-/GOVERNANCE.md                          @VarakornUnicornTech
-/SECURITY.md                            @VarakornUnicornTech
-/MAINTAINERS.md                         @VarakornUnicornTech
+# CI/CD pipelines — can exfiltrate secrets, run malicious code
+/.github/workflows/                    @VarakornUnicornTech
+/.github/CODEOWNERS                    @VarakornUnicornTech
 
-# CI/CD pipelines and repo config
-/.github/workflows/                     @VarakornUnicornTech
-/.github/CODEOWNERS                     @VarakornUnicornTech
+# AI behavior control — prompt-level governance
+/.claude/rules/                        @VarakornUnicornTech
+/.claude/settings.json                 @VarakornUnicornTech
 
-# ============================================================
-# TIER 2: Maintainer Zone (Maintainer review required)
-# Policies, skills, and primary documentation
-# ============================================================
+# External service configuration
+/.mcp.json                             @VarakornUnicornTech
 
-/.claude/policies/                      @VarakornUnicornTech @xMartin14091x
-/.claude/TeamDocument/                  @VarakornUnicornTech @xMartin14091x
-/.claude/skills/                        @VarakornUnicornTech @xMartin14091x
-/CHANGELOG.md                           @VarakornUnicornTech @xMartin14091x
+# Plugin manifest — controls what gets loaded
+/plugin.json                           @VarakornUnicornTech
 
-# Documentation (open for community PRs, but maintainer must review)
-/README.md                              @VarakornUnicornTech @xMartin14091x
-/README.th.md                           @VarakornUnicornTech @xMartin14091x
-/CONTRIBUTING.md                        @VarakornUnicornTech @xMartin14091x
-/CONTRIBUTING.th.md                     @VarakornUnicornTech @xMartin14091x
-/GETTING_STARTED.md                     @VarakornUnicornTech @xMartin14091x
-/GETTING_STARTED_TH.md                  @VarakornUnicornTech @xMartin14091x
-/docs/                                  @VarakornUnicornTech @xMartin14091x
+# Framework identity and versioning
+/.claude/CLAUDE.md                     @VarakornUnicornTech
+/.claude/agents/                       @VarakornUnicornTech
+/template-version.json                 @VarakornUnicornTech
+
+# Legal and governance
+/LICENSE                               @VarakornUnicornTech
+/GOVERNANCE.md                         @VarakornUnicornTech
+/SECURITY.md                           @VarakornUnicornTech
+/MAINTAINERS.md                        @VarakornUnicornTech
 
 # ============================================================
-# TIER 3: Community Zone (no CODEOWNERS restriction)
-# Issue templates, examples, translations
-# Files not listed here are open for community contribution
-# with standard PR review from any maintainer.
+# TIER 2: PROTECTED — Owner + Approved Maintainers
+# Content changes allowed with maintainer review.
+# New subdirectories require Owner approval (enforced by CI).
 # ============================================================
+
+# Policy files (existing subdirectories only)
+/.claude/policies/                     @VarakornUnicornTech @xMartin14091x
+/.claude/TeamDocument/1. Policies/     @VarakornUnicornTech @xMartin14091x
+/.claude/TeamDocument/2. TeamChat/     @VarakornUnicornTech @xMartin14091x
+
+# Skill definitions
+/.claude/skills/                       @VarakornUnicornTech @xMartin14091x
+
+# Primary documentation
+/CHANGELOG.md                          @VarakornUnicornTech @xMartin14091x
+/README.md                             @VarakornUnicornTech @xMartin14091x
+/README.th.md                          @VarakornUnicornTech @xMartin14091x
+
+# ============================================================
+# TIER 2.5: TeamDocument CATCH-ALL — Owner ONLY
+# Any new folder under TeamDocument/ (like 10. GitHubReference/)
+# that doesn't match Tier 2 patterns above requires Owner review.
+# This MUST come AFTER the specific Tier 2 TeamDocument patterns.
+# ============================================================
+
+/.claude/TeamDocument/                 @VarakornUnicornTech
+
+# ============================================================
+# TIER 3: OPEN — Community Contributions Welcome
+# Standard PR review from any maintainer is sufficient.
+# ============================================================
+
+/CONTRIBUTING.md                       @VarakornUnicornTech @xMartin14091x
+/CONTRIBUTING.th.md                    @VarakornUnicornTech @xMartin14091x
+/GETTING_STARTED.md                    @VarakornUnicornTech @xMartin14091x
+/GETTING_STARTED_TH.md                @VarakornUnicornTech @xMartin14091x
+/CODE_OF_CONDUCT.md                    @VarakornUnicornTech @xMartin14091x
+/docs/                                 @VarakornUnicornTech @xMartin14091x
+
+# Issue templates (lower risk, but still need review)
+/.github/ISSUE_TEMPLATE/               @VarakornUnicornTech @xMartin14091x
+/.github/pull_request_template.md      @VarakornUnicornTech @xMartin14091x
+/.github/dependabot.yml                @VarakornUnicornTech

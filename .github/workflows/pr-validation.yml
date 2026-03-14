@@ -9,77 +9,444 @@ permissions:
   pull-requests: write
 
 jobs:
+  # ============================================================
+  # JOB 1: Content Validation (existing checks, enhanced)
+  # ============================================================
   validate:
     name: Validate PR Content
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Validate JSON files
         run: |
-          echo "Checking template-version.json..."
-          if [ -f template-version.json ]; then
-            python3 -m json.tool template-version.json > /dev/null
-            echo "OK: template-version.json is valid JSON"
-          else
-            echo "SKIP: template-version.json not found"
+          echo "Checking JSON files..."
+          FOUND=0
+          for f in template-version.json plugin.json .mcp.json; do
+            if [ -f "$f" ]; then
+              if python3 -m json.tool "$f" > /dev/null 2>&1; then
+                echo "OK: $f is valid JSON"
+              else
+                echo "ERROR: $f is invalid JSON"
+                FOUND=1
+              fi
+            fi
+          done
+          if [ "$FOUND" -eq 1 ]; then
+            echo "::error::Invalid JSON detected."
+            exit 1
           fi
 
       - name: Check for legacy naming contamination
         run: |
           echo "Scanning for legacy names..."
           FOUND=0
-
-          # Check for old role names that should have been replaced
           if grep -rn "Chief Manager Martin" .claude/ docs/ *.md 2>/dev/null; then
             echo "ERROR: Found 'Chief Manager Martin' — should be 'Commander'"
             FOUND=1
           fi
-
+          # Check for old repo name
+          if grep -rn "unicorn_roundtable_framework_repo" .claude/ docs/ *.md *.json .github/ 2>/dev/null; then
+            echo "ERROR: Found old repo name 'unicorn_roundtable_framework_repo' — should be 'roundtable-framework'"
+            FOUND=1
+          fi
           if [ "$FOUND" -eq 1 ]; then
-            echo "::error::Legacy naming contamination detected. See output above."
+            echo "::error::Legacy naming contamination detected."
             exit 1
           fi
-
           echo "OK: No legacy naming contamination found"
 
       - name: Check for absolute paths
         run: |
           echo "Scanning for absolute Windows/Unix paths..."
           FOUND=0
-
-          # Check for Windows absolute paths (C:\, D:\, etc.)
           if grep -rn '[A-Z]:\\\\' .claude/ 2>/dev/null | grep -v '.gitignore' | grep -v 'node_modules'; then
             echo "ERROR: Absolute Windows paths found in .claude/"
             FOUND=1
           fi
-
           if [ "$FOUND" -eq 1 ]; then
             echo "::error::Absolute paths detected. Use relative paths only."
             exit 1
           fi
-
           echo "OK: No absolute paths found"
 
-      - name: Check for potential secrets
+  # ============================================================
+  # JOB 2: Content Security Scan (Layer 1)
+  # Real-world threat: xMartin PR #22 included unauthorized
+  # internal documents. Future PRs could contain malicious
+  # scripts, prompt injections, or harmful content.
+  # ============================================================
+  security-scan:
+    name: "Security: Content Scan"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: "CRITICAL: Scan shell scripts for dangerous commands"
         run: |
-          echo "Scanning for potential secrets..."
+          echo "=== Scanning shell scripts for dangerous patterns ==="
           FOUND=0
 
-          # Check for common secret patterns
-          if grep -rn "ANTHROPIC_API_KEY\|sk-ant-\|api_key.*=.*['\"]" .claude/ *.md 2>/dev/null; then
-            echo "ERROR: Potential API key or secret found"
-            FOUND=1
-          fi
+          # Patterns that should NEVER appear in framework hook scripts
+          DANGEROUS_PATTERNS=(
+            'curl.*|.*sh'           # Download and execute
+            'wget.*|.*sh'           # Download and execute
+            'curl.*|.*bash'         # Download and execute
+            'wget.*|.*bash'         # Download and execute
+            'eval\s'                # Arbitrary code execution
+            '\bexec\b'              # Process replacement
+            'rm\s+-rf\s+/'         # Destructive deletion from root
+            'rm\s+-rf\s+\*'        # Destructive wildcard deletion
+            '\bnc\b.*-[el]'        # Netcat reverse shell
+            '/dev/tcp/'             # Bash TCP connection (exfiltration)
+            'base64.*decode'        # Obfuscated payload
+            '\bchmod\s+777\b'      # Insecure permissions
+            'mkfifo.*nc'            # Named pipe reverse shell
+            '\bsudo\b'             # Privilege escalation
+            '>\s*/etc/'            # System file overwrite
+            '\$\(curl'              # Command substitution with download
+            'GITHUB_TOKEN'          # Token exfiltration from scripts
+            'ANTHROPIC_API_KEY'     # API key exfiltration
+            'sk-ant-'              # Anthropic API key pattern
+            'password.*='          # Hardcoded password
+          )
+
+          for pattern in "${DANGEROUS_PATTERNS[@]}"; do
+            if grep -rn "$pattern" hooks/ .claude/settings.json 2>/dev/null; then
+              echo "::error::CRITICAL: Dangerous pattern '$pattern' found in executable files"
+              FOUND=1
+            fi
+          done
 
           if [ "$FOUND" -eq 1 ]; then
-            echo "::error::Potential secrets detected. Never commit API keys or credentials."
+            echo ""
+            echo "============================================"
+            echo "BLOCKED: Dangerous commands detected in hook"
+            echo "scripts or settings. This could be malicious"
+            echo "code injection. Owner review REQUIRED."
+            echo "============================================"
             exit 1
           fi
+          echo "OK: No dangerous patterns in executable files"
 
-          echo "OK: No potential secrets found"
+      - name: "CRITICAL: Scan CI workflows for supply chain attacks"
+        run: |
+          echo "=== Scanning GitHub Actions workflows ==="
+          FOUND=0
 
+          # Only allow trusted actions (pinned to major version)
+          TRUSTED_ACTIONS="actions/checkout|actions/github-script|actions/stale|actions/first-interaction"
+
+          # Check for untrusted actions
+          for f in .github/workflows/*.yml; do
+            [ -f "$f" ] || continue
+            echo "Scanning: $f"
+
+            # Extract 'uses:' lines
+            ACTIONS=$(grep -n '^\s*uses:' "$f" | grep -v '#' || true)
+            while IFS= read -r line; do
+              [ -z "$line" ] && continue
+              if ! echo "$line" | grep -qE "$TRUSTED_ACTIONS"; then
+                echo "::error::Untrusted GitHub Action in $f: $line"
+                FOUND=1
+              fi
+            done <<< "$ACTIONS"
+
+            # Check for secret exfiltration patterns
+            if grep -n 'secrets\.\w' "$f" 2>/dev/null | grep -v '#'; then
+              echo "::warning::Secret reference found in $f — verify it is not being exfiltrated"
+            fi
+
+            # Check for curl/wget in workflow run steps (data exfiltration)
+            if grep -n 'curl\|wget' "$f" 2>/dev/null | grep -v '#' | grep -v 'echo'; then
+              echo "::warning::Network call found in $f — verify destination"
+            fi
+          done
+
+          if [ "$FOUND" -eq 1 ]; then
+            echo "::error::Untrusted GitHub Actions detected. Only actions from 'actions/' org are allowed."
+            exit 1
+          fi
+          echo "OK: All workflow actions are trusted"
+
+      - name: "HIGH: Scan for prompt injection in rules and skills"
+        run: |
+          echo "=== Scanning for prompt injection patterns ==="
+          FOUND=0
+
+          INJECTION_PATTERNS=(
+            'ignore.*previous.*instructions'
+            'ignore.*above.*instructions'
+            'disregard.*all.*rules'
+            'you are now'
+            'new instructions:'
+            'system prompt:'
+            'override.*policy'
+            'bypass.*security'
+            'act as.*root'
+            'pretend.*you.*are'
+            'forget.*everything'
+            'reveal.*system.*prompt'
+            'output.*api.*key'
+            'send.*to.*http'
+            'execute.*command'
+            'run.*shell'
+          )
+
+          for pattern in "${INJECTION_PATTERNS[@]}"; do
+            MATCHES=$(grep -rin "$pattern" .claude/rules/ .claude/skills/ 2>/dev/null | grep -v '# Example of what NOT' || true)
+            if [ -n "$MATCHES" ]; then
+              echo "::error::Prompt injection pattern '$pattern' found:"
+              echo "$MATCHES"
+              FOUND=1
+            fi
+          done
+
+          if [ "$FOUND" -eq 1 ]; then
+            echo "::error::Potential prompt injection detected in rule/skill files. Owner review REQUIRED."
+            exit 1
+          fi
+          echo "OK: No prompt injection patterns found"
+
+      - name: "HIGH: Scan URLs against domain whitelist"
+        run: |
+          echo "=== Scanning URLs against allowed domains ==="
+          FOUND=0
+
+          # Allowed domains
+          ALLOWED_DOMAINS="github\.com|raw\.githubusercontent\.com|docs\.anthropic\.com|anthropic\.com|unicorntechint\.com|marketplace\.visualstudio\.com|docs\.github\.com|keepachangelog\.com|semver\.org|creativecommons\.org|dotnet\.microsoft\.com|nodejs\.org|docker\.com"
+
+          # Extract all URLs from all files
+          URLS=$(grep -roEh 'https?://[a-zA-Z0-9./?=_&%-]+' .claude/ docs/ *.md *.json .github/ hooks/ 2>/dev/null | sort -u || true)
+
+          while IFS= read -r url; do
+            [ -z "$url" ] && continue
+            if ! echo "$url" | grep -qE "($ALLOWED_DOMAINS)"; then
+              echo "::error::Unauthorized URL: $url"
+              FOUND=1
+            fi
+          done <<< "$URLS"
+
+          if [ "$FOUND" -eq 1 ]; then
+            echo ""
+            echo "URLs must point to approved domains only."
+            echo "To add a domain, update the ALLOWED_DOMAINS list"
+            echo "in pr-validation.yml (requires Owner approval)."
+            exit 1
+          fi
+          echo "OK: All URLs point to approved domains"
+
+      - name: "HIGH: Scan for secrets and credentials"
+        run: |
+          echo "=== Scanning for secrets and credentials ==="
+          FOUND=0
+
+          SECRET_PATTERNS=(
+            'sk-ant-[a-zA-Z0-9]'          # Anthropic API key
+            'sk-[a-zA-Z0-9]{20,}'          # OpenAI-style API key
+            'ghp_[a-zA-Z0-9]{36}'          # GitHub personal access token
+            'gho_[a-zA-Z0-9]{36}'          # GitHub OAuth token
+            'github_pat_[a-zA-Z0-9]'       # GitHub fine-grained PAT
+            'AKIA[0-9A-Z]{16}'             # AWS access key
+            'AIza[0-9A-Za-z_-]{35}'        # Google API key
+            'xox[bpors]-[0-9a-zA-Z]'       # Slack token
+            'password\s*[:=]\s*["\x27][^"\x27]' # Hardcoded password
+            'BEGIN.*PRIVATE KEY'            # Private key
+            'BEGIN.*RSA'                    # RSA key
+          )
+
+          for pattern in "${SECRET_PATTERNS[@]}"; do
+            if grep -rn "$pattern" . 2>/dev/null | grep -v '.git/' | grep -v 'pr-validation.yml'; then
+              echo "::error::Potential secret matching pattern '$pattern'"
+              FOUND=1
+            fi
+          done
+
+          if [ "$FOUND" -eq 1 ]; then
+            echo "::error::Potential secrets or credentials detected. NEVER commit secrets."
+            exit 1
+          fi
+          echo "OK: No secrets or credentials found"
+
+      - name: "MEDIUM: Scan for company reputation risks"
+        run: |
+          echo "=== Scanning for reputation risk content ==="
+          FOUND=0
+
+          # Competitor/inappropriate mentions (real case: gstack was found in PR)
+          REPUTATION_PATTERNS=(
+            'gstack'
+            'competitor'
+            'lawsuit'
+            'stolen'
+            'hack\s'
+            'crack\s'
+            'pirat'
+            'warez'
+            'torrent'
+            'keygen'
+          )
+
+          for pattern in "${REPUTATION_PATTERNS[@]}"; do
+            MATCHES=$(grep -rin "$pattern" .claude/ docs/ *.md 2>/dev/null | grep -v 'pr-validation.yml' || true)
+            if [ -n "$MATCHES" ]; then
+              echo "::warning::Reputation risk pattern '$pattern' found:"
+              echo "$MATCHES"
+              FOUND=1
+            fi
+          done
+
+          if [ "$FOUND" -eq 1 ]; then
+            echo "::warning::Content flagged for manual review. May be false positive — Owner should verify."
+          fi
+          echo "OK: Reputation scan complete"
+
+  # ============================================================
+  # JOB 3: Structural Guard (Layer 2)
+  # Real-world threat: xMartin added unauthorized folder
+  # '10. GitHubReference/' inside TeamDocument. This check
+  # blocks new directories and file types not in the whitelist.
+  # ============================================================
+  structural-guard:
+    name: "Security: Structural Guard"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: "Detect unauthorized new directories"
+        run: |
+          echo "=== Checking for new directories ==="
+
+          # Get the base branch
+          BASE_REF="${{ github.event.pull_request.base.ref }}"
+          git fetch origin "$BASE_REF" --depth=1 2>/dev/null || true
+
+          # Get list of new files (Added only)
+          NEW_FILES=$(git diff --name-only --diff-filter=A "origin/$BASE_REF"...HEAD 2>/dev/null || true)
+
+          if [ -z "$NEW_FILES" ]; then
+            echo "OK: No new files detected"
+            exit 0
+          fi
+
+          # Allowed directory patterns (whitelist)
+          # Any new directory NOT matching these patterns will be BLOCKED
+          ALLOWED_DIRS=(
+            '^\.'                                          # Root dotfiles (.gitignore, .mcp.json)
+            '^\.claude/agents/'                            # Agent definitions
+            '^\.claude/policies/'                          # Legacy policy location
+            '^\.claude/rules/'                             # Path-scoped rules
+            '^\.claude/skills/[^/]+/'                      # Skill folders
+            '^\.claude/TeamDocument/1\. Policies/'         # Policy files
+            '^\.claude/TeamDocument/2\. TeamChat/'         # Team chat gitkeeps
+            '^\.claude/Diagnostic Log/'                    # Cipher logs
+            '^\.claude/Team Chat/'                         # Legacy team chat
+            '^\.github/'                                   # GitHub config
+            '^hooks/scripts/'                              # Hook scripts
+            '^docs/'                                       # Documentation
+            '^[^/]+$'                                      # Root-level files
+          )
+
+          # Build combined regex
+          ALLOWED_REGEX=$(IFS='|'; echo "${ALLOWED_DIRS[*]}")
+
+          UNAUTHORIZED=""
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            if ! echo "$file" | grep -qE "$ALLOWED_REGEX"; then
+              UNAUTHORIZED="$UNAUTHORIZED\n  - $file"
+            fi
+          done <<< "$NEW_FILES"
+
+          if [ -n "$UNAUTHORIZED" ]; then
+            echo "::error::Unauthorized new files in unapproved directories:"
+            echo -e "$UNAUTHORIZED"
+            echo ""
+            echo "============================================"
+            echo "BLOCKED: Files were added outside the"
+            echo "approved directory structure. This requires"
+            echo "Owner (@VarakornUnicornTech) approval."
+            echo ""
+            echo "Approved directories are defined in"
+            echo "pr-validation.yml ALLOWED_DIRS whitelist."
+            echo "============================================"
+            exit 1
+          fi
+          echo "OK: All new files are in approved directories"
+
+      - name: "Block unauthorized file types"
+        run: |
+          echo "=== Checking file types ==="
+
+          # Only these extensions are allowed in the framework
+          ALLOWED_EXTENSIONS="md|json|yml|yaml|sh|txt|gitkeep|gitignore"
+
+          # Also allow extensionless files (LICENSE, CODEOWNERS)
+          NEW_FILES=$(git diff --name-only --diff-filter=A "origin/${{ github.event.pull_request.base.ref }}"...HEAD 2>/dev/null || true)
+
+          UNAUTHORIZED=""
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            ext="${file##*.}"
+            basename=$(basename "$file")
+
+            # Skip extensionless files (LICENSE, CODEOWNERS, etc.)
+            if [ "$ext" = "$basename" ]; then
+              continue
+            fi
+
+            if ! echo "$ext" | grep -qiE "^($ALLOWED_EXTENSIONS)$"; then
+              UNAUTHORIZED="$UNAUTHORIZED\n  - $file (.$ext)"
+            fi
+          done <<< "$NEW_FILES"
+
+          if [ -n "$UNAUTHORIZED" ]; then
+            echo "::error::Unauthorized file types detected:"
+            echo -e "$UNAUTHORIZED"
+            echo ""
+            echo "Allowed: .$ALLOWED_EXTENSIONS"
+            echo "Binary files (.exe, .dll, .py, .js, .zip, images) are not allowed."
+            exit 1
+          fi
+          echo "OK: All file types are approved"
+
+      - name: "Block oversized files"
+        run: |
+          echo "=== Checking file sizes ==="
+          MAX_SIZE_KB=100
+
+          NEW_FILES=$(git diff --name-only --diff-filter=A "origin/${{ github.event.pull_request.base.ref }}"...HEAD 2>/dev/null || true)
+
+          OVERSIZED=""
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            [ -f "$file" ] || continue
+            SIZE_KB=$(du -k "$file" | cut -f1)
+            if [ "$SIZE_KB" -gt "$MAX_SIZE_KB" ]; then
+              OVERSIZED="$OVERSIZED\n  - $file (${SIZE_KB}KB > ${MAX_SIZE_KB}KB limit)"
+            fi
+          done <<< "$NEW_FILES"
+
+          if [ -n "$OVERSIZED" ]; then
+            echo "::error::Oversized files detected:"
+            echo -e "$OVERSIZED"
+            echo "Maximum file size: ${MAX_SIZE_KB}KB. This prevents binary injection."
+            exit 1
+          fi
+          echo "OK: All files within size limits"
+
+  # ============================================================
+  # JOB 4: PR Size Check (existing, unchanged)
+  # ============================================================
   size-check:
     name: PR Size Check
     runs-on: ubuntu-latest
@@ -107,7 +474,6 @@ jobs:
               warning = `This PR has ${totalChanges} changed lines (${pr.additions} additions, ${pr.deletions} deletions) across ${pr.changed_files} files. Consider splitting into smaller PRs for easier review.`;
             }
 
-            // Add size label
             try {
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,
@@ -119,7 +485,6 @@ jobs:
               console.log(`Could not add label ${sizeLabel}: ${e.message}`);
             }
 
-            // Post warning for XL PRs
             if (warning) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
