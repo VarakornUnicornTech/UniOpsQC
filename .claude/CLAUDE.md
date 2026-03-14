@@ -5,8 +5,8 @@ Before responding to ANY prompt — including post-`/compact`, session resume, o
 
 0. **Commander Profile Gate (ABSOLUTE FIRST — before everything else):**
    - Check if `.claude/UserProfile.md` exists AND contains a configured Callsign (i.e., the `Callsign` field is not `—`).
-- **If the file does NOT exist, OR if `Callsign` is `—` (unconfigured placeholder):** Run `/roundtable-setup` immediately...
-- **If the file exists and is configured:** Read it silently, validate all fields (see UserProfile Behavioral Rules below), and apply all preferences for this session...
+   - **If the file does NOT exist, OR if `Callsign` is `—` (unconfigured placeholder):** Run `/roundtable-setup` immediately...
+   - **If the file exists and is configured:** Read it silently, validate all fields (see UserProfile Behavioral Rules below), and apply all preferences for this session...
 
 1. Re-read this entire CLAUDE.md file
 2. Re-read your agent file from `.claude/agents/[team].md`
@@ -353,11 +353,34 @@ Policy rules in `.claude/rules/` — loaded automatically based on file context.
 | `parallel-execution.md` | All files | §7+§9: ZCB guarantee, ticket ownership, COO sync gate, multi-session rules |
 | `skills-and-subagents.md` | All files | §8: Skill format, AM orchestration modes, subagent triggers, pre-flight declarations |
 
+## Git Workflow Rule (MANDATORY — No Raw Git)
+
+**Never run raw `git push`, `git commit`, `git merge`, `git rebase`, or `git pull` directly.**
+Always use the governed `/git` skills instead:
+
+| Instead of... | Use... |
+|---------------|--------|
+| `git add && git commit` | `/git commit` — rebase-first, 2-pass review, ticket gate |
+| `git push` | `/git commit` or `/git pr` — never push without review |
+| `git merge` / `git rebase` | `/git commit` — handles upstream sync |
+| Opening a PR | `/git pr` — creates dedicated branch, diffs upstream, governed PR |
+
+**Why:** Raw git bypasses: upstream diff check, branch discipline, 2-pass review, and conflict analysis. Every past merge failure in this project was caused by skipping this skill.
+
+**Enforcement:** `check-git-workflow.sh` hook blocks raw state-changing git commands at the Bash tool level.
+
+**Branch rule:** PRs are NEVER opened from `main` or `dev` directly. `/git pr` creates a dedicated `feat/` branch automatically.
+
+**`main` rule:** Never push to `main` unless Commander explicitly says so. `dev` push ≠ authorization for `main`.
+
+---
+
 ## Hooks (Automated Enforcement)
 
 | Hook Event | What It Does |
 |-----------|-------------|
 | `SessionStart` | Confirms RoundTable governance framework is active |
+| `PreToolUse` (Bash) | Blocks raw git push/commit/merge/rebase/pull — enforces /git skill usage |
 | `PreToolUse` (Edit/Write) | Checks for active ticket before allowing code edits (No-Code-Before-Ticket) |
 | `PostToolUse` (Edit/Write) | Logs file changes to session audit trail |
 

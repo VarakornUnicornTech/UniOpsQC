@@ -31,7 +31,7 @@ Changes to these files require review from **any maintainer** (Owner or Maintain
 | Files | Why Protected |
 |-------|--------------|
 | `.claude/policies/` | Governance rules that affect workflow |
-| `.claude/policies/` and `.claude/team_chat/` | Team documents and policies |
+| `.claude/team_chat/` | Team discussion logs and OverseerReport |
 | `.claude/skills/` | Skill definitions that extend capabilities |
 | `CHANGELOG.md` | Release history accuracy |
 | `README.md` / `README.th.md` | Public-facing project description |
