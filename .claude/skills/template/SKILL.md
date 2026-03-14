@@ -8,7 +8,8 @@ RoundTable Framework version management. Check for updates, preview upgrade bene
 
 | Action | Options | Description |
 |--------|---------|-------------|
-| *(none)* or `version` | — | Quick local version + component count |
+| *(none)* or `help` | — | Show all available commands |
+| `version` | — | Quick local version + component count |
 | `check update` | — | Compare local vs remote, warn if update available |
 | `preview` | — | Upgrade impact analysis: benefits, risks, recommendation |
 | `changelog [version]` | optional version string | Display changelog, optionally filtered |
@@ -17,7 +18,30 @@ RoundTable Framework version management. Check for updates, preview upgrade bene
 
 ## Dispatch
 
-Parse `$ARGUMENTS`. The first word (or first two words for `check update`) is the action. Default to `version` if empty. Route to the relevant section below.
+Parse `$ARGUMENTS`. The first word (or first two words for `check update`) is the action. Default to `help` if empty. Route to the relevant section below.
+
+---
+
+## ACTION: help
+
+**Goal:** Quick reference of all available commands. No computation, no fetch.
+
+Present:
+
+```markdown
+## RoundTable Framework — Template Commands
+
+| Command | What it does |
+|---------|-------------|
+| `/template version` | Your installed version + component count |
+| `/template check update` | Check if a newer version is available |
+| `/template preview` | Benefits, risks, and upgrade recommendation |
+| `/template changelog` | View what changed in each version |
+| `/template apply` | Upgrade with backup + AI Smart Merge |
+| `/template rollback` | Restore a previous version |
+
+Run any command to get started.
+```
 
 ---
 
