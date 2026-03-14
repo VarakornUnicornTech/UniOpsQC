@@ -2,6 +2,12 @@
 
 **SESSION START — MANDATORY FIRST ACTION (no exceptions):**
 Before responding to ANY prompt — including post-`/compact`, session resume, or fresh session:
+
+0. **Commander Profile Gate (ABSOLUTE FIRST — before everything else):**
+   - Check if `.claude/UserProfile.md` exists AND contains a configured Callsign (i.e., the `Callsign` field is not `—`).
+- **If the file does NOT exist, OR if `Callsign` is `—` (unconfigured placeholder):** Run `/roundtable-setup` immediately...
+- **If the file exists and is configured:** Read it silently...
+
 1. Re-read this entire CLAUDE.md file
 2. Re-read your agent file from `.claude/agents/[team].md`
 3. **AM (Overseer) MUST open or append to today's RoundTable file** (`RoundTable/DD-MM-YYYY_RoundTable.md`) and write a `## Session [N] — [Title]` entry **before** responding
@@ -9,6 +15,7 @@ Before responding to ANY prompt — including post-`/compact`, session resume, o
 5. This applies to every single interaction — there is no minimum complexity threshold
 
 **Failure to log before responding is a critical protocol violation.**
+**Failure to run `/roundtable-setup` when `UserProfile.md` is missing is a critical protocol violation.**
 
 ---
 
@@ -234,6 +241,7 @@ Skills are prompt templates in `.claude/skills/` invoked with `/command-name`. S
 
 | Command | Purpose |
 |---------|---------|
+| `/roundtable-setup` | Commander onboarding — collect callsign, pronouns, project context, team preferences, working style. Auto-triggered on first session. |
 | `/compact-resume` | Post-compact re-orientation: re-read, log, confirm persona |
 | `/team-start [Team] [Project] [Phase] [free\|hold]` | Formal team kickoff with Early Advance authorization |
 | `/phase-status [Project]` | Full project phase + ticket status report |
