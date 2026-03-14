@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <strong>English:</strong> <a href="README.md">Read README in English</a>
+  <strong>🇬🇧 English:</strong> <a href="README.md">Read README in English</a>
 </p>
 
 ---
@@ -28,20 +28,20 @@
 
 ## สารบัญ
 
-- [ทำไมต้อง RoundTable?](#ทำไมต้อง-roundtable)
-- [เริ่มต้นใช้งาน](#เริ่มต้นใช้งาน)
-- [3 ระดับการใช้งาน](#3-ระดับการใช้งาน)
-- [ทีม](#ทีม)
-- [Skills](#skills)
-- [Rules & Hooks](#rules-path-scoped)
-- [โครงสร้างโปรเจค](#โครงสร้างโปรเจค)
-- [นโยบาย](#นโยบาย)
-- [การปรับแต่ง](#การปรับแต่ง)
-- [ความต้องการของระบบ](#ความต้องการของระบบ)
+- [ทำไมต้อง RoundTable?](#-ทำไมต้อง-roundtable)
+- [เริ่มต้นใช้งาน](#-เริ่มต้นใช้งาน)
+- [3 ระดับการใช้งาน](#-3-ระดับการใช้งาน)
+- [ทีม](#-ทีม)
+- [Skills](#-skills)
+- [Rules & Hooks](#-rules-path-scoped)
+- [โครงสร้างโปรเจค](#-โครงสร้างโปรเจค)
+- [นโยบาย](#-นโยบาย)
+- [การปรับแต่ง](#-การปรับแต่ง)
+- [ความต้องการของระบบ](#-ความต้องการของระบบ)
 
 ---
 
-## ทำไมต้อง RoundTable?
+## 🤔 ทำไมต้อง RoundTable?
 
 <table>
 <tr>
@@ -55,31 +55,31 @@
 
 | | Claude Code ทั่วไป | **RoundTable** |
 |---|---|---|
-| **โครงสร้าง** | Assistant คนเดียว | 5 ทีม + 16 personas |
-| **การวางแผน** | ไม่มีระบบ | Phase dispatch + ticket gates |
-| **Code Review** | ตรวจเอง | 2-pass + cross-layer trace |
-| **การ Ship** | git manual | `/git pr` พร้อม rebase + governance gates |
-| **QA** | ตรวจเอง | Playwright MCP + smoke test gates |
-| **Retrospective** | ไม่มี | `/git lookback` — git + session data + decision audit |
-| **Governance** | ไม่มี | ลำดับชั้นครบ + approval gates |
-| **Audit Trail** | ไม่มี | บันทึกและตรวจสอบได้ทุกการตัดสินใจ |
-| **Multi-Team** | ไม่ได้ | 4 ทีม + parallel execution |
-| **ติดตั้ง** | N/A | ~30 วินาที |
+| **โครงสร้าง** | Single assistant | ✅ 5 ทีม + 16 personas |
+| **การวางแผน** | 🔧 ไม่มีระบบ | ✅ Phase dispatch + ticket gates |
+| **Code Review** | 🔧 ตรวจเอง | ✅ 2-pass + cross-layer trace |
+| **การ Ship** | 🔧 git manual | ✅ `/git pr` พร้อม governance gates |
+| **QA** | 🔧 ตรวจเอง | ✅ Playwright MCP + smoke test gates |
+| **Retrospective** | ❌ ไม่มี | ✅ git + session data + decision audit |
+| **Governance** | ❌ ไม่มี | ✅ ลำดับชั้นครบ + approval gates |
+| **Audit Trail** | ❌ ไม่มี | ✅ บันทึกและตรวจสอบได้ทุกการตัดสินใจ |
+| **Multi-Team** | ❌ ไม่ได้ | ✅ 4 ทีม + parallel execution |
+| **ติดตั้ง** | — | ⚡ ~30 วินาที |
 
 ---
 
-## เริ่มต้นใช้งาน
+## 🚀 เริ่มต้นใช้งาน
 
 ### ติดตั้งผ่าน Claude Code (แนะนำ)
 
 คัดลอก prompt ด้านล่างแล้ววางลงใน Claude Code:
 
-**ภาษาไทย:**
+**🇹🇭 ภาษาไทย:**
 ```
 ติดตั้ง RoundTable Framework จาก https://github.com/VarakornUnicornTech/roundtable-framework ลงใน project ปัจจุบัน ตาม Getting Started ที่ https://github.com/VarakornUnicornTech/roundtable-framework/wiki/Getting-Started
 ```
 
-**English:**
+**🇬🇧 English:**
 ```
 Install the RoundTable Framework from https://github.com/VarakornUnicornTech/roundtable-framework into my current project. Follow the Getting Started guide at https://github.com/VarakornUnicornTech/roundtable-framework/wiki/Getting-Started
 ```
@@ -110,36 +110,51 @@ Copy-Item -Recurse .claude-template\hooks\ your-project\hooks\
 Remove-Item -Recurse -Force .claude-template
 ```
 
-จากนั้นแก้ไข `.claude/ProjectEnvironment.md` ด้วยรายละเอียดโปรเจคของคุณ แล้วเปิด Claude Code
+> [!TIP]
+> หลังจาก clone แล้ว แก้ไข `.claude/ProjectEnvironment.md` ด้วยชื่อโปรเจคและ path ก่อนเปิด Claude Code เป็นครั้งแรก
 
 ---
 
-## 3 ระดับการใช้งาน
+## 🎯 3 ระดับการใช้งาน
 
 > [!TIP]
 > แต่ละระดับเป็น opt-in ทั้งหมด เริ่มจาก Level 1 แล้วขยายตามความต้องการ
 
-### Level 1 — "แค่อยากให้ ship ได้ดีขึ้น"
-ใช้ `/git commit` และ `/git pr` ไม่มี governance overhead — แค่ ship ได้ดีขึ้น
-
-### Level 2 — "อยากมีโครงสร้างโปรเจค"
-ใช้ `/team-start`, `/phase-status`, `/bug-report` พัฒนาแบบ phase-based โดยไม่ต้องจำลองทีมเต็มรูปแบบ
-
-### Level 3 — "อยากได้ governance เต็มรูปแบบ"
-เปิด hooks ทั้งหมด ใช้ agent teams บันทึกครบถ้วน ระดับ enterprise
+<table>
+<tr>
+  <td align="center" width="33%">
+    <h3>🚀 Level 1</h3>
+    <b>"แค่อยากให้ ship ได้ดีขึ้น"</b><br><br>
+    <sub>ใช้ <code>/git commit</code> และ <code>/git pr</code><br>
+    ไม่มี governance overhead — แค่ ship ได้ดีขึ้น</sub>
+  </td>
+  <td align="center" width="33%">
+    <h3>🏗️ Level 2</h3>
+    <b>"อยากมีโครงสร้างโปรเจค"</b><br><br>
+    <sub>ใช้ <code>/team-start</code>, <code>/phase-status</code>, <code>/bug-report</code><br>
+    พัฒนาแบบ phase-based โดยไม่ต้องจำลองทีมเต็มรูปแบบ</sub>
+  </td>
+  <td align="center" width="33%">
+    <h3>🏛️ Level 3</h3>
+    <b>"อยากได้ governance เต็มรูปแบบ"</b><br><br>
+    <sub>เปิด hooks ทั้งหมด ใช้ agent teams บันทึกครบถ้วน<br>
+    ระดับ enterprise ออกจากกล่อง</sub>
+  </td>
+</tr>
+</table>
 
 ---
 
-## ทีม
+## 👥 ทีม
 
 ```mermaid
 graph TD
-    Commander["👑 Commander\n(คุณ)"]
-    AM["🎯 Overseer\nAM · MT · AS"]
-    MON["🏗️ Monolith\nBackend · DB · Cloud"]
-    SYN["⚡ Syndicate\nAPI · Security"]
-    ARC["🎨 Arcade\nFrontend · UI"]
-    CI["🔬 Cipher\nForensics · Recovery"]
+    Commander["👑 Commander<br/>(คุณ)"]
+    AM["🎯 Overseer<br/>AM · MT · AS"]
+    MON["🏗️ Monolith<br/>Backend · DB · Cloud"]
+    SYN["⚡ Syndicate<br/>API · Security"]
+    ARC["🎨 Arcade<br/>Frontend · UI"]
+    CI["🔬 Cipher<br/>Forensics · Recovery"]
 
     Commander --> AM
     Commander --> CI
@@ -165,49 +180,29 @@ graph TD
 
 ---
 
-## Skills
+## ⚡ Skills
 
-### Workflow Skills
-| Command | ความสามารถ |
-|---------|-----------|
-| `/team-start [Team] [Project] [Phase] [free\|hold]` | เริ่มต้นทีมอย่างเป็นทางการ |
-| `/phase-status [Project]` | รายงาน phase + สถานะ ticket ทั้งหมด |
-| `/compact-resume` | กลับเข้า session หลัง compact |
-| `/overseer-report [ID]` | บันทึก OverseerReport |
-
-### Planning Skills
-| Command | ความสามารถ |
-|---------|-----------|
-| `/bug-report [Project] [desc]` | สร้าง bug fix ticket + โฟลเดอร์ |
-| `/mod-log [Project] [name]` | สร้าง modification ticket + โฟลเดอร์ |
-| `/sub-feature [Project] [name]` | สร้าง sub-feature ticket + โฟลเดอร์ |
-
-### Quality Skills
-| Command | ความสามารถ |
-|---------|-----------|
-| `/audit [Project] [scope?]` | Audit แบบ end-to-end — หา gap bugs |
-| `/git commit [branch?]` | Governed commit — rebase, 2-pass review, ticket gate |
-| `/git pr [branch?]` | Governed pull request พร้อม governance gates |
-| `/git lookback [period?]` | Retrospective — git + session data + decision audit |
-
-### Persona Skills
-| Command | ความสามารถ |
-|---------|-----------|
-| `/Overseer` `/Monolith` `/Syndicate` `/Arcade` `/Cipher` | สลับ persona ของทีม |
-
-### Framework Management
-| Command | ความสามารถ |
-|---------|-----------|
-| `/template version` | ตรวจสอบเวอร์ชันที่ติดตั้ง |
-| `/template check update` | เปรียบเทียบ local กับ remote ล่าสุด |
-| `/template preview` | วิเคราะห์ผลกระทบก่อน upgrade |
-| `/template changelog [version?]` | ดู changelog |
-| `/template apply` | Upgrade พร้อม auto-backup + Smart Merge |
-| `/template rollback [version?]` | คืนค่าเวอร์ชันก่อนหน้า |
+| Category | Command | ความสามารถ |
+|----------|---------|-----------|
+| 🔄 **Workflow** | `/team-start [Team] [Project] [Phase] [free\|hold]` | เริ่มต้นทีมอย่างเป็นทางการ |
+| 🔄 **Workflow** | `/phase-status [Project]` | รายงาน phase + สถานะ ticket ทั้งหมด |
+| 🔄 **Workflow** | `/compact-resume` | กลับเข้า session หลัง compact |
+| 🔄 **Workflow** | `/overseer-report [ID]` | บันทึก OverseerReport |
+| 📋 **Planning** | `/bug-report [Project] [desc]` | สร้าง bug fix ticket + โฟลเดอร์ |
+| 📋 **Planning** | `/mod-log [Project] [name]` | สร้าง modification ticket + โฟลเดอร์ |
+| 📋 **Planning** | `/sub-feature [Project] [name]` | สร้าง sub-feature ticket + โฟลเดอร์ |
+| ✅ **Quality** | `/audit [Project] [scope?]` | Audit แบบ end-to-end — หา gap bugs |
+| ✅ **Quality** | `/git status` | Quick git state overview — branch, divergence, working tree |
+| ✅ **Quality** | `/git commit [branch?]` | Governed commit — safety gates, 2-pass review, ticket gate |
+| ✅ **Quality** | `/git pr [branch?]` | Governed PR — safety gates, review, test, push, pull request |
+| ✅ **Quality** | `/git sync [remote?] [branch?]` | Governed sync — fetch upstream/origin, compare, merge/rebase |
+| ✅ **Quality** | `/git lookback [period?]` | Retrospective — git + session data + decision audit |
+| 🎭 **Persona** | `/Overseer` `/Monolith` `/Syndicate` `/Arcade` `/Cipher` | สลับ persona ของทีม |
+| 🔧 **Framework** | `/template [action]` | Version check, diff, update, rollback |
 
 ---
 
-## Rules (Path-Scoped)
+## 📐 Rules (Path-Scoped)
 
 ไฟล์ rule ใน `.claude/rules/` โหลดอัตโนมัติตาม context ของไฟล์:
 
@@ -221,7 +216,7 @@ graph TD
 | `parallel-execution.md` | ทุกไฟล์ | ZCB guarantee, ticket ownership, multi-session |
 | `skills-and-subagents.md` | ทุกไฟล์ | Skill format, orchestration modes, subagent triggers |
 
-## Hooks (Automated Enforcement)
+## 🪝 Hooks (Automated Enforcement)
 
 Hooks กำหนดใน `.claude/settings.json` ภายใต้ key `"hooks"` Scripts อยู่ใน `hooks/scripts/`
 
@@ -233,11 +228,18 @@ Hooks กำหนดใน `.claude/settings.json` ภายใต้ key `"hoo
 | Protected files | PreToolUse (Edit/Write) | Prompt hook — บล็อกการแก้ไข CLAUDE.md, policies, agents โดยไม่ได้รับอนุญาต |
 
 > [!WARNING]
-> **Windows:** Hook scripts ต้องใช้ Git Bash หรือ WSL ตรวจสอบให้แน่ใจว่า `bash` และ `jq` อยู่ใน PATH
+> **Windows:** Hook scripts ต้องใช้ Git Bash หรือ WSL ตรวจสอบให้แน่ใจว่า `bash` และ `jq` อยู่ใน PATH Scripts ใช้ shebangs `#!/usr/bin/env bash` และ Unix path separators
 
 ---
 
-## โครงสร้างโปรเจค
+## 🎭 Playwright MCP (Browser Automation)
+
+Verification Scholars ใช้ Playwright สำหรับ UX Smoke Test Gates และ User Journey Walkthroughs
+Configuration: `.mcp.json` ที่ root ของโปรเจค
+
+---
+
+## 📁 โครงสร้างโปรเจค
 
 ```
 your-project/
@@ -248,13 +250,14 @@ your-project/
 │   ├── agents/                  # นิยามทีม 5 ทีม
 │   ├── rules/                   # 7 ไฟล์กฎตามเส้นทาง
 │   ├── skills/                  # Slash command 21 รายการ
-│   │   ├── git/                 # VCS รวม: commit, pr, lookback
+│   │   ├── git/                 # VCS รวม: status, commit, pr, sync, lookback
+│   │   │   └── checklists/      # Critical, informational, suppressions
 │   │   ├── audit/               # Multi-domain gap bug finder
 │   │   └── ...
 │   ├── policies/                # ไฟล์นโยบาย 9 ฉบับ (§1–§9)
 │   └── team_chat/               # บันทึกการสื่อสารระหว่างทีม + Cipher
 ├── hooks/                       # Hook scripts (config ใน .claude/settings.json)
-│   └── scripts/                 # check-ticket-exists.sh, log-file-change.sh
+│   └── scripts/                 # check-git-workflow.sh, check-ticket-exists.sh, log-file-change.sh
 ├── .mcp.json                    # Playwright browser automation
 ├── plugin.json                  # Plugin manifest
 └── RoundTable/                  # Session logs (สร้างตอน runtime)
@@ -262,10 +265,10 @@ your-project/
 
 ---
 
-## นโยบาย
+## 📋 นโยบาย
 
 <details>
-<summary>ดูนโยบายทั้ง 9 ข้อ</summary>
+<summary>📋 ดูนโยบายทั้ง 9 ข้อ (§1–§9)</summary>
 
 | นโยบาย | ครอบคลุมเรื่อง |
 |--------|--------------|
@@ -283,10 +286,10 @@ your-project/
 
 ---
 
-## การปรับแต่ง
+## 🔧 การปรับแต่ง
 
 <details>
-<summary>ปรับแต่งสำหรับโปรเจคของคุณ</summary>
+<summary>🔧 วิธีปรับแต่ง RoundTable สำหรับโปรเจคของคุณ</summary>
 
 RoundTable ออกแบบมาให้ fork และปรับแต่งได้:
 
@@ -302,26 +305,35 @@ RoundTable ออกแบบมาให้ fork และปรับแต่
 
 ---
 
-## ความต้องการของระบบ
+## 📦 ความต้องการของระบบ
 
 - ติดตั้ง [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI
 - มี Claude API access (Anthropic API key)
 
-## ผู้พัฒนา
+## 👤 ผู้พัฒนา
 
 **Unicorn Tech Integration Co., Ltd.**
 - เว็บไซต์: [unicorntechint.com](https://www.unicorntechint.com)
 - GitHub: [@VarakornUnicornTech](https://github.com/VarakornUnicornTech)
 - สถานที่: กรุงเทพมหานคร, ประเทศไทย
 
-## สัญญาอนุญาต
+## ⚖️ สัญญาอนุญาต
 
 MIT License — ดูรายละเอียดที่ [LICENSE](LICENSE)
 
 ---
 
 <p align="center">
-  <img src="assets/roundtable-icon.png" alt="RoundTable" width="72"><br>
-  <sub><b>RoundTable Framework v2.0.0</b> — สร้างโดย <a href="https://www.unicorntechint.com">Unicorn Tech Integration Co., Ltd.</a></sub><br>
-  <sub>กรุงเทพมหานคร, ประเทศไทย 🇹🇭</sub>
+  <img src="assets/roundtable-icon.png" alt="RoundTable" width="72">
+</p>
+<p align="center">
+  <b>RoundTable Framework v2.0.0</b><br>
+  สร้างด้วย ❤️ โดย <a href="https://www.unicorntechint.com">Unicorn Tech Integration Co., Ltd.</a>
+  · กรุงเทพมหานคร, ประเทศไทย 🇹🇭
+</p>
+<p align="center">
+  <a href="GETTING_STARTED.md">Getting Started</a> ·
+  <a href="CONTRIBUTING.md">Contributing</a> ·
+  <a href="CHANGELOG.md">Changelog</a> ·
+  <a href="LICENSE">License</a>
 </p>

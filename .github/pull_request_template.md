@@ -14,7 +14,7 @@
 ## Changed Files Scope
 
 - [ ] Core framework (`.claude/CLAUDE.md`)
-- [ ] Policies (`.claude/policies/` or `policies/` and `team_chat/`)
+- [ ] Policies (`.claude/policies/` and `.claude/team_chat/`)
 - [ ] Skills (`.claude/skills/`)
 - [ ] Agents (`.claude/agents/`)
 - [ ] Documentation (`README`, `GETTING_STARTED`, `docs/`)

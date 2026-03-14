@@ -7,6 +7,7 @@ Before responding to ANY prompt — including post-`/compact`, session resume, o
    - Check if `.claude/UserProfile.md` exists AND contains a configured Callsign (i.e., the `Callsign` field is not `—`).
    - **If the file does NOT exist, OR if `Callsign` is `—` (unconfigured placeholder):** Run `/roundtable-setup` immediately...
    - **If the file exists and is configured:** Read it silently, validate all fields (see UserProfile Behavioral Rules below), and apply all preferences for this session...
+   > **First-install exception:** When `UserProfile.md` is missing, no team assignment or session file path has been established yet, so Step 3 (RoundTable logging) cannot precede setup. This is the **only** recognized exception to the logging-first rule. After `/roundtable-setup` completes, write the Session 1 log entry immediately — before any other response.
 
 1. Re-read this entire CLAUDE.md file
 2. Re-read your agent file from `.claude/agents/[team].md`
@@ -291,8 +292,10 @@ Skills are prompt templates in `.claude/skills/` invoked with `/command-name`. S
 | `/mod-log [Project] [name]` | Create PLANNED modification log + ticket folders |
 | `/sub-feature [Project] [name]` | Create PLANNED sub-feature + ticket folders |
 | `/overseer-report [ID]` | File a report entry for AM review |
-| `/git commit [branch?]` | Governed commit — rebase, 2-pass review, ticket gate, commit |
-| `/git pr [branch?]` | Governed pull request — rebase, review, test, PR with governance gates |
+| `/git status` | Quick git state overview — branch, divergence, working tree |
+| `/git commit [branch?]` | Governed commit — safety gates, 2-pass review, ticket gate, commit |
+| `/git pr [branch?]` | Governed PR — safety gates, review, test, push, pull request |
+| `/git sync [remote?] [branch?]` | Governed sync — fetch upstream/origin, compare, merge/rebase |
 | `/git lookback [period?]` | Retrospective — rebase-aware git + RoundTable session metrics |
 | `/template [action]` | Framework management — `status` · `changelog` · `check` · `diff` · `apply` · `rollback` |
 | `/Overseer` `/Monolith` `/Syndicate` `/Arcade` `/Cipher` | Persona switch |
@@ -355,21 +358,26 @@ Policy rules in `.claude/rules/` — loaded automatically based on file context.
 
 ## Git Workflow Rule (MANDATORY — No Raw Git)
 
-**Never run raw `git push`, `git commit`, `git merge`, `git rebase`, or `git pull` directly.**
+**Never run raw `git push`, `git commit`, `git merge`, `git rebase`, `git pull`, or `git reset --hard` directly.**
 Always use the governed `/git` skills instead:
 
 | Instead of... | Use... |
 |---------------|--------|
-| `git add && git commit` | `/git commit` — rebase-first, 2-pass review, ticket gate |
-| `git push` | `/git commit` or `/git pr` — never push without review |
-| `git merge` / `git rebase` | `/git commit` — handles upstream sync |
-| Opening a PR | `/git pr` — creates dedicated branch, diffs upstream, governed PR |
+| `git add && git commit` | `/git commit` — safety gates, 2-pass review, ticket gate |
+| `git push` | `/git pr` — never push without review and branch enforcement |
+| `git merge` / `git rebase` (upstream) | `/git sync upstream` — governed merge with conflict walkthrough |
+| `git merge` / `git rebase` (origin) | `/git sync` — governed rebase with conflict handling |
+| Opening a PR | `/git pr` — branch enforcement, review, test, push, PR |
+| `git reset --hard` | `git stash` or `git checkout -- .` — non-destructive alternatives |
+| Checking branch state | `/git status` — divergence vs origin AND upstream in one view |
 
-**Why:** Raw git bypasses: upstream diff check, branch discipline, 2-pass review, and conflict analysis. Every past merge failure in this project was caused by skipping this skill.
+**Why:** Raw git bypasses: safety gates (branch protection, sensitive file scan), upstream divergence check, 2-pass review, conflict walkthrough, and audit logging. Every past merge failure in this project was caused by skipping this skill.
 
-**Enforcement:** `check-git-workflow.sh` hook blocks raw state-changing git commands at the Bash tool level.
+**Enforcement:** `check-git-workflow.sh` hook blocks raw state-changing git commands + `git reset --hard` at the Bash tool level. The `/git` skill appends `# git-skill-internal` to bypass the hook for its own internal operations.
 
-**Branch rule:** PRs are NEVER opened from `main` or `dev` directly. `/git pr` creates a dedicated `feat/` branch automatically.
+**Branch protection:** `main` and `master` are protected branches. Direct commits blocked unless `--force` flag is used (logged). PRs from protected branches always blocked (no override).
+
+**Sensitive file scan:** `.env`, `*.key`, `*.pem`, `credentials.*`, `*secret*` are auto-excluded from staging. Override with `--force` (logged).
 
 **`main` rule:** Never push to `main` unless Commander explicitly says so. `dev` push ≠ authorization for `main`.
 
@@ -380,7 +388,7 @@ Always use the governed `/git` skills instead:
 | Hook Event | What It Does |
 |-----------|-------------|
 | `SessionStart` | Confirms RoundTable governance framework is active |
-| `PreToolUse` (Bash) | Blocks raw git push/commit/merge/rebase/pull — enforces /git skill usage |
+| `PreToolUse` (Bash) | Blocks raw git push/commit/merge/rebase/pull/reset --hard — enforces /git skill usage |
 | `PreToolUse` (Edit/Write) | Checks for active ticket before allowing code edits (No-Code-Before-Ticket) |
 | `PostToolUse` (Edit/Write) | Logs file changes to session audit trail |
 

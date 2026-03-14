@@ -28,20 +28,20 @@
 
 ## Table of Contents
 
-- [Why RoundTable?](#why-roundtable)
-- [Quick Start](#quick-start)
-- [Three Ways to Use](#three-ways-to-use-roundtable)
-- [Teams](#teams)
-- [Skills](#skills)
-- [Rules & Hooks](#rules-path-scoped)
-- [Project Structure](#project-structure)
-- [Policies](#policy-reference)
-- [Customization](#customization)
-- [Requirements](#requirements)
+- [Why RoundTable?](#-why-roundtable)
+- [Quick Start](#-quick-start)
+- [Three Ways to Use](#-three-ways-to-use-roundtable)
+- [Teams](#-teams)
+- [Skills](#-skills)
+- [Rules & Hooks](#-rules-path-scoped)
+- [Project Structure](#-project-structure)
+- [Policies](#-policy-reference)
+- [Customization](#-customization)
+- [Requirements](#-requirements)
 
 ---
 
-## Why RoundTable?
+## 🤔 Why RoundTable?
 
 <table>
 <tr>
@@ -55,31 +55,31 @@
 
 | | Vanilla Claude Code | **RoundTable** |
 |---|---|---|
-| **Structure** | Single assistant | 5 teams + 16 personas |
-| **Planning** | Ad hoc | Phase dispatch + ticket gates |
-| **Code Review** | Manual | 2-pass + cross-layer trace |
-| **Shipping** | Manual git | `/git pr` with rebase + governance gates |
-| **QA** | Manual | Playwright MCP + smoke test gates |
-| **Retrospective** | None | `/git lookback` — git + session data + decision audit |
-| **Governance** | None | Full hierarchy + approval gates |
-| **Audit Trail** | None | Every decision logged + traceable |
-| **Multi-Team** | No | 4 teams + parallel execution |
-| **Setup** | N/A | ~30 seconds |
+| **Structure** | Single assistant | ✅ 5 teams + 16 personas |
+| **Planning** | 🔧 Ad hoc | ✅ Phase dispatch + ticket gates |
+| **Code Review** | 🔧 Manual | ✅ 2-pass + cross-layer trace |
+| **Shipping** | 🔧 Manual git | ✅ `/git pr` with rebase + governance gates |
+| **QA** | 🔧 Manual | ✅ Playwright MCP + smoke test gates |
+| **Retrospective** | ❌ None | ✅ `/git lookback` — git + session data + decision audit |
+| **Governance** | ❌ None | ✅ Full hierarchy + approval gates |
+| **Audit Trail** | ❌ None | ✅ Every decision logged + traceable |
+| **Multi-Team** | ❌ No | ✅ 4 teams + parallel execution |
+| **Setup** | — | ⚡ ~30 seconds |
 
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
 ### Install via Claude Code (Recommended)
 
 Copy and paste into Claude Code:
 
-**English:**
+**🇬🇧 English:**
 ```
 Install the RoundTable Framework from https://github.com/VarakornUnicornTech/roundtable-framework into my current project. Follow the Getting Started guide at https://github.com/VarakornUnicornTech/roundtable-framework/wiki/Getting-Started
 ```
 
-**Thai / ภาษาไทย:**
+**🇹🇭 Thai / ภาษาไทย:**
 ```
 ติดตั้ง RoundTable Framework จาก https://github.com/VarakornUnicornTech/roundtable-framework ลงใน project ปัจจุบัน ตาม Getting Started ที่ https://github.com/VarakornUnicornTech/roundtable-framework/wiki/Getting-Started
 ```
@@ -109,36 +109,51 @@ Copy-Item -Recurse .claude-template\hooks\ your-project\hooks\
 Remove-Item -Recurse -Force .claude-template
 ```
 
-Then edit `.claude/ProjectEnvironment.md` with your project details and start Claude Code.
+> [!TIP]
+> After cloning, edit `.claude/ProjectEnvironment.md` with your project name and paths before starting Claude Code for the first time.
 
 ---
 
-## Three Ways to Use RoundTable
+## 🎯 Three Ways to Use RoundTable
 
 > [!TIP]
 > Each level is fully opt-in. Start at Level 1 and expand as your project grows.
 
-### Level 1 — "I just want better shipping"
-Use `/git commit` and `/git pr`. No governance overhead — just better shipping.
-
-### Level 2 — "I want project structure"
-Use `/team-start`, `/phase-status`, `/bug-report`. Phase-based development without full team simulation.
-
-### Level 3 — "I want full governance"
-Enable all hooks, use agent teams, full logging. Enterprise-grade traceability.
+<table>
+<tr>
+  <td align="center" width="33%">
+    <h3>🚀 Level 1</h3>
+    <b>"I just want better shipping"</b><br><br>
+    <sub>Drop in <code>/git commit</code> and <code>/git pr</code>.<br>
+    No governance overhead — just better, safer shipping.</sub>
+  </td>
+  <td align="center" width="33%">
+    <h3>🏗️ Level 2</h3>
+    <b>"I want project structure"</b><br><br>
+    <sub>Use <code>/team-start</code>, <code>/phase-status</code>, <code>/bug-report</code>.<br>
+    Phase-based development without full team simulation.</sub>
+  </td>
+  <td align="center" width="33%">
+    <h3>🏛️ Level 3</h3>
+    <b>"I want full governance"</b><br><br>
+    <sub>Enable all hooks, activate agent teams, full session logging.<br>
+    Enterprise-grade traceability out of the box.</sub>
+  </td>
+</tr>
+</table>
 
 ---
 
-## Teams
+## 👥 Teams
 
 ```mermaid
 graph TD
-    Commander["👑 Commander\n(You)"]
-    AM["🎯 Overseer\nAM · MT · AS"]
-    MON["🏗️ Monolith\nBackend · DB · Cloud"]
-    SYN["⚡ Syndicate\nAPI · Security"]
-    ARC["🎨 Arcade\nFrontend · UI"]
-    CI["🔬 Cipher\nForensics · Recovery"]
+    Commander["👑 Commander<br/>(You)"]
+    AM["🎯 Overseer<br/>AM · MT · AS"]
+    MON["🏗️ Monolith<br/>Backend · DB · Cloud"]
+    SYN["⚡ Syndicate<br/>API · Security"]
+    ARC["🎨 Arcade<br/>Frontend · UI"]
+    CI["🔬 Cipher<br/>Forensics · Recovery"]
 
     Commander --> AM
     Commander --> CI
@@ -164,44 +179,29 @@ graph TD
 
 ---
 
-## Skills
+## ⚡ Skills
 
-### Workflow Skills
-| Command | Purpose |
-|---------|---------|
-| `/team-start [Team] [Project] [Phase] [free\|hold]` | Formal team kickoff |
-| `/phase-status [Project]` | Full project phase + ticket status |
-| `/compact-resume` | Post-compact re-orientation |
-| `/overseer-report [ID]` | File OverseerReport entry |
-
-### Planning Skills
-| Command | Purpose |
-|---------|---------|
-| `/bug-report [Project] [desc]` | Create bug fix ticket + folders |
-| `/mod-log [Project] [name]` | Create modification ticket + folders |
-| `/sub-feature [Project] [name]` | Create sub-feature ticket + folders |
-
-### Quality Skills
-| Command | Purpose |
-|---------|---------|
-| `/audit [Project] [scope?]` | End-to-end multi-domain audit — finds gap bugs |
-| `/git commit [branch?]` | Governed commit — rebase, 2-pass review, ticket gate |
-| `/git pr [branch?]` | Governed pull request — rebase, review, test, PR with governance gates |
-| `/git lookback [period?]` | Retrospective — rebase-aware git + session data + decision audit |
-
-### Persona Skills
-| Command | Purpose |
-|---------|---------|
-| `/Overseer` `/Monolith` `/Syndicate` `/Arcade` `/Cipher` | Switch active team persona |
-
-### Framework Management
-| Command | Purpose |
-|---------|---------|
-| `/template [action]` | Version check, diff, update, rollback |
+| Category | Command | Purpose |
+|----------|---------|---------|
+| 🔄 **Workflow** | `/team-start [Team] [Project] [Phase] [free\|hold]` | Formal team kickoff |
+| 🔄 **Workflow** | `/phase-status [Project]` | Full project phase + ticket status |
+| 🔄 **Workflow** | `/compact-resume` | Post-compact re-orientation |
+| 🔄 **Workflow** | `/overseer-report [ID]` | File OverseerReport entry |
+| 📋 **Planning** | `/bug-report [Project] [desc]` | Create bug fix ticket + folders |
+| 📋 **Planning** | `/mod-log [Project] [name]` | Create modification ticket + folders |
+| 📋 **Planning** | `/sub-feature [Project] [name]` | Create sub-feature ticket + folders |
+| ✅ **Quality** | `/audit [Project] [scope?]` | End-to-end multi-domain audit — finds gap bugs |
+| ✅ **Quality** | `/git status` | Quick git state overview — branch, divergence, working tree |
+| ✅ **Quality** | `/git commit [branch?]` | Governed commit — safety gates, 2-pass review, ticket gate |
+| ✅ **Quality** | `/git pr [branch?]` | Governed PR — safety gates, review, test, push, pull request |
+| ✅ **Quality** | `/git sync [remote?] [branch?]` | Governed sync — fetch upstream/origin, compare, merge/rebase |
+| ✅ **Quality** | `/git lookback [period?]` | Retrospective — rebase-aware git + session data + decision audit |
+| 🎭 **Persona** | `/Overseer` `/Monolith` `/Syndicate` `/Arcade` `/Cipher` | Switch active team persona |
+| 🔧 **Framework** | `/template [action]` | Version check, diff, update, rollback |
 
 ---
 
-## Rules (Path-Scoped)
+## 📐 Rules (Path-Scoped)
 
 Policy rules in `.claude/rules/` load automatically based on file context:
 
@@ -215,7 +215,9 @@ Policy rules in `.claude/rules/` load automatically based on file context:
 | `parallel-execution.md` | Always | ZCB guarantee, ticket ownership, multi-session |
 | `skills-and-subagents.md` | Always | Skill format, orchestration modes, subagent triggers |
 
-## Hooks (Automated Enforcement)
+---
+
+## 🪝 Hooks (Automated Enforcement)
 
 Hooks are defined in `.claude/settings.json` under the `"hooks"` key. Scripts live in `hooks/scripts/`.
 
@@ -229,14 +231,16 @@ Hooks are defined in `.claude/settings.json` under the `"hooks"` key. Scripts li
 > [!WARNING]
 > **Windows note:** Hook scripts require Git Bash or WSL. Ensure `bash` and `jq` are available in your PATH. Scripts use `#!/usr/bin/env bash` shebangs and Unix path separators.
 
-## Playwright MCP (Browser Automation)
+---
+
+## 🎭 Playwright MCP (Browser Automation)
 
 Verification Scholars can use Playwright for UX Smoke Test Gates and User Journey Walkthroughs.
 Configuration: `.mcp.json` at project root.
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 your-project/
@@ -247,14 +251,14 @@ your-project/
 │   ├── agents/                  # 5 team agent definitions
 │   ├── rules/                   # 7 path-scoped rule files
 │   ├── skills/                  # 21 slash command skills
-│   │   ├── git/                 # Unified VCS: commit, pr, lookback
+│   │   ├── git/                 # Unified VCS: status, commit, pr, sync, lookback
 │   │   │   └── checklists/      # Critical, informational, suppressions
 │   │   ├── audit/               # Multi-domain gap bug finder
 │   │   └── ...
 │   ├── policies/                # 9 detailed policy files (§1–§9)
 │   └── team_chat/               # Team communication logs + Cipher diagnostics
 ├── hooks/                       # Hook scripts (config in .claude/settings.json)
-│   └── scripts/                 # check-ticket-exists.sh, log-file-change.sh
+│   └── scripts/                 # check-git-workflow.sh, check-ticket-exists.sh, log-file-change.sh
 ├── .mcp.json                    # Playwright browser automation
 ├── plugin.json                  # Plugin manifest
 └── RoundTable/                  # Session logs (created at runtime)
@@ -262,10 +266,10 @@ your-project/
 
 ---
 
-## Policy Reference
+## 📋 Policy Reference
 
 <details>
-<summary>View all 9 policies</summary>
+<summary>📋 View all 9 policies (§1–§9)</summary>
 
 | Policy | What It Covers |
 |--------|---------------|
@@ -283,10 +287,10 @@ your-project/
 
 ---
 
-## Customization
+## 🔧 Customization
 
 <details>
-<summary>Customize for your project</summary>
+<summary>🔧 How to customize RoundTable for your project</summary>
 
 RoundTable is designed to be forked and customized:
 
@@ -302,26 +306,35 @@ RoundTable is designed to be forked and customized:
 
 ---
 
-## Requirements
+## 📦 Requirements
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI installed
 - Claude API access (Anthropic API key)
 
-## Author
+## 👤 Author
 
 **Unicorn Tech Integration Co., Ltd.**
 - Website: [unicorntechint.com](https://www.unicorntechint.com)
 - GitHub: [@VarakornUnicornTech](https://github.com/VarakornUnicornTech)
 - Location: Bangkok, Thailand
 
-## License
+## ⚖️ License
 
 MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
 <p align="center">
-  <img src="assets/roundtable-icon.png" alt="RoundTable" width="72"><br>
-  <sub><b>RoundTable Framework v2.0.0</b> — Built by <a href="https://www.unicorntechint.com">Unicorn Tech Integration Co., Ltd.</a></sub><br>
-  <sub>Bangkok, Thailand 🇹🇭</sub>
+  <img src="assets/roundtable-icon.png" alt="RoundTable" width="72">
+</p>
+<p align="center">
+  <b>RoundTable Framework v2.0.0</b><br>
+  Built with ❤️ by <a href="https://www.unicorntechint.com">Unicorn Tech Integration Co., Ltd.</a>
+  · Bangkok, Thailand 🇹🇭
+</p>
+<p align="center">
+  <a href="GETTING_STARTED.md">Getting Started</a> ·
+  <a href="CONTRIBUTING.md">Contributing</a> ·
+  <a href="CHANGELOG.md">Changelog</a> ·
+  <a href="LICENSE">License</a>
 </p>
