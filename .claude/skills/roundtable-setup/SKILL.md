@@ -5,7 +5,7 @@ description: Interactive Commander onboarding. Collects callsign, name, pronouns
 
 # /roundtable-setup
 
-You are performing the **RoundTable Commander Onboarding**. Execute all steps in order. Use `AskUserQuestion` for every preference — never assume defaults without asking.
+You are performing the **RoundTable Commander Onboarding** (10 questions total). Execute all steps in order. Use `AskUserQuestion` for every preference — never assume defaults without asking. Include the progress counter `(X of 10)` in every question so the user knows how far along they are.
 
 ## Arguments
 
@@ -35,8 +35,8 @@ You are performing the **RoundTable Commander Onboarding**. Execute all steps in
 
 Ask each question one at a time using `AskUserQuestion`.
 
-**Question 1 (Language — asked first so the rest of onboarding uses your preferred language):**
-> "What language should RoundTable respond in? Type your preferred language, or select an option below."
+**Question 1 of 10 (Language — asked first so the rest of onboarding uses your preferred language):**
+> "(1/10) What language should RoundTable respond in? Type your preferred language, or select an option below."
 - Options: `English` / `Mirror input language (bilingual — respond in whichever language the message was written in)`
 - Header: `Language`
 - Description for each:
@@ -46,8 +46,8 @@ Ask each question one at a time using `AskUserQuestion`.
 
 **From this point forward, present all remaining questions and text in the user’s chosen language.**
 
-**Question 2:**
-> "What position title should AM and the teams use when addressing you?"
+**Question 2 of 10:**
+> "(2/10) What position title should AM and the teams use when addressing you?"
 - Options: `Commander` / `Boss` / `Chief` / `Other — type your preferred title`
 - Header: `Callsign`
 - Description for each:
@@ -56,14 +56,14 @@ Ask each question one at a time using `AskUserQuestion`.
   - Chief — leadership-focused title
   - Other — enter any custom title you prefer
 
-**Question 3:**
-> "What is your name?"
+**Question 3 of 10:**
+> "(3/10) What is your name?"
 - Header: `Name`
 - Options: `Prefer not to say` / `Use callsign only`
 - Note: The question text should make clear that typing a name is preferred. The two options are fallbacks for users who do not want to provide a name. Most users will type their name via the "Other" free-text input.
 
-**Question 4:**
-> "What are your preferred pronouns?"
+**Question 4 of 10:**
+> "(4/10) What are your preferred pronouns?"
 - Options: `He / Him` / `She / Her` / `They / Them` / `No preference`
 - Header: `Pronouns`
 
@@ -86,22 +86,22 @@ Run only the selected steps (1a, 2, 3 as applicable). Skip the rest.
 
 Ask each question one at a time using `AskUserQuestion`.
 
-**Question 1:**
-> "Which teams should be active by default?" (multiSelect: true)
+**Question 5 of 10:**
+> "(5/10) Which teams should be active by default?" (multiSelect: true)
 - Options: `Overseer (always on)` / `Monolith` / `Syndicate` / `Arcade`
 - Header: `Active teams`
 - Note: Cipher is always available on-demand — not listed here.
 
-**Question 2:**
-> "Default orchestration mode?"
+**Question 6 of 10:**
+> "(6/10) Default orchestration mode?"
 - Options: `Mode A — AM Direct (one prompt in, consolidated report out)` / `Mode B — Separate sessions (you manage each team directly)`
 - Header: `Orchestration`
 - Description for each:
   - Mode A — You give AM one instruction. AM spawns all sub-teams, collects results, and presents a single consolidated report. Best for efficiency.
   - Mode B — You open a separate Claude session per team and interact with each directly. Best for hands-on control and real-time course correction.
 
-**Question 3:**
-> "Commander Phase Acceptance Gate — do you want to personally test and accept each phase before teams advance?"
+**Question 7 of 10:**
+> "(7/10) Commander Phase Acceptance Gate — do you want to personally test and accept each phase before teams advance?"
 - Options: `ON — I will test each phase` / `OFF — trust team sign-off (default)`
 - Header: `Phase gate`
 - Description for each:
@@ -116,8 +116,8 @@ Save answers to profile section: `## Team & Orchestration`
 
 Ask each question one at a time using `AskUserQuestion`.
 
-**Question 1:**
-> "How verbose should team responses be?"
+**Question 8 of 10:**
+> "(8/10) How verbose should team responses be?"
 - Options: `Concise — short and direct` / `Standard — balanced detail` / `Full — complete reasoning shown`
 - Header: `Verbosity`
 - Description for each:
@@ -125,8 +125,8 @@ Ask each question one at a time using `AskUserQuestion`.
   - Standard — balanced. Enough context to understand decisions without excessive detail.
   - Full — complete reasoning shown. Every decision includes the rationale, alternatives considered, and trade-offs.
 
-**Question 2:**
-> "How much autonomy should the team have?"
+**Question 9 of 10:**
+> "(9/10) How much autonomy should the team have?"
 - Options: `Full Oversight — full report and explicit approval required for every action` / `Balanced — report and approval for major items, AM handles minor tasks independently` / `Autonomous — short concise report only, team executes autonomously without requiring approval`
 - Header: `Autonomy`
 - Description for each:
@@ -134,8 +134,8 @@ Ask each question one at a time using `AskUserQuestion`.
   - Balanced — major decisions (architecture, new features, phase advances) require your approval. Minor tasks (formatting, small fixes, documentation updates) AM handles independently and reports after.
   - Autonomous — team operates autonomously. You receive a short concise summary of what was done. Team makes implementation decisions on their own. You intervene only when you choose to.
 
-**Question 3:**
-> "When AM or MT need to present you with a decision that has multiple valid options (architecture, stack choice, fix strategy), how should they present it?"
+**Question 10 of 10:**
+> "(10/10) When AM or MT need to present you with a decision that has multiple valid options (architecture, stack choice, fix strategy), how should they present it?"
 - Options: `Structured — explain options first, then present choice UI` / `Conversational — describe options in prose, I reply in free text`
 - Header: `Decisions`
 - Description for each:
