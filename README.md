@@ -32,6 +32,7 @@
 - [Why UniOps Quantum Cycle?](#-why-uniops-quantum-cycle)
 - [Quick Start](#-quick-start)
 - [Three Ways to Use](#-three-ways-to-use-uniops-quantum-cycle)
+- [VSCode Extension](#-vscode-extension-uniopsqc-hub)
 - [Teams](#-teams)
 - [Skills](#-skills)
 - [Rules & Hooks](#-rules-path-scoped)
@@ -90,28 +91,38 @@ Install UniOps Quantum Cycle from https://github.com/VarakornUnicornTech/UniOpsQ
 
 ### Manual Install
 
+> [!NOTE]
+> Replace `C:/Projects/my-project` in the commands below with the **actual path to your project folder** — the folder where you want to install UniOps Quantum Cycle.
+
 **Bash / Git Bash / macOS / Linux:**
 ```bash
 git clone https://github.com/VarakornUnicornTech/UniOpsQC.git .claude-template
-cp -r .claude-template/.claude/ your-project/.claude/
-cp .claude-template/plugin.json your-project/plugin.json
-cp .claude-template/.mcp.json your-project/.mcp.json
-cp -r .claude-template/hooks/ your-project/hooks/
+cp -r .claude-template/.claude/ C:/Projects/my-project/.claude/
+cp .claude-template/template-version.json C:/Projects/my-project/template-version.json
+cp .claude-template/plugin.json C:/Projects/my-project/plugin.json
+cp .claude-template/.mcp.json C:/Projects/my-project/.mcp.json
+cp -r .claude-template/hooks/ C:/Projects/my-project/hooks/
 rm -rf .claude-template
 ```
 
 **PowerShell (Windows):**
 ```powershell
 git clone https://github.com/VarakornUnicornTech/UniOpsQC.git .claude-template
-Copy-Item -Recurse .claude-template\.claude\ your-project\.claude\
-Copy-Item .claude-template\plugin.json your-project\plugin.json
-Copy-Item .claude-template\.mcp.json your-project\.mcp.json
-Copy-Item -Recurse .claude-template\hooks\ your-project\hooks\
+Copy-Item -Recurse .claude-template\.claude\ C:\Projects\my-project\.claude\
+Copy-Item .claude-template\template-version.json C:\Projects\my-project\template-version.json
+Copy-Item .claude-template\plugin.json C:\Projects\my-project\plugin.json
+Copy-Item .claude-template\.mcp.json C:\Projects\my-project\.mcp.json
+Copy-Item -Recurse .claude-template\hooks\ C:\Projects\my-project\hooks\
 Remove-Item -Recurse -Force .claude-template
 ```
 
 > [!TIP]
-> After cloning, edit `.claude/ProjectEnvironment.md` with your project name and paths before starting Claude Code for the first time.
+> After installing, edit `.claude/ProjectEnvironment.md` with your project name and paths before starting Claude Code for the first time.
+
+> [!NOTE]
+> **Windows — Hook scripts require `jq`:** Install via [winget](https://winget.run/pkg/jqlang/jq) (`winget install jqlang.jq`) or [Chocolatey](https://chocolatey.org/) (`choco install jq`), then restart your terminal. Without `jq`, hook scripts will not function.
+>
+> **Playwright MCP (optional):** Required only if you want browser automation for UX smoke tests. Install [Node.js](https://nodejs.org/) and run `npx playwright install` inside your project.
 
 ---
 
@@ -142,6 +153,48 @@ Remove-Item -Recurse -Force .claude-template
   </td>
 </tr>
 </table>
+
+---
+
+## 🖥️ VSCode Extension — UniOpsQC Hub
+
+**UniOpsQC Hub** is a companion VSCode extension that gives you a visual dashboard alongside Claude Code.
+
+**Install:** Search for `UniOpsQC Hub` or `RoundTable Hub` in the VSCode Marketplace, or install extension ID `unicorntech.roundhub`.
+
+### What It Does
+
+The extension does **not** run Claude Code — it is a **command launcher and log viewer** that works alongside the CLI.
+
+| Button | What It Does |
+|--------|-------------|
+| **Quick Actions** | Copies a `/command` to your clipboard — paste it into Claude Code to run |
+| **SESSION LOGS** | Displays your RoundTable session log files for the active project |
+| **FRAMEWORK STATUS** | Shows the installed framework version (requires a `.git` repository) |
+| **Push to Hub** | Syncs your RoundTable logs to a cloud dashboard (subscription feature — not yet available) |
+| **Update Preview** | Copies the `/template preview` command to your clipboard — paste into Claude Code to run |
+| **Refresh** | Reloads the extension panel to reflect the latest file changes |
+
+### Two Versions — What Each Shows
+
+The extension panel displays two version numbers:
+
+| Version | What It Is | Where It Comes From |
+|---------|-----------|---------------------|
+| **Framework version** (e.g., `v2.0.0`) | The UniOpsQC template version | Read from your project's `.git` tags or `template-version.json` |
+| **Extension version** (e.g., `v1.6.0`) | The VSCode extension itself | The extension's own release version in the Marketplace |
+
+> [!TIP]
+> The framework and extension are versioned independently. A newer extension does not mean a newer framework, and vice versa.
+
+### Centralized vs. Decentralized Projects
+
+When you add a project in the extension, you will be asked for a **Project Name** and **Project Root**. UniOpsQC supports two project modes (set in `.claude/ProjectEnvironment.md`):
+
+| Mode | When to Use | Root Path Points To |
+|------|-------------|---------------------|
+| **Centralized** | Greenfield or solo projects | The folder containing both `.claude/` and your source code |
+| **Decentralized** | Pre-existing codebases | The planning hub folder (containing `.claude/`), which is separate from the source code |
 
 ---
 
