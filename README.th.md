@@ -32,6 +32,7 @@
 - [ทำไมต้อง UniOps Quantum Cycle?](#-ทำไมต้อง-uniops-quantum-cycle)
 - [เริ่มต้นใช้งาน](#-เริ่มต้นใช้งาน)
 - [3 ระดับการใช้งาน](#-3-ระดับการใช้งาน)
+- [VSCode Extension](#-vscode-extension-uniopsqc-hub)
 - [ทีม](#-ทีม)
 - [Skills](#-skills)
 - [Rules & Hooks](#-rules-path-scoped)
@@ -91,28 +92,38 @@ Install UniOps Quantum Cycle from https://github.com/VarakornUnicornTech/UniOpsQ
 
 ### ติดตั้งด้วยตัวเอง (Manual Install)
 
+> [!NOTE]
+> เปลี่ยน `C:/Projects/my-project` ในคำสั่งด้านล่างให้เป็น **path จริงของโฟลเดอร์โปรเจคของคุณ** — โฟลเดอร์ที่ต้องการติดตั้ง UniOps Quantum Cycle
+
 **Bash / Git Bash / macOS / Linux:**
 ```bash
 git clone https://github.com/VarakornUnicornTech/UniOpsQC.git .claude-template
-cp -r .claude-template/.claude/ your-project/.claude/
-cp .claude-template/plugin.json your-project/plugin.json
-cp .claude-template/.mcp.json your-project/.mcp.json
-cp -r .claude-template/hooks/ your-project/hooks/
+cp -r .claude-template/.claude/ C:/Projects/my-project/.claude/
+cp .claude-template/template-version.json C:/Projects/my-project/template-version.json
+cp .claude-template/plugin.json C:/Projects/my-project/plugin.json
+cp .claude-template/.mcp.json C:/Projects/my-project/.mcp.json
+cp -r .claude-template/hooks/ C:/Projects/my-project/hooks/
 rm -rf .claude-template
 ```
 
 **PowerShell (Windows):**
 ```powershell
 git clone https://github.com/VarakornUnicornTech/UniOpsQC.git .claude-template
-Copy-Item -Recurse .claude-template\.claude\ your-project\.claude\
-Copy-Item .claude-template\plugin.json your-project\plugin.json
-Copy-Item .claude-template\.mcp.json your-project\.mcp.json
-Copy-Item -Recurse .claude-template\hooks\ your-project\hooks\
+Copy-Item -Recurse .claude-template\.claude\ C:\Projects\my-project\.claude\
+Copy-Item .claude-template\template-version.json C:\Projects\my-project\template-version.json
+Copy-Item .claude-template\plugin.json C:\Projects\my-project\plugin.json
+Copy-Item .claude-template\.mcp.json C:\Projects\my-project\.mcp.json
+Copy-Item -Recurse .claude-template\hooks\ C:\Projects\my-project\hooks\
 Remove-Item -Recurse -Force .claude-template
 ```
 
 > [!TIP]
-> หลังจาก clone แล้ว แก้ไข `.claude/ProjectEnvironment.md` ด้วยชื่อโปรเจคและ path ก่อนเปิด Claude Code เป็นครั้งแรก
+> หลังติดตั้ง แก้ไข `.claude/ProjectEnvironment.md` ด้วยชื่อโปรเจคและ path ก่อนเปิด Claude Code เป็นครั้งแรก
+
+> [!NOTE]
+> **Windows — Hook scripts ต้องใช้ `jq`:** ติดตั้งผ่าน [winget](https://winget.run/pkg/jqlang/jq) (`winget install jqlang.jq`) หรือ [Chocolatey](https://chocolatey.org/) (`choco install jq`) แล้ว restart terminal ถ้าไม่มี `jq` hook scripts จะไม่ทำงาน
+>
+> **Playwright MCP (optional):** ต้องการเฉพาะเมื่อใช้ browser automation สำหรับ UX smoke tests ติดตั้ง [Node.js](https://nodejs.org/) แล้วรัน `npx playwright install` ในโปรเจค
 
 ---
 
@@ -143,6 +154,48 @@ Remove-Item -Recurse -Force .claude-template
   </td>
 </tr>
 </table>
+
+---
+
+## 💻 VSCode Extension (UniOpsQC Hub)
+
+**UniOpsQC Hub** คือ extension ของ VSCode ที่ใช้งานควบคู่กับ Claude Code ให้คุณมี dashboard แบบ visual ขณะทำงาน
+
+**ติดตั้ง:** ค้นหา `UniOpsQC Hub` หรือ `RoundTable Hub` ใน VSCode Marketplace หรือติดตั้งด้วย extension ID `unicorntech.roundhub`
+
+### Extension ทำอะไรได้บ้าง
+
+Extension **ไม่ได้รัน Claude Code** — มันคือ **command launcher และ log viewer** ที่ทำงานควบคู่กับ CLI
+
+| ปุ่ม | ทำอะไร |
+|------|--------|
+| **Quick Actions** | คัดลอก `/command` ไปยัง clipboard — วางลงใน Claude Code เพื่อรัน |
+| **SESSION LOGS** | แสดงไฟล์ RoundTable session log ของโปรเจคที่ active อยู่ |
+| **FRAMEWORK STATUS** | แสดง version ของ framework ที่ติดตั้ง (ต้องมี `.git` repository) |
+| **Push to Hub** | ซิงค์ RoundTable logs ขึ้น cloud dashboard (ฟีเจอร์สำหรับสมาชิก — ยังไม่เปิดใช้งาน) |
+| **Update Preview** | คัดลอกคำสั่ง `/template preview` ไปยัง clipboard — วางลงใน Claude Code เพื่อรัน |
+| **Refresh** | โหลดหน้า panel ใหม่เพื่อดูไฟล์ล่าสุด |
+
+### 2 Version — แต่ละอันคืออะไร
+
+panel ของ extension แสดงตัวเลข version 2 ตัว:
+
+| Version | คืออะไร | มาจากไหน |
+|---------|---------|----------|
+| **Framework version** (เช่น `v2.0.0`) | Version ของ template UniOpsQC | อ่านจาก `.git` tags หรือ `template-version.json` ในโปรเจค |
+| **Extension version** (เช่น `v1.6.0`) | Version ของ VSCode extension เอง | Release version ของ extension ใน Marketplace |
+
+> [!TIP]
+> Framework และ Extension ใช้ version แยกกัน — Extension ใหม่กว่าไม่ได้แปลว่า Framework ใหม่กว่า และในทางกลับกัน
+
+### Centralized vs. Decentralized Project
+
+เมื่อเพิ่มโปรเจคใน extension จะถามหา **Project Name** และ **Project Root** UniOpsQC รองรับ 2 โหมด (กำหนดใน `.claude/ProjectEnvironment.md`):
+
+| โหมด | ใช้เมื่อ | Project Root ชี้ไปที่ |
+|------|---------|----------------------|
+| **Centralized** | โปรเจคใหม่หรือทำคนเดียว | โฟลเดอร์ที่มีทั้ง `.claude/` และ source code |
+| **Decentralized** | codebase ที่มีอยู่แล้ว | โฟลเดอร์ planning hub (ที่มี `.claude/`) แยกจาก source code |
 
 ---
 

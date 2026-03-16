@@ -156,7 +156,7 @@ Remove-Item -Recurse -Force .claude-template
 
 ---
 
-## 🖥️ VSCode Extension — UniOpsQC Hub
+## 💻 VSCode Extension (UniOpsQC Hub)
 
 **UniOpsQC Hub** is a companion VSCode extension that gives you a visual dashboard alongside Claude Code.
 
