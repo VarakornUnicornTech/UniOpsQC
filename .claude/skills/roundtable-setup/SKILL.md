@@ -57,21 +57,21 @@ Ask each question one at a time using `AskUserQuestion`.
 - Options: `English` / `Mirror input language (bilingual — respond in whichever language the message was written in)`
 - Header: `Language`
 - Description for each:
-  - English — all responses in English regardless of input language
-  - Mirror input language (bilingual) — RoundTable mirrors the language of each individual message. If you write in English, the response is in English. If you write in another language, the response matches. Recommended for multilingual sessions.
-- Note: Most users will type their preferred language (e.g., "Thai", "Japanese", "Spanish") via the free-text input. The options above are common defaults.
+  - English — all responses in English regardless of what language you write in
+  - Mirror input language (bilingual) — RoundTable automatically matches the language of each message. Write in Thai → response in Thai. Write in English → response in English. Useful if you switch languages mid-session or share the session with others.
+- Note: Most users will type their preferred language name directly (e.g., "Thai", "Japanese", "Spanish") via the free-text input. The options above are common defaults.
 
 **From this point forward, present all remaining questions and text in the user's chosen language.**
 
 **Question (2/5):**
-> "(2/5) What position title should AM and the teams use when addressing you?"
+> "(2/5) What title should the AI team use when addressing you? (AM is the team lead AI who coordinates everything on your behalf.)"
 - Options: `Commander` / `Boss` / `Chief` / `Other — type your preferred title`
 - Header: `Callsign`
 - Description for each:
-  - Commander — formal military-style rank
-  - Boss — direct authority title
+  - Commander — formal authority title (the default; used throughout all team logs and reports)
+  - Boss — a direct, informal authority title
   - Chief — leadership-focused title
-  - Other — enter any custom title you prefer
+  - Other — type any custom title you prefer (e.g., "Captain", "Director", your own name)
 
 **Question (3/5):**
 > "(3/5) What is your name?"
@@ -94,6 +94,8 @@ Ask each question one at a time using `AskUserQuestion`.
 
 - If **Use defaults** → apply defaults (see table below), skip to Step 4 (Confirm Before Saving).
 - If **Configure** → proceed to Step 2 (Advanced Setup).
+
+> **When "Use defaults" is selected:** All 4 teams are active (Overseer, Monolith, Syndicate, Arcade). The team lead AI (AM) manages them on your behalf — you give one instruction and receive one consolidated report. Responses are balanced in length. You approve major decisions; minor tasks run independently.
 
 **Defaults when skipped:**
 
@@ -137,15 +139,15 @@ Ask each question one at a time using `AskUserQuestion`. No progress counter for
 > "Which teams should be active by default?" (multiSelect: true)
 - Options: `Overseer (always on)` / `Monolith` / `Syndicate` / `Arcade`
 - Header: `Active teams`
-- Note: Cipher is always available on-demand — not listed here.
+- Note: Cipher (the forensic/hardware diagnostic specialist) is always available on-demand from Commander — not listed here because Cipher operates outside the normal team hierarchy.
 
 **Orchestration Mode:**
 > "Default orchestration mode?"
 - Options: `Mode A — AM Direct (one prompt in, consolidated report out)` / `Mode B — Separate sessions (you manage each team directly)`
 - Header: `Orchestration`
 - Description for each:
-  - Mode A — You give AM one instruction. AM spawns all sub-teams, collects results, and presents a single consolidated report. Best for efficiency.
-  - Mode B — You open a separate Claude session per team and interact with each directly. Best for hands-on control and real-time course correction.
+  - Mode A — You give AM (the team lead AI) one instruction. AM assigns tasks to all sub-teams, collects their results, and presents a single consolidated report. Best for efficiency — you only talk to AM.
+  - Mode B — You open a separate Claude session per team and interact with each team directly. Best for hands-on control and real-time course correction.
 
 **Phase Acceptance Gate:**
 > "Commander Phase Acceptance Gate — do you want to personally test and accept each phase before teams advance?"
@@ -194,8 +196,8 @@ Ask each question one at a time using `AskUserQuestion`. No progress counter for
 - Options: `Professional — clean and formal, no decorations` / `Expressive — team members show personality with emojis and kaomoji`
 - Header: `Tone`
 - Description for each:
-  - Professional — straight to the point. No emojis, no kaomoji. Clean, formal output.
-  - Expressive — team members can use emojis and kaomoji to convey feelings and reactions. Adds personality to reports, logs, and responses.
+  - Professional — straight to the point. No emojis, no kaomoji. Clean, formal output only.
+  - Expressive — team members can use emojis 🎉 and kaomoji (e.g., ヽ(・∀・)ﾉ) to convey feelings and reactions. Adds personality to reports, logs, and responses.
 
 Save answers to profile section: `## Working Style`
 
