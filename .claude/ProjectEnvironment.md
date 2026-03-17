@@ -7,12 +7,21 @@
 
 ## Active Projects
 
-### [Example Project]
+### UniOpsQC
 **PROJECT_MODE:** Centralized
-**PROJECT_ROOT:** `[Project Root]/[ProjectName]`
-**SOURCE_ROOT:** `[Project Root]/[ProjectName]/Projects/[source-folder]`
+**PROJECT_ROOT:** `C:/UnicornVibeCode/UniOpsQC`
+**SOURCE_ROOT:** `C:/UnicornVibeCode/UniOpsQC`
 **ACTIVE:** true
-**Notes:** Example entry. Replace with your actual project details.
+**Notes:** RoundTable Framework — the governance framework itself. Planning and source in same root. Framework management, policy updates, skill development, contributor PR review.
+
+---
+
+### HubVSCode
+**PROJECT_MODE:** Decentralized
+**PROJECT_ROOT:** `C:/UnicornVibeCode/UniOpsQC/Development/HubVSCode`
+**SOURCE_ROOT:** `C:/UnicornVibeCode/roundtable-hub-vscode`
+**ACTIVE:** true
+**Notes:** UniOpsQC Hub VSCode Extension (TypeScript, esbuild, v1.6.0). Publisher: UnicornTech. Planning hub in UniOpsQC/Development/HubVSCode — source code in separate repo (GitHub: UniOpsQC-vscode, local folder: roundtable-hub-vscode). Issues tracked in UniOpsQC repo (#50–55). Open bugs: SESSION LOGS filename mismatch, FRAMEWORK STATUS vunknown, Update Preview clipboard bug, Set project name dialog repeat.
 
 ---
 
@@ -26,4 +35,4 @@
 
 ---
 
-*Template — replace example entries with your actual projects.*
+*Last updated: 17-03-2026 by AM (AstonMartin)*

@@ -19,6 +19,24 @@
 
 ---
 
+<p align="center"><b>📊 Presentation</b></p>
+<p align="center">
+  <a href="docs/UniOpsPresent-TH.pdf">
+    <img src="docs/present-preview-th.png" width="47%" alt="UniOpsQC Presentation — ภาษาไทย">
+  </a>
+  &nbsp;
+  <a href="docs/UniOpsPresent-EN.pdf">
+    <img src="docs/present-preview-en.png" width="47%" alt="UniOpsQC Presentation — English">
+  </a>
+</p>
+<p align="center">
+  <a href="docs/UniOpsPresent-TH.pdf"><img src="https://img.shields.io/badge/📊_ดู_Presentation-ภาษาไทย-e63946?style=flat-square" alt="Presentation TH"></a>
+  &nbsp;
+  <a href="docs/UniOpsPresent-EN.pdf"><img src="https://img.shields.io/badge/📊_View_Presentation-English-0d6efd?style=flat-square" alt="Presentation EN"></a>
+</p>
+
+---
+
 > [!NOTE]
 > **ระบบบริหารจัดการทีม AI สำหรับ Claude Code — ship ด้วยความมั่นใจ ไม่ใช่แค่ความเร็ว**
 > เปลี่ยน Claude Code ให้กลายเป็นองค์กรวิศวกรรมที่ทำงานประสานกัน ด้วยทีมเฉพาะทาง approval gate นโยบายที่บังคับใช้อัตโนมัติ และ audit trail ครบถ้วน
