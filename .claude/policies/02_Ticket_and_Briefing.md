@@ -170,6 +170,7 @@ Examples: `MON-01_UIDSchemaAndStorage.md`, `SYN-02_RateLimiterMiddleware.md`
 **Phase:** Phase [N] — [Phase Name]
 **Team:** [TeamName] — [Team Subtitle]
 **Status:** `[ ] PENDING` | `[~] IN PROGRESS` | `[x] Complete` | `[!] BLOCKED`
+**Complexity:** `Simple` | `Medium` | `Complex`
 **Depends on:** [ticket IDs, or "None"]
 **Blocks:** [ticket IDs, or "None"]
 
@@ -207,6 +208,23 @@ Examples: `MON-01_UIDSchemaAndStorage.md`, `SYN-02_RateLimiterMiddleware.md`
 | `[x]` | Complete | All criteria met, tests pass, OverseerReport filed |
 | `[!]` | BLOCKED | Cannot proceed — blocker filed in OverseerReport |
 | `[>]` | DEFERRED | Intentionally scheduled for a later phase — not forgotten, not pending. Always include target phase in the status field (e.g., `[>] Deferred — scheduled pre-Phase 5 open`) |
+
+---
+
+## Ticket Complexity Values (NEW — 16-03-2026)
+
+The `**Complexity:**` field signals the expected depth of planning, testing, and documentation for a ticket. Set by AM when creating the ticket; confirmed by MT for Complex tickets.
+
+| Value | Scope | Min Testing | Docs Update | Other Gates |
+|-------|-------|-------------|-------------|-------------|
+| `Simple` | One-file change, no new interfaces, trivial scope | One unit test | Optional (unless output-facing) | Self-Check Q1 + Q4 minimum |
+| `Medium` | Multi-file change, touches existing interfaces | Unit + integration tests | Required | Full Self-Check (all 4 questions) |
+| `Complex` | Architectural change, new integrations, cross-team impact, or major refactor | Full test suite (unit + integration + smoke) | Required + design doc | Confidence Threshold mandatory; MT architecture sign-off; Full Self-Check |
+
+**Rules:**
+- Mandatory for all new tickets from 16-03-2026 forward
+- Optional (but encouraged) for tickets created before 16-03-2026
+- Complexity informs the Pre-Implementation Confidence Threshold (§10) and Self-Check Protocol (§11) depth requirements
 
 ---
 

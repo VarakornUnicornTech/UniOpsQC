@@ -271,8 +271,10 @@ All three sub-teams (Monolith, Syndicate, Arcade) work in parallel across every 
 | §7 | Parallel Execution, ZCB Guarantee, Ticket Ownership, Commander Sync Gate | `policies/07_Parallel_Execution.md` |
 | §8 | Skills (slash commands), Subagent standard, Trigger Conditions, Pre-Flight Declaration | `policies/08_Skills_and_Subagents.md` |
 | §9 | Multi-Session Parallel Work, one-session-per-project, project-prefixed logging | `policies/09_Multi_Session_Parallel_Work.md` |
+| §10 | Pre-Implementation Confidence Threshold — 5-check scoring gate (Git Sync + 4 scored checks), decision tiers, output format | `policies/10_ConfidenceThreshold.md` |
+| §11 | Self-Check Protocol — 4-question post-implementation evidence checklist, 7 hallucination red flags, complexity-scaled depth | `policies/11_SelfCheckProtocol.md` |
 
-> **Loading rule:** Policy files are read on-demand. Teams do NOT need to read all 9 at session start — CLAUDE.md is sufficient for initialization. Read the specific policy when needed.
+> **Loading rule:** Policy files are read on-demand. Teams do NOT need to read all 11 at session start — CLAUDE.md is sufficient for initialization. Read the specific policy when needed.
 
 ---
 
@@ -291,6 +293,9 @@ Skills are prompt templates in `.claude/skills/` invoked with `/command-name`. S
 | `/bug-report [Project] [desc]` | Create PLANNED bug fix file + ticket folders |
 | `/mod-log [Project] [name]` | Create PLANNED modification log + ticket folders |
 | `/sub-feature [Project] [name]` | Create PLANNED sub-feature + ticket folders |
+| `/plan [Project] [description]` | Unified planning — brainstorm → design → spec → tickets. Awaits Commander approval before implementation. |
+| `/document [Project] [FeatureName]` | Generate or update a feature description doc from source code (L1/L2 scan, living doc) |
+| `/commands [list\|recommend]` | Command discovery — list all commands or recommend best command for your intent |
 | `/overseer-report [ID]` | File a report entry for AM review |
 | `/git status` | Quick git state overview — branch, divergence, working tree |
 | `/git commit [branch?]` | Governed commit — safety gates, 2-pass review, ticket gate, commit |
