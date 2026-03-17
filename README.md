@@ -19,6 +19,24 @@
 
 ---
 
+<p align="center"><b>📊 Presentation</b></p>
+<p align="center">
+  <a href="docs/UniOpsPresent-EN.pdf">
+    <img src="docs/present-preview-en.png" width="47%" alt="UniOpsQC Presentation — English">
+  </a>
+  &nbsp;
+  <a href="docs/UniOpsPresent-TH.pdf">
+    <img src="docs/present-preview-th.png" width="47%" alt="UniOpsQC Presentation — ภาษาไทย">
+  </a>
+</p>
+<p align="center">
+  <a href="docs/UniOpsPresent-EN.pdf"><img src="https://img.shields.io/badge/📊_View_Presentation-English-0d6efd?style=flat-square" alt="Presentation EN"></a>
+  &nbsp;
+  <a href="docs/UniOpsPresent-TH.pdf"><img src="https://img.shields.io/badge/📊_View_Presentation-ภาษาไทย-e63946?style=flat-square" alt="Presentation TH"></a>
+</p>
+
+---
+
 > [!NOTE]
 > **Governance for Claude Code — ship with confidence, not just speed.**
 > A structured multi-team AI governance framework that turns Claude Code into a coordinated engineering organization with specialized teams, approval gates, automated policy enforcement, and full audit trail.
