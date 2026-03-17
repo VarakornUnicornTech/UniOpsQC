@@ -34,6 +34,7 @@ Enumerated scenarios:
 **Phase:** [N]
 **Team:** [TeamName]
 **Status:** [ ] PENDING
+**Complexity:** Simple | Medium | Complex
 **Depends on:** [TicketIDs or "None"]
 **Blocks:** [TicketIDs or "None"]
 
