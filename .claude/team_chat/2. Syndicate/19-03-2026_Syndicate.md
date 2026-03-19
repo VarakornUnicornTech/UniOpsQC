@@ -128,3 +128,118 @@ Ticket CMD-24 is COMPLETE. Teams waiting on this ticket may now proceed:
 **Reason:** Both tickets deliver Phase 5 Organization Workspace API — CMD-25 fixes schema mismatch and hardens RBAC, CMD-24 adds the full invitation lifecycle replacing direct member insertion.
 
 **DR:** Phase 5 Syndicate scope complete. Both tickets delivered. Holding for Commander — do NOT advance to Phase 6.
+
+---
+
+## Session Start — Phase 6: Agent Session Reporting (CMD-31, CMD-32)
+
+**DR:** Syndicate back online for Phase 6. Dependency signal received -- Monolith CMD-29 + CMD-30 COMPLETE. Migration deployed, domain entities + interface delivered. Two tickets: CMD-31 (CQRS handlers + repository) first, then CMD-32 (API endpoints). Executing now.
+
+**AX:** Scanned Monolith deliverables. Interface `IAgentSessionRepository` has 10 methods covering full lifecycle. DB tables use `TIMESTAMPTZ`, array columns (`TEXT[]`), and `JSONB`. RLS is workspace-scoped via `app.workspace_id`. Will follow `TokenRepository` pattern -- `WorkspaceAwareConnection` for RLS injection, Dapper for queries.
+
+**LX:** API schema will extend existing `/api/agent` route. Six new endpoints -- three write (POST, PATCH, POST events), three read (list, detail, active). Response shapes will mirror entity structures with clean JSON serialization.
+
+**WT:** Security posture: dual auth (`TokenAuth,Bearer`), rate limiting on writes (`push-api` policy), project-scope enforcement on token claims. Will verify all paths after implementation.
+
+---
+
+### CMD-31 — CQRS Handlers + Repository [COMPLETE]
+
+**DR:** CMD-31 executing now. AX, build the repository and all 6 handlers.
+
+**AX:** Done. Full implementation delivered:
+
+**Repository** (`AgentSessionRepository.cs`):
+- 10 methods implementing `IAgentSessionRepository`
+- Workspace-scoped via `WorkspaceAwareConnection` + RLS
+- `AddEventsAsync` uses batched multi-row INSERT (50 per batch) for performance
+- `MarkTimedOutAsync` uses interval casting for timeout comparison
+- `ListAsync` builds dynamic WHERE clause for optional filters
+- Private `SessionRow` mapper class for Dapper snake_case compatibility
+
+**6 CQRS Handlers:**
+1. `StartSessionCommand` -- validates agentName, enforces project-scope on token claims, logs AGENT_SESSION_STARTED security event
+2. `EndSessionCommand` -- validates end status (completed/failed), verifies session is active, logs AGENT_SESSION_ENDED
+3. `PushEventsCommand` -- validates batch size (max 200), event types, session active status
+4. `GetAgentSessionsQuery` -- paginated list with status/project/agent filters, clamps page/pageSize
+5. `GetSessionDetailQuery` -- session + events, project-scope enforcement
+6. `GetActiveSessionsQuery` -- calls MarkTimedOutAsync(2h) first, then returns active, filters by token project
+
+**DI:** Both layers registered -- `IAgentSessionRepository` in Infrastructure, 6 handlers in Application.
+
+**LX:** Data structures are clean. Request/Response DTOs follow established patterns -- required properties, nullable optionals, result objects with Success/StatusCode/Error.
+
+**WT:** Validation coverage confirmed:
+- Empty agentName returns 400
+- Invalid end status returns 400
+- Ending non-active session returns 400
+- Empty events list returns 400
+- Batch > 200 returns 400
+- Invalid event type returns 400 with index
+- Session not found returns 404
+- Project scope mismatch returns 403
+
+**DR:** CMD-31 marked Complete. Proceeding to CMD-32.
+
+---
+
+### CMD-32 — Agent Session API Endpoints [COMPLETE]
+
+**DR:** CMD-32 now. AX, wire the endpoints into AgentController.
+
+**AX:** Done. 6 endpoints added to `AgentController.cs`:
+
+| Method | Route | Rate Limited | Auth |
+|--------|-------|-------------|------|
+| POST | `/api/agent/sessions` | Yes | TokenAuth,Bearer |
+| PATCH | `/api/agent/sessions/{id}` | Yes | TokenAuth,Bearer |
+| POST | `/api/agent/sessions/{id}/events` | Yes | TokenAuth,Bearer |
+| GET | `/api/agent/sessions` | No | TokenAuth,Bearer |
+| GET | `/api/agent/sessions/{id}` | No | TokenAuth,Bearer |
+| GET | `/api/agent/sessions/active` | No | TokenAuth,Bearer |
+
+Claims extracted via helper methods: `GetClaimGuid`, `GetClaimGuidNullable`, `GetClaimIntNullable`. X-Sync-Batch-ID correlation header supported on write endpoints.
+
+Existing `/api/agent/push` endpoint untouched.
+
+**LX:** API schema follows REST conventions. POST returns 201 for creation, PATCH and GET return 200. Paginated list response uses `items/total/page/page_size` shape.
+
+**WT:** Security audit passed:
+- All 6 endpoints require `[Authorize(AuthenticationSchemes = "TokenAuth,Bearer")]`
+- Write endpoints have `[EnableRateLimiting("push-api")]`
+- workspace_id claim validated on write endpoints (401 if missing)
+- Project-scope enforced at handler level (403 on mismatch)
+- TokenScopeMiddleware handles read/write scope enforcement
+- Build: 0 warnings, 0 errors across all 4 projects
+
+**DR:** CMD-32 marked Complete.
+
+### Dependency Signal
+Ticket CMD-31 is COMPLETE. Tickets waiting on this may proceed:
+- CMD-32 (internal -- already executed)
+
+### Dependency Signal
+Ticket CMD-32 is COMPLETE. Teams waiting on this ticket may now proceed:
+- Arcade: CMD-33, CMD-34 now unblocked (live API wiring)
+
+---
+
+### Output Delivered
+
+**Files Created:**
+- `C:/UnicornVibeCode/UniOpsQC-command/src/Hub.Infrastructure/Repositories/AgentSessionRepository.cs`
+- `C:/UnicornVibeCode/UniOpsQC-command/src/Hub.Application/Features/Agent/StartSessionCommand.cs`
+- `C:/UnicornVibeCode/UniOpsQC-command/src/Hub.Application/Features/Agent/EndSessionCommand.cs`
+- `C:/UnicornVibeCode/UniOpsQC-command/src/Hub.Application/Features/Agent/PushEventsCommand.cs`
+- `C:/UnicornVibeCode/UniOpsQC-command/src/Hub.Application/Features/Agent/GetSessionsQuery.cs`
+- `C:/UnicornVibeCode/UniOpsQC-command/src/Hub.Application/Features/Agent/GetSessionDetailQuery.cs`
+- `C:/UnicornVibeCode/UniOpsQC-command/src/Hub.Application/Features/Agent/GetActiveSessionsQuery.cs`
+
+**Files Modified:**
+- `C:/UnicornVibeCode/UniOpsQC-command/src/Hub.Infrastructure/DependencyInjection.cs` -- registered IAgentSessionRepository
+- `C:/UnicornVibeCode/UniOpsQC-command/src/Hub.Application/DependencyInjection.cs` -- registered 6 CQRS handlers
+- `C:/UnicornVibeCode/UniOpsQC-command/src/Hub.Api/Controllers/AgentController.cs` -- added 6 session endpoints + claim helpers
+
+**Reason:** Both tickets deliver the application + API layers for Agent Session Reporting, enabling agents to start/end sessions and push events through authenticated, rate-limited, workspace-scoped endpoints.
+
+**DR:** Phase 6 Syndicate scope complete. Both tickets delivered. Holding for Commander -- do NOT advance to Phase 7.

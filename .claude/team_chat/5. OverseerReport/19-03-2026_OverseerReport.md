@@ -151,3 +151,54 @@ Ticket CMD-24 is COMPLETE. Teams waiting on this ticket may now proceed:
 
 ### Syndicate Phase 5 Status
 All 2 Syndicate tickets (CMD-25, CMD-24) are COMPLETE. Holding for Commander -- NOT advancing to Phase 6.
+
+---
+
+## Monolith (Phase 6)
+### CMD-29 -- Agent Sessions + Events DB Migration
+**Filed by:** AT (Atlas)
+**Date:** 19-03-2026
+**Status:** COMPLETE
+
+**Summary**
+Created `41_agent_sessions.sql` migration with two tables: `hub.agent_sessions` (UUID PK, workspace FK with CASCADE, project FK with SET NULL, 4-value status CHECK, TEXT[] tickets_processed, JSONB metadata) and `hub.agent_session_events` (BIGSERIAL PK, session FK with CASCADE, 5-value event_type CHECK, JSONB data). Three indexes created: (workspace_id, status), (workspace_id, started_at DESC), and (session_id, timestamp). RLS enabled and forced on both tables -- sessions use direct workspace_id policy, events use subquery through parent session. Fully idempotent with IF NOT EXISTS and DROP POLICY IF EXISTS guards.
+
+**Acceptance Criteria**
+- [x] Migration SQL file created at `deploy/init-scripts/41_agent_sessions.sql`
+- [x] Both tables created with correct columns, types, constraints
+- [x] RLS policies enabled and enforced
+- [x] Indexes created for query performance
+- [x] Migration is idempotent (IF NOT EXISTS)
+
+**Blockers:** None
+**Next Step for AM:** Present to Commander. Signal Syndicate that CMD-31 foundation is ready.
+
+---
+
+### CMD-30 -- AgentSession Domain Entities + IAgentSessionRepository
+**Filed by:** AT (Atlas)
+**Date:** 19-03-2026
+**Status:** COMPLETE
+
+**Summary**
+Created three files in Hub.Domain: `AgentSession.cs` (sealed class, 11 init-only properties matching migration schema + EventCount computed field for list views), `AgentSessionEvent.cs` (sealed class, 6 init-only properties with BIGSERIAL id), and `IAgentSessionRepository.cs` (10-method interface covering create, get-by-id, get-active, list with pagination, end-session, mark-timed-out, add-event, add-events-batch, get-events, get-active-count). All follow existing patterns from Workspace.cs and IWorkspaceRepository.cs. No implementation code -- interface only for Syndicate to implement.
+
+**Acceptance Criteria**
+- [x] `AgentSession` entity created with all fields matching migration schema
+- [x] `AgentSessionEvent` entity created with all fields
+- [x] `IAgentSessionRepository` interface covers: create, get, list, end, timeout, add events, get events
+- [x] Follows existing entity patterns (sealed class, init-only properties)
+- [x] No implementation -- interface only (Syndicate implements in Infrastructure)
+
+**Blockers:** None
+**Next Step for AM:** Present to Commander. Signal Syndicate that CMD-31 is fully unblocked.
+
+### Dependency Signal
+Tickets CMD-29 and CMD-30 are COMPLETE. Teams waiting on these tickets may now proceed:
+- Syndicate: CMD-31 (AgentSessionRepository implementation) is now unblocked
+- Syndicate: CMD-32 (Agent Session API endpoints) is now unblocked (CMD-29 dependency satisfied)
+
+---
+
+### Monolith Phase 6 Status
+All 2 Monolith tickets (CMD-29, CMD-30) are COMPLETE. Holding for Commander -- NOT advancing to Phase 7.
