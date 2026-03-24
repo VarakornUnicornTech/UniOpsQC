@@ -1,3 +1,124 @@
+# Migration Guide — v2.0.0 → v2.1.0
+
+This document covers upgrading an existing v2.0.0 install to v2.1.0.
+
+**v2.1.0 is a non-breaking additive release.** No existing files are moved, renamed, or removed. All new content is purely additive.
+
+---
+
+## 1. New Policy Files
+
+Two new policies added to `.claude/policies/`:
+
+| New File | § | Purpose |
+|----------|---|---------|
+| `.claude/policies/10_ConfidenceThreshold.md` | §10 | Pre-Implementation Confidence Threshold — 5-check gate (Git Sync binary + 4 scored checks). Required before any Complex ticket starts. |
+| `.claude/policies/11_SelfCheckProtocol.md` | §11 | Self-Check Protocol — 4-question post-implementation evidence checklist, 7 hallucination red flags, complexity-scaled depth. Assigned to Verification Scholar. |
+
+**Action:** Copy both files from the updated framework into your `.claude/policies/` directory.
+
+---
+
+## 2. Updated Policy Files (Additive Only)
+
+### `.claude/policies/02_Ticket_and_Briefing.md`
+
+Added a mandatory `**Complexity:**` field to the ticket standard. Also added a new `## Ticket Complexity Values` section.
+
+**New ticket section (after Status, before Depends on):**
+```
+**Complexity:** `Simple` | `Medium` | `Complex`
+```
+
+**Routing table — Complexity values:**
+
+| Value | Scope | Min Testing | Docs Update | Other Gates |
+|-------|-------|-------------|-------------|-------------|
+| `Simple` | One-file change, no new interfaces | One unit test | Optional | Self-Check Q1 + Q4 minimum |
+| `Medium` | Multi-file, touches existing interfaces | Unit + integration | Required | Full Self-Check (all 4 questions) |
+| `Complex` | Architectural change, new integrations, cross-team impact | Full test suite | Required + design doc | Confidence Threshold mandatory; MT sign-off; Full Self-Check |
+
+**Action:** Update your local `.claude/policies/02_Ticket_and_Briefing.md` by adding the `**Complexity:**` field and `## Ticket Complexity Values` section. Alternatively, run `/template apply policies` to sync automatically.
+
+### `.claude/rules/governance.md`
+
+Added `**Complexity:** Simple | Medium | Complex` to the Ticket File Standard template block.
+
+**Action:** Update your local `.claude/rules/governance.md` ticket template section. Run `/template apply rules` to sync automatically.
+
+---
+
+## 3. New Skills
+
+Three new skills added to `.claude/skills/`:
+
+| New Skill | Path | Purpose |
+|-----------|------|---------|
+| `/plan` | `.claude/skills/plan/SKILL.md` | Unified planning — brainstorm → design → spec review → workflow → plan doc. Awaits Commander approval before any implementation. |
+| `/document` | `.claude/skills/document/SKILL.md` | Generate or update feature description docs from source code (L1/L2 scan, no hallucination, living doc). |
+| `/commands` | `.claude/skills/commands/SKILL.md` | Command discovery — `list` mode shows all commands, `recommend [intent]` matches intent to best command. |
+
+**Action:** Create the corresponding directories and copy the `SKILL.md` files into your `.claude/skills/` directory.
+
+---
+
+## 4. New Bug Reflection System
+
+Added `.claude/reflection/` — a flat-file searchable knowledge base of resolved bugs.
+
+| New File | Purpose |
+|----------|---------|
+| `.claude/reflection/_INDEX.md` | Index explaining format, naming convention, YAML frontmatter spec, and search instructions |
+
+**Naming convention:** `[Lang]_[ErrorType]_[Name]_DD_MM_YYYY.md`
+**YAML frontmatter fields:** `language`, `error_type`, `project`, `severity`, `status`, `ticket`
+
+**Workflow:** Monolith creates a reflection entry whenever a bug ticket reaches Complete.
+
+**Action:** Create the `.claude/reflection/` directory and copy `_INDEX.md` into it.
+
+---
+
+## 5. CLAUDE.md Updates
+
+The framework `CLAUDE.md` has two additive changes:
+
+- **Policy Reference Index:** Two new rows for §10 and §11
+- **Available Skills table:** Three new rows for `/plan`, `/document`, `/commands`
+
+**Action:** Update your local `CLAUDE.md` with the new rows, or run `/template apply` to sync automatically.
+
+---
+
+## 6. Quick Migration Checklist
+
+```
+[ ] Copy .claude/policies/10_ConfidenceThreshold.md (new)
+[ ] Copy .claude/policies/11_SelfCheckProtocol.md (new)
+[ ] Add Complexity field + section to .claude/policies/02_Ticket_and_Briefing.md
+[ ] Add Complexity field to .claude/rules/governance.md ticket template
+[ ] Create .claude/skills/plan/SKILL.md (new)
+[ ] Create .claude/skills/document/SKILL.md (new)
+[ ] Create .claude/skills/commands/SKILL.md (new)
+[ ] Create .claude/reflection/ directory
+[ ] Copy .claude/reflection/_INDEX.md (new)
+[ ] Update CLAUDE.md — add §10/§11 to policy index + 3 skills to table
+[ ] Update template-version.json to v2.1.0
+[ ] Run /template check to verify — all new files should show as PRESENT
+```
+
+---
+
+## 7. Post-Migration Verification
+
+Run `/template check` to verify your local instance matches the v2.1.0 baseline. New files should show `PRESENT`. Modified files (CLAUDE.md, 02_Ticket_and_Briefing.md, governance.md) will show `CUSTOMIZED` if you have local modifications — this is expected.
+
+---
+
+*Migration guide for RoundTable Framework v2.1.0 — created 16-03-2026*
+
+---
+
 # Migration Guide — v1.x → v1.3.0
 
 This document provides step-by-step instructions for existing RoundTable Framework users to update their local instances to v1.3.0.
